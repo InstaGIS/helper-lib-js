@@ -30,17 +30,17 @@ se instala con:
 
 ```sh
 
-jspm install providers=github:instagis/helper-lib-js -o '{"directories":{"lib":"dist"}}'
+jspm install github:instagis/helper-lib-js -o '{"directories":{"lib":"dist"}}'
 
 ```
 
 Este comando modifica la configuración de la aplicación insertando la referencia apropiada, mediante la cual
-providers se asocia a la carpeta `dist` del presente repositorio. Si se quisiera utilizar, en cambio, la carpeta
-packages, que contiene los archivos fuente sin consolidar, habría que instalar con:
+helper-libs se asocia a la carpeta `dist` del presente repositorio. Si se quisiera utilizar, en cambio, la carpeta
+src, que contiene los archivos fuente sin consolidar, habría que instalar con:
 
 ```sh
 
-jspm install providers=github:instagis/helper-lib-js -o '{"directories":{"lib":"src"}}'
+jspm install github:instagis/helper-lib-js -o '{"directories":{"lib":"src"}}'
 
 ```
 
