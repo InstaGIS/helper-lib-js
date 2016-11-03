@@ -1,20 +1,17 @@
 {
   "name": "ig_helper",
-  "version": "16.0.2",
+  "version": "16.0.3",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
-  "contributors": [
-    {
-      "name": "José Salazar",
-      "email": "jolsalazar@gmail.com",
-      "role": "Senior Developer"
-    },
-    {
-      "name": "Gabriel Tamayo",
-      "email": "gabriel.tamayo@gmail.com",
-      "role": "Junion Developer"
-    }
-  ],
+  "contributors": [{
+    "name": "José Salazar",
+    "email": "jolsalazar@gmail.com",
+    "role": "Senior Developer"
+  }, {
+    "name": "Gabriel Tamayo",
+    "email": "gabriel.tamayo@gmail.com",
+    "role": "Junion Developer"
+  }],
   "license": "propietary",
   "repository": {
     "type": "git",
@@ -49,11 +46,9 @@
   },
   "jspm": {
     "registry": "jspm",
-    "main": "ig_helper.js",
+    "main": "dist/ig_helper.js",
     "format": "esm",
-    "directories": {
-      "lib": "dist"
-    },
+    "files": ["src", "dist"],
     "map": {
       "ig_helper": "./ig_helper.js"
     },
