@@ -1,9 +1,11 @@
 
 # Helper Libs JS
 
-Este repo contiene helpers no específicos que InstaGIS-App u otro proyecto puede incluir entre
-sus dependencias:
+Este repo contiene helpers no específicos que InstaGIS-app u otro proyecto puede reutilizar
 
+Los componentes son:
+
+* CollectionUtils
 * ButtonFactory
 * Wkt	
 * Wicket	
@@ -17,7 +19,7 @@ sus dependencias:
 * randomname	
 * getCookie
 
-Requiere de jQuery Helper para funcionar.
+Algunas funciones (las que manipulan el DOM) requieren de jQuery para funcionar.
 
 
 
