@@ -1,0 +1,99 @@
+{
+  "name": "ig_helper",
+  "version": "16.0.0",
+  "description": "Javascript helpers for instagis apps",
+  "author": "Felipe Figueroa  <amenadiel@gmail.com>",
+  "contributors": [
+    {
+      "name": "José Salazar",
+      "email": "jolsalazar@gmail.com",
+      "role": "Senior Developer"
+    },
+    {
+      "name": "Gabriel Tamayo",
+      "email": "gabriel.tamayo@gmail.com",
+      "role": "Junion Developer"
+    }
+  ],
+  "license": "propietary",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InstaGIS/helper-lib-js"
+  },
+  "bugs": {
+    "url": "https://github.com/InstaGIS/helper-lib-js/issues"
+  },
+  "homepage": "https://www.instagis.com",
+  "engines": {
+    "node": "4.2.x"
+  },
+  "main": "dist/ig_helper.js",
+  "private": true,
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-karma": "^2.0.0",
+    "jspm": "^0.17.0-beta.31",
+    "karma": "^1.1.1",
+    "karma-coverage": "^1.0.0",
+    "karma-phantomjs-launcher": "^1.0.1",
+    "karma-qunit": "^1.1.0",
+    "phantomjs-prebuilt": "^2.1.7",
+    "qunitjs": "^1.23.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.1.1",
+    "grunt-jsdoc-to-markdown": "^1.2.1",
+    "karma-jasmine-textio-html-reporter": "^1.0.0",
+    "lodash": "^4.14.1"
+  },
+  "jspm": {
+    "registry": "jspm",
+    "main": "ig_helper.js",
+    "format": "esm",
+    "directories": {
+      "lib": "dist"
+    },
+    "map": {
+      "ig_helper": "./ig_helper.js"
+    },
+    "dependencies": {
+      "gmap": "npm:amd-googlemaps-loader@^1.7.1",
+      "lodash-es": "npm:lodash-es@^4.16.6",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.17"
+    },
+    "devDependencies": {
+      "assert": "npm:jspm-nodelibs-assert@^0.2.0",
+      "babel-plugin-transform-es2015-unicode-regex": "npm:babel-plugin-transform-es2015-unicode-regex@^6.11.0",
+      "babel-plugin-transform-merge-sibling-variables": "npm:babel-plugin-transform-merge-sibling-variables@^6.8.0",
+      "babel-plugin-transform-object-assign": "npm:babel-plugin-transform-object-assign@^6.8.0",
+      "buffer": "npm:jspm-nodelibs-buffer@^0.2.0",
+      "constants": "npm:jspm-nodelibs-constants@^0.2.0",
+      "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
+      "events": "npm:jspm-nodelibs-events@^0.2.0",
+      "fs": "npm:jspm-nodelibs-fs@^0.2.0",
+      "os": "npm:jspm-nodelibs-os@^0.2.0",
+      "path": "npm:jspm-nodelibs-path@^0.2.0",
+      "stream": "npm:jspm-nodelibs-stream@^0.2.0",
+      "string_decoder": "npm:jspm-nodelibs-string_decoder@^0.2.0",
+      "util": "npm:jspm-nodelibs-util@^0.2.0",
+      "vm": "npm:jspm-nodelibs-vm@^0.2.0"
+    },
+    "peerDependencies": {
+      "process": "npm:jspm-nodelibs-process@^0.2.0"
+    },
+    "overrides": {
+      "npm:inherits@2.0.3": {
+        "ignore": [
+          "test.js"
+        ]
+      },
+      "npm:lodash@4.16.6": {
+        "map": {
+          "buffer": "@empty",
+          "process": "@empty"
+        }
+      }
+    }
+  }
+}

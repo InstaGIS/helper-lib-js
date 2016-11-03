@@ -1,0 +1,9 @@
+SystemJS.config({
+	baseURL: "/",
+	paths: {
+		"github:": "jspm_packages/github/",
+		"npm:": "jspm_packages/npm/",
+		"ig-helper/": "dist/",
+		"ig_helper/": "dist/"
+	}
+});
