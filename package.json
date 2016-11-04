@@ -1,17 +1,20 @@
 {
   "name": "ig_helper",
-  "version": "16.0.8",
+  "version": "16.0.9",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
-  "contributors": [{
-    "name": "José Salazar",
-    "email": "jolsalazar@gmail.com",
-    "role": "Senior Developer"
-  }, {
-    "name": "Gabriel Tamayo",
-    "email": "gabriel.tamayo@gmail.com",
-    "role": "Junion Developer"
-  }],
+  "contributors": [
+    {
+      "name": "José Salazar",
+      "email": "jolsalazar@gmail.com",
+      "role": "Senior Developer"
+    },
+    {
+      "name": "Gabriel Tamayo",
+      "email": "gabriel.tamayo@gmail.com",
+      "role": "Junion Developer"
+    }
+  ],
   "license": "propietary",
   "repository": {
     "type": "git",
@@ -60,16 +63,16 @@
       "ig_helper": "./ig_helper.js"
     },
     "dependencies": {
-      "gmap": "npm:amd-googlemaps-loader@^1.7.1",
-      "jquery": "github:huasofoundries/jquery_helper@^1.8.5"
+      "gmap": "npm:amd-googlemaps-loader@^1.8.5",
+      "jquery": "github:huasofoundries/jquery_helper@^1.8.3"
     },
     "devDependencies": {
-      "assert": "npm:jspm-nodelibs-assert@^0.2.0",
       "babel-plugin-transform-es2015-unicode-regex": "npm:babel-plugin-transform-es2015-unicode-regex@^6.11.0",
       "babel-plugin-transform-merge-sibling-variables": "npm:babel-plugin-transform-merge-sibling-variables@^6.8.0",
       "babel-plugin-transform-object-assign": "npm:babel-plugin-transform-object-assign@^6.8.0"
     },
     "peerDependencies": {
+      "assert": "npm:jspm-nodelibs-assert@^0.2.0",
       "buffer": "npm:jspm-nodelibs-buffer@^0.2.0",
       "constants": "npm:jspm-nodelibs-constants@^0.2.0",
       "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
