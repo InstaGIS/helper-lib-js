@@ -1,20 +1,17 @@
 {
   "name": "ig_helper",
-  "version": "16.0.9",
+  "version": "16.0.10",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
-  "contributors": [
-    {
-      "name": "José Salazar",
-      "email": "jolsalazar@gmail.com",
-      "role": "Senior Developer"
-    },
-    {
-      "name": "Gabriel Tamayo",
-      "email": "gabriel.tamayo@gmail.com",
-      "role": "Junion Developer"
-    }
-  ],
+  "contributors": [{
+    "name": "José Salazar",
+    "email": "jolsalazar@gmail.com",
+    "role": "Senior Developer"
+  }, {
+    "name": "Gabriel Tamayo",
+    "email": "gabriel.tamayo@gmail.com",
+    "role": "Junion Developer"
+  }],
   "license": "propietary",
   "repository": {
     "type": "git",
@@ -63,8 +60,8 @@
       "ig_helper": "./ig_helper.js"
     },
     "dependencies": {
-      "gmap": "npm:amd-googlemaps-loader@^1.8.5",
-      "jquery": "github:huasofoundries/jquery_helper@^1.8.3"
+      "gmap": "npm:amd-googlemaps-loader@^1.8.5"
+
     },
     "devDependencies": {
       "babel-plugin-transform-es2015-unicode-regex": "npm:babel-plugin-transform-es2015-unicode-regex@^6.11.0",
