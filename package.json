@@ -1,6 +1,6 @@
 {
   "name": "ig_helper",
-  "version": "16.0.7",
+  "version": "16.0.8",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
   "contributors": [{
@@ -61,13 +61,15 @@
     },
     "dependencies": {
       "gmap": "npm:amd-googlemaps-loader@^1.7.1",
-      "jquery": "github:huasofoundries/jquery_helper@^1.8.3"
+      "jquery": "github:huasofoundries/jquery_helper@^1.8.5"
     },
     "devDependencies": {
       "assert": "npm:jspm-nodelibs-assert@^0.2.0",
       "babel-plugin-transform-es2015-unicode-regex": "npm:babel-plugin-transform-es2015-unicode-regex@^6.11.0",
       "babel-plugin-transform-merge-sibling-variables": "npm:babel-plugin-transform-merge-sibling-variables@^6.8.0",
-      "babel-plugin-transform-object-assign": "npm:babel-plugin-transform-object-assign@^6.8.0",
+      "babel-plugin-transform-object-assign": "npm:babel-plugin-transform-object-assign@^6.8.0"
+    },
+    "peerDependencies": {
       "buffer": "npm:jspm-nodelibs-buffer@^0.2.0",
       "constants": "npm:jspm-nodelibs-constants@^0.2.0",
       "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
@@ -80,9 +82,7 @@
       "util": "npm:jspm-nodelibs-util@^0.2.0",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.17",
       "lodash-es": "npm:lodash-es@^4.16.6",
-      "vm": "npm:jspm-nodelibs-vm@^0.2.0"
-    },
-    "peerDependencies": {
+      "vm": "npm:jspm-nodelibs-vm@^0.2.0",
       "process": "npm:jspm-nodelibs-process@^0.2.0"
     },
     "overrides": {
