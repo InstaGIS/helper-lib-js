@@ -22,7 +22,8 @@ test:
 
 ig_helper:
 	jspm build src dist/ig_helper.js  --format esm --skip-source-maps  
-	jspm build src dist/ig_helper.bundle.js  --skip-encode-names -m --global-name IGProviders  
+	jspm build src dist/ig_helper.bundle.js  --skip-encode-names --global-name IGProviders  
+	jspm build src dist/ig_helper.min.js  --skip-encode-names -m --global-name IGProviders  
 	
 
 

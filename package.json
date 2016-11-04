@@ -1,6 +1,6 @@
 {
   "name": "ig_helper",
-  "version": "16.0.3",
+  "version": "16.0.4",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
   "contributors": [{
@@ -20,6 +20,10 @@
   "bugs": {
     "url": "https://github.com/InstaGIS/helper-lib-js/issues"
   },
+  "files": [
+    "src",
+    "dist"
+  ],
   "homepage": "https://www.instagis.com",
   "engines": {
     "node": "4.2.x"
