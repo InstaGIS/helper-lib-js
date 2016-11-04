@@ -1,17 +1,20 @@
 {
   "name": "ig_helper",
-  "version": "16.0.5",
+  "version": "16.0.6",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
-  "contributors": [{
-    "name": "José Salazar",
-    "email": "jolsalazar@gmail.com",
-    "role": "Senior Developer"
-  }, {
-    "name": "Gabriel Tamayo",
-    "email": "gabriel.tamayo@gmail.com",
-    "role": "Junion Developer"
-  }],
+  "contributors": [
+    {
+      "name": "José Salazar",
+      "email": "jolsalazar@gmail.com",
+      "role": "Senior Developer"
+    },
+    {
+      "name": "Gabriel Tamayo",
+      "email": "gabriel.tamayo@gmail.com",
+      "role": "Junion Developer"
+    }
+  ],
   "license": "propietary",
   "repository": {
     "type": "git",
@@ -28,7 +31,7 @@
   "engines": {
     "node": "4.2.x"
   },
-  "main": "dist/ig_helper.js",
+  "main": "dist/ig_helper.min.js",
   "private": true,
   "dependencies": {
     "grunt": "^1.0.1",
@@ -50,16 +53,18 @@
   },
   "jspm": {
     "registry": "jspm",
-    "main": "dist/ig_helper.js",
+    "main": "dist/ig_helper.min.js",
     "format": "esm",
-    "files": ["src", "dist"],
+    "files": [
+      "src",
+      "dist"
+    ],
     "map": {
       "ig_helper": "./ig_helper.js"
     },
     "dependencies": {
       "gmap": "npm:amd-googlemaps-loader@^1.7.1",
-      "lodash-es": "npm:lodash-es@^4.16.6",
-      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.17"
+      "jquery": "github:huasofoundries/jquery_helper@^1.8.3"
     },
     "devDependencies": {
       "assert": "npm:jspm-nodelibs-assert@^0.2.0",
@@ -76,6 +81,8 @@
       "stream": "npm:jspm-nodelibs-stream@^0.2.0",
       "string_decoder": "npm:jspm-nodelibs-string_decoder@^0.2.0",
       "util": "npm:jspm-nodelibs-util@^0.2.0",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.17",
+      "lodash-es": "npm:lodash-es@^4.16.6",
       "vm": "npm:jspm-nodelibs-vm@^0.2.0"
     },
     "peerDependencies": {

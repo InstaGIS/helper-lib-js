@@ -20,12 +20,19 @@ test:
 
 
 
-ig_helper:
-	jspm build src dist/ig_helper.js  --format esm --skip-source-maps  
-	jspm build src dist/ig_helper.bundle.js  --skip-encode-names --global-name IGProviders  
-	jspm build src dist/ig_helper.min.js  --skip-encode-names -m --global-name IGProviders  
+ig_helper: build_esm build_bundle build_min
 	
+	
+	
+	
+build_esm:
+	jspm build src - jquery dist/ig_helper.js  --format esm --skip-source-maps  
 
+build_bundle:
+	jspm build src - jquery dist/ig_helper.bundle.js   --global-name IGProviders  --global-deps '{"jquery":"$$", "gmaps":"gmaps"}' --skip-encode-names
+
+build_min:
+	jspm build src - jquery dist/ig_helper.min.js   -m --global-name IGProviders  --global-deps '{"jquery":"$$", "gmaps":"gmaps"}' --skip-encode-names
 
 
 update_version:

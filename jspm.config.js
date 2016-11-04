@@ -25,6 +25,9 @@ SystemJS.config({
     "test/vendor/*": {
       "build": false
     },
+    "jquery.js": {
+      "build": false
+    },
     "https://maps.googleapis.com/maps/api/*": {
       "build": false,
       "parameters": {
@@ -50,12 +53,12 @@ SystemJS.config({
 SystemJS.config({
   packageConfigPaths: [
     "npm:@*/*.json",
-    "npm:*.json"
+    "npm:*.json",
+    "github:*/*.json"
   ],
   map: {
     "gmap": "npm:amd-googlemaps-loader@1.7.1",
-    "lodash-es": "npm:lodash-es@4.16.6",
-    "plugin-babel": "npm:systemjs-plugin-babel@0.0.17",
+    "jquery": "github:huasofoundries/jquery_helper@1.8.3",
     "process": "npm:jspm-nodelibs-process@0.2.0"
   },
   packages: {}

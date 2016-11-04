@@ -561,5 +561,9 @@
   "npm:lodash-es@4.16.6": {
     "deps": {},
     "peerDeps": {}
+  },
+  "github:huasofoundries/jquery_helper@1.8.3": {
+    "deps": {},
+    "peerDeps": {}
   }
 }

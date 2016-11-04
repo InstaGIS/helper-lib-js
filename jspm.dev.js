@@ -14,7 +14,9 @@ SystemJS.config({
     "string_decoder": "npm:jspm-nodelibs-string_decoder@0.2.0",
     "vm": "npm:jspm-nodelibs-vm@0.2.0",
     "stream": "npm:jspm-nodelibs-stream@0.2.0",
-    "util": "npm:jspm-nodelibs-util@0.2.1"
+    "util": "npm:jspm-nodelibs-util@0.2.1",
+    "lodash-es": "npm:lodash-es@4.16.6",
+    "plugin-babel": "npm:systemjs-plugin-babel@0.0.17"
   },
   packages: {
     "npm:isarray@1.0.0": {
