@@ -5418,7 +5418,9 @@ var ButtonFactory = {
         options.hexcolor = getHexColor(options.color);
 
         // En frontdev el icono debe aparecer solo, sin envoltorio
-        options.transparent_background = true;
+        if (options.transparent_background === undefined) {
+            options.transparent_background = true;
+        }
         if (options.font === 'fontawesome-webfont' || options.font === 'fontello' || options.font === 'Material Icons' || options.font === 'Material-Design-Icons') {
 
             // Fontello obligatorio
