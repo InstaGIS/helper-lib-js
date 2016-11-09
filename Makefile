@@ -3,25 +3,22 @@ VERSION = $(shell cat package.json | sed -n 's/.*"version": "\([^"]*\)",/\1/p')
 SHELL = /usr/bin/env bash
 
 default: build
-.PHONY: test  default ig_helper
+.PHONY: test  default build
 
 
-build: ig_helper
+build:  build_esm build_bundle build_min
 
 version:
 	@echo $(VERSION)
 
 install: 
 	npm install
-	jspm install --quick
+	jspm install 
 
 test:
 	grunt karma
 
 
-
-ig_helper: build_esm build_bundle build_min
-	
 	
 	
 	

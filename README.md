@@ -1,6 +1,9 @@
 
 # Helper Libs JS
 
+[![Travis CI](https://travis-ci.org/InstaGIS/helper-lib-js.svg?branch=master)](https://travis-ci.org/InstaGIS/helper-lib-js)
+
+
 Este repo contiene helpers no específicos que InstaGIS-app u otro proyecto puede reutilizar
 
 Los componentes son:
