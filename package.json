@@ -35,7 +35,6 @@
     "grunt-karma": "^2.0.0",
     "jspm": "^0.17.0-beta.31",
     "karma": "^1.1.1",
-    "karma-coverage": "^1.0.0",
     "karma-phantomjs-launcher": "^1.0.1",
     "karma-qunit": "^1.1.0",
     "phantomjs-prebuilt": "^2.1.7",
