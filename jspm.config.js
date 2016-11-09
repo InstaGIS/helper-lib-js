@@ -64,7 +64,6 @@ SystemJS.config({
     "events": "npm:jspm-nodelibs-events@0.2.0",
     "fs": "npm:jspm-nodelibs-fs@0.2.0",
     "gmap": "npm:amd-googlemaps-loader@1.8.6",
-    "jquery": "github:huasofoundries/jquery_helper@1.8.3",
     "lodash-es": "npm:lodash-es@4.16.6",
     "os": "npm:jspm-nodelibs-os@0.2.0",
     "path": "npm:jspm-nodelibs-path@0.2.1",
