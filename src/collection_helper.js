@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-export {
+import {
 	default as reduce
 }
 from 'lodash-es/reduce.js';
