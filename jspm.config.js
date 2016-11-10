@@ -5,6 +5,7 @@ SystemJS.config({
       "github:": "jspm_packages/github/",
       "npm:": "jspm_packages/npm/",
       "jquery": "test/vendor/jquery.js",
+      "underscore": "test/vendor/underscore.js",
       "ig_helper/": "dist/"
     }
   },
@@ -26,6 +27,9 @@ SystemJS.config({
       "build": false
     },
     "jquery.js": {
+      "build": false
+    },
+    "underscore.js": {
       "build": false
     },
     "https://maps.googleapis.com/maps/api/*": {
@@ -64,7 +68,6 @@ SystemJS.config({
     "events": "npm:jspm-nodelibs-events@0.2.0",
     "fs": "npm:jspm-nodelibs-fs@0.2.0",
     "gmap": "npm:amd-googlemaps-loader@1.8.6",
-    "lodash-es": "npm:lodash-es@4.16.6",
     "os": "npm:jspm-nodelibs-os@0.2.0",
     "path": "npm:jspm-nodelibs-path@0.2.1",
     "plugin-babel": "npm:systemjs-plugin-babel@0.0.17",

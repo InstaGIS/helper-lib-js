@@ -129,10 +129,6 @@
     "deps": {},
     "peerDeps": {}
   },
-  "npm:lodash-es@4.16.6": {
-    "deps": {},
-    "peerDeps": {}
-  },
   "npm:base64-js@1.2.0": {
     "deps": {},
     "peerDeps": {}
