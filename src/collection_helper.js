@@ -1,4 +1,10 @@
 import $ from 'jquery';
+
+export {
+	default as reduce
+}
+from 'lodash-es/reduce.js';
+
 import {
 	default as chain
 } from 'lodash-es/chain.js';
@@ -43,6 +49,7 @@ import {
 } from 'lodash-es/uniq.js';
 
 const _ = {
+	reduce: reduce,
 	chain: chain,
 	compact: compact,
 	each: each,
