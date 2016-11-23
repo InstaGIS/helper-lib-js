@@ -31,28 +31,28 @@ SystemJS.config({
     "npm:babel-helper-regex@6.18.0": {
       "map": {
         "babel-runtime": "npm:babel-runtime@6.18.0",
-        "babel-types": "npm:babel-types@6.18.0",
-        "lodash": "npm:lodash@4.16.6"
+        "babel-types": "npm:babel-types@6.19.0",
+        "lodash": "npm:lodash@4.17.2"
       }
     },
     "npm:regexpu-core@2.0.0": {
       "map": {
         "regjsgen": "npm:regjsgen@0.2.0",
         "regjsparser": "npm:regjsparser@0.1.5",
-        "regenerate": "npm:regenerate@1.3.1"
-      }
-    },
-    "npm:babel-types@6.18.0": {
-      "map": {
-        "babel-runtime": "npm:babel-runtime@6.18.0",
-        "lodash": "npm:lodash@4.16.6",
-        "to-fast-properties": "npm:to-fast-properties@1.0.2",
-        "esutils": "npm:esutils@2.0.2"
+        "regenerate": "npm:regenerate@1.3.2"
       }
     },
     "npm:regjsparser@0.1.5": {
       "map": {
         "jsesc": "npm:jsesc@0.5.0"
+      }
+    },
+    "npm:babel-types@6.19.0": {
+      "map": {
+        "babel-runtime": "npm:babel-runtime@6.18.0",
+        "lodash": "npm:lodash@4.17.2",
+        "esutils": "npm:esutils@2.0.2",
+        "to-fast-properties": "npm:to-fast-properties@1.0.2"
       }
     }
   }
