@@ -123,7 +123,7 @@ CollectionUtils.prototype.findQualityFields = function (DataSet) {
 	_.each(DataSet.fields, function (propiedadObj, propiedad) {
 
 		//console.zlog(propiedadObj, propiedad); return;
-		if (propiedadObj.value) {
+		if (propiedadObj && propiedadObj.value) {
 			var arraypropiedad = _.map(DataSet.getArray(), function (element) {
 				return element.get ? element.get(propiedadObj.value) : element[propiedadObj.value]; // || element['properties']['gse_preponderante'];
 			});
@@ -197,7 +197,7 @@ CollectionUtils.prototype.findQuantityFields = function (DataSet) {
 	}
 
 	_.each(DataSet.fields, function (propiedadObj, propiedad) {
-		if (propiedadObj.value !== null && propiedadObj.value !== undefined) {
+		if (propiedadObj && propiedadObj.value !== null && propiedadObj.value !== undefined) {
 			var arraypropiedad = _.map(DataSet.getArray(), function (element) {
 				if (element.get) {
 					return element.get(propiedadObj.value);
@@ -281,7 +281,7 @@ CollectionUtils.prototype.discriminateFields = function () {
 	return new Promise(function (resolve, reject) {
 
 		_.each(DataSet.fields, function (propiedadObj, propiedad) {
-			if (propiedadObj.value !== null && propiedadObj.value !== undefined) {
+			if (propiedadObj && propiedadObj.value !== null && propiedadObj.value !== undefined) {
 				var arraypropiedad = _.map(DataSet.getArray(), function (element) {
 					if (element.get) {
 						return element.get(propiedadObj.value);
