@@ -237,6 +237,19 @@ var toDecColor = function (stringcolor) {
     return parsedcolor;
 };
 
+var IconObject = function (canvas, markerOpts) {
+    this.url = canvas.toDataURL();
+    this.markerOpts = markerOpts;
+    Object.assign(this, markerOpts);
+    return this;
+};
+IconObject.prototype.toJSON = function () {
+    return {
+        url: null,
+        markerOpts: this.markerOpts
+    };
+};
+
 var createTextMarker = function (theoptions) {
 
     var generateCanvas = function (options) {
@@ -321,19 +334,20 @@ var createTextMarker = function (theoptions) {
 
     };
     theoptions.scale = theoptions.scale || 0.75;
-    var markerCanvas = generateCanvas(theoptions);
+    var markerCanvas = generateCanvas(theoptions),
+        markerOpts = {};
 
-    var iconObj = {
-        url: markerCanvas.toDataURL()
-    };
+    Object.assign(markerOpts, theoptions);
+
     if (window.google && window.google.maps) {
-        Object.assign(iconObj, {
+        Object.assign(markerOpts, {
             size: new google.maps.Size(48, 40),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(24 * theoptions.scale, 40 * theoptions.scale),
             scaledSize: new google.maps.Size(48 * theoptions.scale, 40 * theoptions.scale)
         });
     }
+    var iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
 };
@@ -405,20 +419,20 @@ var createFatMarkerIcon = function (theoptions) {
 
     };
     var scale = theoptions.scale || 1,
-        markerCanvas = generateFatCanvas(theoptions);
+        markerCanvas = generateFatCanvas(theoptions),
+        markerOpts = {};
+    Object.assign(markerOpts, theoptions);
 
-    var iconObj = {
-        url: markerCanvas.toDataURL(),
-        scale: scale
-    };
     if (window.google && window.google.maps) {
-        Object.assign(iconObj, {
+        Object.assign(markerOpts, {
             size: new google.maps.Size(54, 48),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(21 * scale, 36 * scale),
-            scaledSize: new google.maps.Size(42 * scale, 36 * scale)
+            scaledSize: new google.maps.Size(42 * scale, 36 * scale),
+            scale: scale
         });
     }
+    var iconObj = new IconObject(markerCanvas, markerOpts);
     return iconObj;
 };
 
@@ -506,29 +520,25 @@ var createTransparentMarkerIcon = function (theoptions) {
     theoptions.scale = theoptions.scale || 1;
     theoptions.fontsize = theoptions.fontsize || 30;
 
-    var markerCanvas = generateTransparentCanvas(theoptions);
+    var markerCanvas = generateTransparentCanvas(theoptions),
+        markerOpts = {};
 
     var scale = theoptions.scale;
     if (theoptions.shadow) {
         scale = 0.9 * scale;
     }
-    var iconObj = {
-        canvas: markerCanvas,
-        url: markerCanvas.toDataURL(),
-        fillColor: markerCanvas.fillColor
-    };
 
-    Object.assign(iconObj, theoptions);
+    Object.assign(markerOpts, theoptions);
 
     if (window.google && window.google.maps) {
-        Object.assign(iconObj, {
+        Object.assign(markerOpts, {
             size: new google.maps.Size(54 * scale, 48 * scale),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(27 * scale, 24 * scale),
             scaledSize: new google.maps.Size(54 * scale, 48 * scale)
         });
     }
-    //console.debug('createTransparentMarkerIcon', iconObj);
+    var iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
 };

@@ -17,6 +17,7 @@ install:
 
 test:
 	grunt karma
+	mocha --compilers js:babel-core/register
 
 
 	
