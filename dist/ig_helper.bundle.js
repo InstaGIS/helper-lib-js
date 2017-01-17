@@ -2565,11 +2565,13 @@ function loadingcircle(timeout, message, container) {
 
 	jqContainerLoading.attr('class', 'preloader');
 	var removeContainer = function removeContainer(delay) {
-		jqContainerLoading.addClass('animated fadeOut');
-		jqContainerLoading.detach();
-		var garbagedivs = $('body').find(loadingcircleId);
 
 		window.setTimeout(function () {
+			jqContainerLoading.addClass('animated fadeOut');
+			jqContainerLoading.detach();
+
+			var garbagedivs = $('body').find(loadingcircleId);
+
 			garbagedivs.detach();
 		}, delay);
 	};
