@@ -2527,6 +2527,7 @@ function WKT2Object(WKT) {
 }
 
 var jqContainerLoading = null;
+var removeEvent = null;
 var preloaderFN = function preloaderFN(id_selector) {
 	var preloader = $('<div class="preloader">'),
 	    loading = $('<div class="preloader-wrapper big active" id="loading">'),
@@ -2568,9 +2569,9 @@ function loadingcircle(timeout, message, container) {
 			}, 1000);
 		}, delay);
 	};
-	if (this.removeEvent) {
-		console.log('clearTimeout', this.removeEvent);
-		window.clearTimeout(this.removeEvent);
+	if (removeEvent) {
+		console.log('clearTimeout', removeEvent);
+		window.clearTimeout(removeEvent);
 	} else {
 		console.log('no remove event detected');
 	}
@@ -2578,7 +2579,7 @@ function loadingcircle(timeout, message, container) {
 	jqContainerLoading.attr('class', 'preloader');
 
 	if (timeout === 0) {
-		this.removeEvent = removeContainer(500);
+		removeEvent = removeContainer(500);
 	} else {
 
 		if (container) {
@@ -2592,7 +2593,7 @@ function loadingcircle(timeout, message, container) {
 
 		if (timeout >= 2) {
 			timeout = Math.max(timeout, 2000);
-			this.removeEvent = removeContainer(timeout);
+			removeEvent = removeContainer(timeout);
 		}
 	}
 	return jqContainerLoading;
