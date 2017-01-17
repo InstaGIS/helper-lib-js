@@ -2557,10 +2557,9 @@ function loadingcircle(timeout, message, container) {
 		jqContainerLoading = preloaderFN(loadingcircleId);
 	}
 
-	jqContainerLoading.attr('class', 'preloader');
 	var removeContainer = function removeContainer(delay) {
 
-		window.setTimeout(function () {
+		return window.setTimeout(function () {
 			jqContainerLoading.addClass('animated fadeOut');
 			window.setTimeout(function () {
 				jqContainerLoading.detach();
@@ -2569,9 +2568,17 @@ function loadingcircle(timeout, message, container) {
 			}, 1000);
 		}, delay);
 	};
+	if (this.removeEvent) {
+		console.log('clearTimeout', this.removeEvent);
+		window.clearTimeout(this.removeEvent);
+	} else {
+		console.log('no remove event detected');
+	}
+
+	jqContainerLoading.attr('class', 'preloader');
 
 	if (timeout === 0) {
-		removeContainer(500);
+		this.removeEvent = removeContainer(500);
 	} else {
 
 		if (container) {
@@ -2585,7 +2592,7 @@ function loadingcircle(timeout, message, container) {
 
 		if (timeout >= 2) {
 			timeout = Math.max(timeout, 2000);
-			removeContainer(timeout);
+			this.removeEvent = removeContainer(timeout);
 		}
 	}
 	return jqContainerLoading;
