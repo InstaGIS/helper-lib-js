@@ -70,7 +70,7 @@ export function loadingcircle(timeout, message, container) {
 		$('#preload_text').html(message);
 
 		if (timeout >= 2) {
-			timeout = Math.max(timeout, 2000);
+			timeout = Math.max(timeout, 1000);
 			removeEvent = removeContainer(timeout);
 		}
 	}
