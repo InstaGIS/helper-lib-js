@@ -2568,16 +2568,16 @@ function loadingcircle(timeout, message, container) {
 
 		window.setTimeout(function () {
 			jqContainerLoading.addClass('animated fadeOut');
-			jqContainerLoading.detach();
-
-			var garbagedivs = $('body').find(loadingcircleId);
-
-			garbagedivs.detach();
+			window.setTimeout(function () {
+				jqContainerLoading.detach();
+				var garbagedivs = $('body').find(loadingcircleId);
+				garbagedivs.detach();
+			}, 1000);
 		}, delay);
 	};
 
 	if (timeout === 0) {
-		removeContainer(1500);
+		removeContainer(500);
 	} else {
 
 		if (container) {
