@@ -239,6 +239,7 @@ var toDecColor = function (stringcolor) {
 
 var IconObject = function (canvas, markerOpts) {
     this.url = canvas.toDataURL();
+    this.fillColor = canvas.fillColor;
     this.markerOpts = markerOpts;
     Object.assign(this, markerOpts);
     return this;
@@ -414,7 +415,7 @@ var createFatMarkerIcon = function (theoptions) {
 
         // centre the text.
         context.fillText(options.unicodelabel, Math.floor((canvas.width / 2) - (textWidth.width / 2)), 1 + Math.floor(canvas.height / 2 - fontsize / 2));
-
+        canvas.fillColor = color0;
         return canvas;
 
     };

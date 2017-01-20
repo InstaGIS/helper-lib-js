@@ -583,6 +583,7 @@ var toDecColor = function toDecColor(stringcolor) {
 
 var IconObject = function IconObject(canvas, markerOpts) {
     this.url = canvas.toDataURL();
+    this.fillColor = canvas.fillColor;
     this.markerOpts = markerOpts;
     Object.assign(this, markerOpts);
     return this;
@@ -759,7 +760,7 @@ var createFatMarkerIcon = function createFatMarkerIcon(theoptions) {
 
         // centre the text.
         context.fillText(options.unicodelabel, Math.floor(canvas.width / 2 - textWidth.width / 2), 1 + Math.floor(canvas.height / 2 - fontsize / 2));
-
+        canvas.fillColor = color0;
         return canvas;
     };
     var scale = theoptions.scale || 1,
