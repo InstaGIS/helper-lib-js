@@ -2571,10 +2571,10 @@ function loadingcircle(timeout, message, container) {
 		}, delay);
 	};
 	if (removeEvent) {
-		console.log('clearTimeout', removeEvent);
+		//console.log('clearTimeout', removeEvent);
 		window.clearTimeout(removeEvent);
 	} else {
-		console.log('no remove event detected');
+		//console.log('no remove event detected');
 	}
 
 	jqContainerLoading.attr('class', 'preloader');
