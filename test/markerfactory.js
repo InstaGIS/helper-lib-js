@@ -1,8 +1,6 @@
 // Run with mocha
-var assert = require('assert'),
-	_ = require('lodash'),
-	ButtonFactory = require('../src/markerfactory.esm'),
-	MarkerFactory = ButtonFactory.default;
+var assert = chai.assert;
+var MarkerFactory = IGProviders.ButtonFactory;
 
 console.dir(MarkerFactory);
 var testColors = {
@@ -43,36 +41,37 @@ var testColors = {
 		},
 		hex: '#ff3399'
 	};
+describe('Markerfactory component of IGProviders', function () {
 
-_.each(testColors, function (value, key) {
-	describe('Parsing of ' + key + ' color', function () {
+	_.each(testColors, function (value, key) {
+		describe('Parsing of ' + key + ' color', function () {
 
-		var parsedObject = MarkerFactory.parseColorString(value),
-			parsedObjectWO = MarkerFactory.parseColorString(value, 0.5);
+			var parsedObject = MarkerFactory.parseColorString(value),
+				parsedObjectWO = MarkerFactory.parseColorString(value, 0.5);
 
-		it('should match RGBA result of parsed ' + key + ' color', function () {
-			assert.deepEqual(parsedObject.rgb, parsedColor.rgb);
+			it('should match RGBA result of parsed ' + key + ' color', function () {
+				assert.deepEqual(parsedObject.rgb, parsedColor.rgb);
+			});
+
+			it('should match HSLA result of parsed ' + key + ' color', function () {
+				assert.deepEqual(parsedObject.hsl, parsedColor.hsl);
+			});
+
+			it('should match HEX result of parsed ' + key + ' color', function () {
+				assert.equal(parsedObject.hex, parsedColor.hex);
+			});
+
+			it('should match RGBA result of parsed ' + key + ' color with 50% opacity', function () {
+				assert.deepEqual(parsedObjectWO.rgb, parsedColorWO.rgb);
+			});
+
+			it('should match HSLA result of parsed ' + key + ' color with 50% opacity', function () {
+				assert.deepEqual(parsedObjectWO.hsl, parsedColorWO.hsl);
+			});
+
 		});
-
-		it('should match HSLA result of parsed ' + key + ' color', function () {
-			assert.deepEqual(parsedObject.hsl, parsedColor.hsl);
-		});
-
-		it('should match HEX result of parsed ' + key + ' color', function () {
-			assert.equal(parsedObject.hex, parsedColor.hex);
-		});
-
-		it('should match RGBA result of parsed ' + key + ' color with 50% opacity', function () {
-			assert.deepEqual(parsedObjectWO.rgb, parsedColorWO.rgb);
-		});
-
-		it('should match HSLA result of parsed ' + key + ' color with 50% opacity', function () {
-			assert.deepEqual(parsedObjectWO.hsl, parsedColorWO.hsl);
-		});
-
 	});
 });
-
 /*var iconSeed = {
 	character: 'f011',
 	font: 'fontello',

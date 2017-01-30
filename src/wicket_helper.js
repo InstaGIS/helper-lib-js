@@ -872,7 +872,7 @@ Wkt.Wkt.prototype.construct = {
 	 * Creates the framework's equivalent point geometry object.
 	 * @param   config      {Object}    An optional properties hash the object should use
 	 * @param   component   {Object}    An optional component to build from
-	 * @return              {gmaps.Marker}
+	 * @return              {google.maps.Marker}
 	 */
 	point: function (config, component) {
 		var c = component || this.components;
@@ -881,15 +881,15 @@ Wkt.Wkt.prototype.construct = {
 			optimized: true
 		};
 
-		config.position = new gmaps.LatLng(c[0].y, c[0].x);
+		config.position = new google.maps.LatLng(c[0].y, c[0].x);
 
-		return new gmaps.Marker(config);
+		return new google.maps.Marker(config);
 	},
 
 	/**
 	 * Creates the framework's equivalent multipoint geometry object.
 	 * @param   config  {Object}    An optional properties hash the object should use
-	 * @return          {Array}     Array containing multiple gmaps.Marker
+	 * @return          {Array}     Array containing multiple google.maps.Marker
 	 */
 	multipoint: function (config) {
 		var i, c, arr;
@@ -911,7 +911,7 @@ Wkt.Wkt.prototype.construct = {
 	 * Creates the framework's equivalent linestring geometry object.
 	 * @param   config      {Object}    An optional properties hash the object should use
 	 * @param   component   {Object}    An optional component to build from
-	 * @return              {gmaps.Polyline}
+	 * @return              {google.maps.Polyline}
 	 */
 	linestring: function (config, component) {
 		var i, c;
@@ -925,16 +925,16 @@ Wkt.Wkt.prototype.construct = {
 		config.path = [];
 
 		for (i = 0; i < c.length; i += 1) {
-			config.path.push(new gmaps.LatLng(c[i].y, c[i].x));
+			config.path.push(new google.maps.LatLng(c[i].y, c[i].x));
 		}
 
-		return new gmaps.Polyline(config);
+		return new google.maps.Polyline(config);
 	},
 
 	/**
 	 * Creates the framework's equivalent multilinestring geometry object.
 	 * @param   config  {Object}    An optional properties hash the object should use
-	 * @return          {Array}     Array containing multiple gmaps.Polyline instances
+	 * @return          {Array}     Array containing multiple google.maps.Polyline instances
 	 */
 	multilinestring: function (config) {
 		var i, c, arr;
@@ -960,25 +960,25 @@ Wkt.Wkt.prototype.construct = {
 	 * Creates the framework's equivalent Box or Rectangle geometry object.
 	 * @param   config      {Object}    An optional properties hash the object should use
 	 * @param   component   {Object}    An optional component to build from
-	 * @return              {gmaps.Rectangle}
+	 * @return              {google.maps.Rectangle}
 	 */
 	box: function (config, component) {
 		var c = component || this.components;
 
 		config = config || {};
 
-		config.bounds = new gmaps.LatLngBounds(
-			new gmaps.LatLng(c[0].y, c[0].x),
-			new gmaps.LatLng(c[1].y, c[1].x));
+		config.bounds = new google.maps.LatLngBounds(
+			new google.maps.LatLng(c[0].y, c[0].x),
+			new google.maps.LatLng(c[1].y, c[1].x));
 
-		return new gmaps.Rectangle(config);
+		return new google.maps.Rectangle(config);
 	},
 
 	/**
 	 * Creates the framework's equivalent polygon geometry object.
 	 * @param   config      {Object}    An optional properties hash the object should use
 	 * @param   component   {Object}    An optional component to build from
-	 * @return              {gmaps.Polygon}
+	 * @return              {google.maps.Polygon}
 	 */
 	polygon: function (config, component) {
 		var j, k, c, rings, verts;
@@ -997,7 +997,7 @@ Wkt.Wkt.prototype.construct = {
 			verts = [];
 			// NOTE: We iterate to one (1) less than the Array length to skip the last vertex
 			for (k = 0; k < c[j].length - 1; k += 1) { // For each vertex...
-				verts.push(new gmaps.LatLng(c[j][k].y, c[j][k].x));
+				verts.push(new google.maps.LatLng(c[j][k].y, c[j][k].x));
 
 			} // eo for each vertex
 
@@ -1016,7 +1016,7 @@ Wkt.Wkt.prototype.construct = {
 			return (function () {
 				var bounds, v;
 
-				bounds = new gmaps.LatLngBounds();
+				bounds = new google.maps.LatLngBounds();
 
 				for (v in rings[0]) { // Ought to be only 1 ring in a Rectangle
 					if (rings[0].hasOwnProperty(v)) {
@@ -1024,19 +1024,19 @@ Wkt.Wkt.prototype.construct = {
 					}
 				}
 
-				return new gmaps.Rectangle({
+				return new google.maps.Rectangle({
 					bounds: bounds
 				});
 			}());
 		} else {
-			return new gmaps.Polygon(config);
+			return new google.maps.Polygon(config);
 		}
 	},
 
 	/**
 	 * Creates the framework's equivalent multipolygon geometry object.
 	 * @param   config  {Object}    An optional properties hash the object should use
-	 * @return          {Array}     Array containing multiple gmaps.Polygon
+	 * @return          {Array}     Array containing multiple google.maps.Polygon
 	 */
 	multipolygon: function (config) {
 		var i, c, arr;
@@ -1074,12 +1074,12 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 	var features, i, j, verts, rings, sign, tmp, response, lat, lng, vertex, ring;
 	var polygons, polygon, k, linestring, linestrings;
 	// Shortcut to signed area function (determines clockwise vs counter-clock)
-	if (gmaps.geometry) {
-		sign = gmaps.geometry.spherical.computeSignedArea;
+	if (google.maps.geometry) {
+		sign = google.maps.geometry.spherical.computeSignedArea;
 	}
 
-	// gmaps.LatLng //////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.LatLng) {
+	// google.maps.LatLng //////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.LatLng) {
 
 		response = {
 			type: 'point',
@@ -1091,8 +1091,8 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		return response;
 	}
 
-	// gmaps.Point //////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Point) {
+	// google.maps.Point //////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Point) {
 		response = {
 			type: 'point',
 			components: [{
@@ -1103,8 +1103,8 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		return response;
 	}
 
-	// gmaps.Marker //////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Marker) {
+	// google.maps.Marker //////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Marker) {
 		response = {
 			type: 'point',
 			components: [{
@@ -1115,8 +1115,8 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		return response;
 	}
 
-	// gmaps.Polyline ////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Polyline) {
+	// google.maps.Polyline ////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Polyline) {
 
 		verts = [];
 		for (i = 0; i < obj.getPath().length; i += 1) {
@@ -1134,8 +1134,8 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 	}
 
-	// gmaps.Polygon /////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Polygon) {
+	// google.maps.Polygon /////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Polygon) {
 
 		rings = [];
 
@@ -1228,8 +1228,8 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 	}
 
-	// gmaps.Circle //////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Circle) {
+	// google.maps.Circle //////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Circle) {
 		var point = obj.getCenter();
 		var radius = obj.getRadius();
 		verts = [];
@@ -1260,8 +1260,8 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 	}
 
-	// gmaps.LatLngBounds ///////////////////////////////////////////////////
-	if (obj.constructor === gmaps.LatLngBounds) {
+	// google.maps.LatLngBounds ///////////////////////////////////////////////////
+	if (obj.constructor === google.maps.LatLngBounds) {
 
 		tmp = obj;
 		verts = [];
@@ -1300,8 +1300,8 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 	}
 
-	// gmaps.Rectangle ///////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Rectangle) {
+	// google.maps.Rectangle ///////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Rectangle) {
 
 		tmp = obj.getBounds();
 		verts = [];
@@ -1340,16 +1340,16 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 	}
 
-	// gmaps.Data Geometry Types /////////////////////////////////////////////////////
+	// google.maps.Data Geometry Types /////////////////////////////////////////////////////
 
-	// gmaps.Data.Feature /////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Data.Feature) {
+	// google.maps.Data.Feature /////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Data.Feature) {
 		return this.deconstruct.call(this, obj.getGeometry());
 	}
 
-	// gmaps.Data.Point /////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Data.Point) {
-		//console.zlog('It is a gmaps.Data.Point');
+	// google.maps.Data.Point /////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Data.Point) {
+		//console.zlog('It is a google.maps.Data.Point');
 		response = {
 			type: 'point',
 			components: [{
@@ -1360,10 +1360,10 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		return response;
 	}
 
-	// gmaps.Data.LineString /////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Data.LineString) {
+	// google.maps.Data.LineString /////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Data.LineString) {
 		verts = [];
-		//console.zlog('It is a gmaps.Data.LineString');
+		//console.zlog('It is a google.maps.Data.LineString');
 		for (i = 0; i < obj.getLength(); i += 1) {
 			vertex = obj.getAt(i);
 			verts.push({
@@ -1378,10 +1378,10 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		return response;
 	}
 
-	// gmaps.Data.Polygon /////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Data.Polygon) {
+	// google.maps.Data.Polygon /////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Data.Polygon) {
 		rings = [];
-		//console.zlog('It is a gmaps.Data.Polygon');
+		//console.zlog('It is a google.maps.Data.Polygon');
 		for (i = 0; i < obj.getLength(); i += 1) { // For each ring...
 			ring = obj.getAt(i);
 			verts = [];
@@ -1407,8 +1407,8 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		return response;
 	}
 
-	// gmaps.Data.MultiPoint /////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Data.MultiPoint) {
+	// google.maps.Data.MultiPoint /////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Data.MultiPoint) {
 		verts = [];
 		for (i = 0; i < obj.getLength(); i += 1) {
 			vertex = obj.getAt(i);
@@ -1424,8 +1424,8 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		return response;
 	}
 
-	// gmaps.Data.MultiLineString /////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Data.MultiLineString) {
+	// google.maps.Data.MultiLineString /////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Data.MultiLineString) {
 		linestrings = [];
 		for (i = 0; i < obj.getLength(); i += 1) {
 			verts = [];
@@ -1446,12 +1446,12 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		return response;
 	}
 
-	// gmaps.Data.MultiPolygon /////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Data.MultiPolygon) {
+	// google.maps.Data.MultiPolygon /////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Data.MultiPolygon) {
 
 		polygons = [];
 
-		//console.zlog('It is a gmaps.Data.MultiPolygon');
+		//console.zlog('It is a google.maps.Data.MultiPolygon');
 		for (k = 0; k < obj.getLength(); k += 1) { // For each multipolygon
 			polygon = obj.getAt(k);
 			rings = [];
@@ -1482,15 +1482,15 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		return response;
 	}
 
-	// gmaps.Data.GeometryCollection /////////////////////////////////////////////////////
-	if (obj.constructor === gmaps.Data.GeometryCollection) {
+	// google.maps.Data.GeometryCollection /////////////////////////////////////////////////////
+	if (obj.constructor === google.maps.Data.GeometryCollection) {
 
 		var objects = [];
 		for (k = 0; k < obj.getLength(); k += 1) { // For each multipolygon
 			var object = obj.getAt(k);
 			objects.push(this.deconstruct.call(this, object));
 		}
-		//console.zlog('It is a gmaps.Data.GeometryCollection', objects);
+		//console.zlog('It is a google.maps.Data.GeometryCollection', objects);
 		response = {
 			type: 'geometrycollection',
 			components: objects
@@ -1520,11 +1520,11 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 				}
 
 				switch (type) {
-				case gmaps.Marker:
+				case google.maps.Marker:
 					return 'multipoint';
-				case gmaps.Polyline:
+				case google.maps.Polyline:
 					return 'multilinestring';
-				case gmaps.Polygon:
+				case google.maps.Polygon:
 					return 'multipolygon';
 				default:
 					return 'geometrycollection';
