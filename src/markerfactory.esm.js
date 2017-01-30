@@ -473,10 +473,10 @@ var createTransparentMarkerIcon = function (theoptions) {
             text_x = Math.floor((canvas.width / 2) - (textWidth.width / 2));
 
         if (options.shadow) {
-            var grad = context.createLinearGradient(text_x, 0, canvas.width, canvas.height);
+            //var grad = context.createLinearGradient(text_x, 0, canvas.width, canvas.height);
 
-            grad.addColorStop(0, '#FFFFFF');
-            grad.addColorStop(1, color0);
+            //grad.addColorStop(0, '#FFFFFF');
+            //grad.addColorStop(1, color0);
 
             //console.debug('applying shadow');
             context.shadowOffsetX = -2;
@@ -488,7 +488,7 @@ var createTransparentMarkerIcon = function (theoptions) {
 
             context.fillText(options.unicodelabel, text_x - 4, 0);
             context.fillText(options.unicodelabel, text_x, 3);
-            context.fillStyle = grad;
+            context.fillStyle = color0;
             context.fillText(options.unicodelabel, text_x + 4, 6);
 
             context.strokeStyle = '#FFFFFF';
@@ -525,9 +525,9 @@ var createTransparentMarkerIcon = function (theoptions) {
         markerOpts = {};
 
     var scale = theoptions.scale;
-    if (theoptions.shadow) {
+    /*if (theoptions.shadow) {
         scale = 0.9 * scale;
-    }
+    }*/
 
     Object.assign(markerOpts, theoptions);
 
