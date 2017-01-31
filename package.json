@@ -1,6 +1,6 @@
 {
   "name": "ig_helper",
-  "version": "17.0.9",
+  "version": "17.0.10",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
   "contributors": [
@@ -68,7 +68,8 @@
       "ig_helper": "./ig_helper.js"
     },
     "dependencies": {
-      "gmap": "npm:amd-googlemaps-loader@^1"
+      "gmap": "npm:amd-googlemaps-loader@^1",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.20"
     },
     "devDependencies": {
       "babel-plugin-transform-es2015-unicode-regex": "npm:babel-plugin-transform-es2015-unicode-regex@^6.11.0",
@@ -87,7 +88,6 @@
       "stream": "npm:jspm-nodelibs-stream@^0.2.0",
       "string_decoder": "npm:jspm-nodelibs-string_decoder@^0.2.0",
       "util": "npm:jspm-nodelibs-util@^0.2.0",
-      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.17",
       "vm": "npm:jspm-nodelibs-vm@^0.2.0",
       "process": "npm:jspm-nodelibs-process@^0.2.0"
     },
