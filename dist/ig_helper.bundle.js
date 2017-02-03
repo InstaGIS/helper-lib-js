@@ -752,7 +752,7 @@ var createFatMarkerIcon = function createFatMarkerIcon(theoptions) {
         context.beginPath();
 
         context.font = 'normal normal normal ' + fontsize + 'px ' + font;
-        console.log('context font', context.font);
+        //console.log('context font', context.font);
         context.fillStyle = color1;
         context.textBaseline = "top";
         var textWidth = context.measureText(options.unicodelabel);
