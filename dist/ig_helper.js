@@ -1452,7 +1452,7 @@ Wkt.Wkt.prototype.read = function (str) {
 				};
 			}
 		} else {
-			console.log('Invalid WKT string provided to read()');
+			console.log('Invalid WKT string provided to read()', str);
 			throw {
 				name: 'WKTError',
 				message: 'Invalid WKT string provided to read()'
