@@ -50,34 +50,7 @@ SystemJS.config({
     "src": {
       "main": "ig_helper.js",
       "format": "esm"
-    }
-  }
-});
-
-SystemJS.config({
-  packageConfigPaths: [
-    "npm:@*/*.json",
-    "npm:*.json",
-    "github:*/*.json"
-  ],
-  map: {
-    "assert": "npm:jspm-nodelibs-assert@0.2.0",
-    "buffer": "npm:jspm-nodelibs-buffer@0.2.1",
-    "constants": "npm:jspm-nodelibs-constants@0.2.0",
-    "crypto": "npm:jspm-nodelibs-crypto@0.2.0",
-    "events": "npm:jspm-nodelibs-events@0.2.0",
-    "fs": "npm:jspm-nodelibs-fs@0.2.0",
-    "gmap": "npm:amd-googlemaps-loader@1.8.6",
-    "os": "npm:jspm-nodelibs-os@0.2.0",
-    "path": "npm:jspm-nodelibs-path@0.2.1",
-    "plugin-babel": "npm:systemjs-plugin-babel@0.0.20",
-    "process": "npm:jspm-nodelibs-process@0.2.0",
-    "stream": "npm:jspm-nodelibs-stream@0.2.0",
-    "string_decoder": "npm:jspm-nodelibs-string_decoder@0.2.0",
-    "util": "npm:jspm-nodelibs-util@0.2.1",
-    "vm": "npm:jspm-nodelibs-vm@0.2.0"
-  },
-  packages: {
+    },
     "npm:isarray@1.0.0": {
       "map": {
         "systemjs-json": "github:systemjs/plugin-json@0.1.2"
@@ -283,5 +256,30 @@ SystemJS.config({
         "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
       }
     }
+  },
+  map: {
+    "assert": "npm:jspm-nodelibs-assert@0.2.0",
+    "buffer": "npm:jspm-nodelibs-buffer@0.2.1",
+    "constants": "npm:jspm-nodelibs-constants@0.2.0",
+    "crypto": "npm:jspm-nodelibs-crypto@0.2.0",
+    "events": "npm:jspm-nodelibs-events@0.2.0",
+    "os": "npm:jspm-nodelibs-os@0.2.0",
+    "stream": "npm:jspm-nodelibs-stream@0.2.0",
+    "string_decoder": "npm:jspm-nodelibs-string_decoder@0.2.0",
+    "util": "npm:jspm-nodelibs-util@0.2.1",
+    "vm": "npm:jspm-nodelibs-vm@0.2.0"
   }
+});
+
+SystemJS.config({
+  packageConfigPaths: [
+    "npm:@*/*.json",
+    "npm:*.json",
+    "github:*/*.json"
+  ],
+  map: {
+    "gmap": "npm:amd-googlemaps-loader@1.8.6",
+    "plugin-babel": "npm:systemjs-plugin-babel@0.0.20"
+  },
+  packages: {}
 });
