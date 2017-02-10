@@ -279,7 +279,7 @@ SystemJS.config({
   ],
   map: {
     "gmap": "npm:amd-googlemaps-loader@1.8.6",
-    "plugin-babel": "npm:systemjs-plugin-babel@0.0.20"
+    "plugin-babel": "npm:systemjs-plugin-babel@0.0.21"
   },
   packages: {}
 });
