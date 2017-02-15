@@ -1,6 +1,4 @@
-var MarkerFactory = {};
-
-function compact(array) {
+ function compact(array) {
     var index = -1,
         length = array ? array.length : 0,
         resIndex = 0,
@@ -13,29 +11,29 @@ function compact(array) {
         }
     }
     return result;
-}
+ }
 
-var defaults = {
+ var defaults = {
     h: 1,
     s: 78, // constant saturation
     l: 63, // constant luminance
     a: 1
-};
+ };
 
-var getColor = function (val, range) {
+ var getColor = function (val, range) {
     defaults.h = Math.floor((360 / range) * val);
     return "hsla(" + defaults.h + "," + defaults.s + "%," + defaults.l + "%," + defaults.a + ")";
-};
+ };
 
-var getColor1 = function () {
+ var getColor1 = function () {
     return "hsla(" + defaults.h + "," + defaults.s + "%," + (defaults.l - 30) + "%," + defaults.a + ")";
-};
+ };
 
-var parseHalf = function (foo) {
+ var parseHalf = function (foo) {
     return parseInt(foo / 2, 10);
-};
+ };
 
-var darken = function (stringcolor, factor) {
+ var darken = function (stringcolor, factor) {
     var darkercolor = {};
     if (!factor) {
         factor = 1;
@@ -53,9 +51,9 @@ var darken = function (stringcolor, factor) {
     }
 
     return darkercolor;
-};
+ };
 
-var parseHex = function (hexstring, opacity) {
+ var parseHex = function (hexstring, opacity) {
     var hexcolor = {
         hex: hexstring
     };
@@ -76,9 +74,9 @@ var parseHex = function (hexstring, opacity) {
     hexcolor.strokeColor = ['rgba(' + parseHalf(hexcolor.r), parseHalf(hexcolor.g), parseHalf(hexcolor.b), hexcolor.a + ')'].join(',');
     hexcolor.rgb = hexcolor.fillColor;
     return hexcolor;
-};
+ };
 
-var parseHSL = function (hslstring, opacity) {
+ var parseHSL = function (hslstring, opacity) {
     var hslcolor = {},
         hslparts = compact(hslstring.split(/hsla?\(|\,|\)|\%/));
 
@@ -98,9 +96,9 @@ var parseHSL = function (hslstring, opacity) {
     hslcolor.strokeColor = 'hsla(' + hslcolor.h + ',' + hslcolor.s + '%,' + parseInt(hslcolor.l / 2, 10) + '%,' + hslcolor.a + ')';
     hslcolor.hsl = hslcolor.fillColor;
     return hslcolor;
-};
+ };
 
-var parseRGB = function (rgbstring, opacity) {
+ var parseRGB = function (rgbstring, opacity) {
     var rgbcolor = {},
         rgbparts = compact(rgbstring.split(/rgba?\(|\,|\)/));
 
@@ -120,9 +118,9 @@ var parseRGB = function (rgbstring, opacity) {
     rgbcolor.strokeColor = 'rgba(' + rgbcolor.r / 2 + ',' + rgbcolor.g / 2 + ',' + rgbcolor.b / 2 + ',' + rgbcolor.a + ')';
     rgbcolor.rgb = rgbcolor.fillColor;
     return rgbcolor;
-};
+ };
 
-var rgbToHSL = function (r, g, b, a) {
+ var rgbToHSL = function (r, g, b, a) {
     r = (r % 256) / 255;
     g = (g % 256) / 255;
     b = (b % 256) / 255;
@@ -165,9 +163,9 @@ var rgbToHSL = function (r, g, b, a) {
     hsl.fillColor = 'hsla(' + hsl.h + ',' + hsl.s + '%,' + hsl.l + '%,' + hsl.a + ')';
 
     return hsl;
-};
+ };
 
-var hslToRGB = function (h, s, l, a) {
+ var hslToRGB = function (h, s, l, a) {
     var r, g, b;
 
     h = parseFloat(h, 10) / 360;
@@ -220,9 +218,9 @@ var hslToRGB = function (h, s, l, a) {
 
     return rgb;
 
-};
+ };
 
-var toDecColor = function (stringcolor) {
+ var toDecColor = function (stringcolor) {
     var parsedcolor = {};
     if (!stringcolor) {
         parsedcolor.fillColor = 'rgba(100,250,50,0.99)';
@@ -235,23 +233,23 @@ var toDecColor = function (stringcolor) {
     }
 
     return parsedcolor;
-};
+ };
 
-var IconObject = function (canvas, markerOpts) {
+ var IconObject = function (canvas, markerOpts) {
     this.url = canvas.toDataURL();
     this.fillColor = canvas.fillColor;
     this.markerOpts = markerOpts;
     Object.assign(this, markerOpts);
     return this;
-};
-IconObject.prototype.toJSON = function () {
+ };
+ IconObject.prototype.toJSON = function () {
     return {
         url: null,
         markerOpts: this.markerOpts
     };
-};
+ };
 
-var createTextMarker = function (theoptions) {
+ var createTextMarker = function (theoptions) {
 
     var generateCanvas = function (options) {
         var canvas = document.createElement("canvas");
@@ -338,6 +336,8 @@ var createTextMarker = function (theoptions) {
     var markerCanvas = generateCanvas(theoptions),
         markerOpts = {};
 
+    theoptions.type = 'textmarker';
+
     Object.assign(markerOpts, theoptions);
 
     if (window.google && window.google.maps) {
@@ -351,9 +351,9 @@ var createTextMarker = function (theoptions) {
     var iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
-};
+ };
 
-var createFatMarkerIcon = function (theoptions) {
+ var createFatMarkerIcon = function (theoptions) {
 
     var generateFatCanvas = function (options) {
         var canvas = options.canvas || document.createElement("canvas"),
@@ -422,6 +422,9 @@ var createFatMarkerIcon = function (theoptions) {
     var scale = theoptions.scale || 1,
         markerCanvas = generateFatCanvas(theoptions),
         markerOpts = {};
+
+    theoptions.type = 'fatmarker';
+
     Object.assign(markerOpts, theoptions);
 
     if (window.google && window.google.maps) {
@@ -435,9 +438,9 @@ var createFatMarkerIcon = function (theoptions) {
     }
     var iconObj = new IconObject(markerCanvas, markerOpts);
     return iconObj;
-};
+ };
 
-var createTransparentMarkerIcon = function (theoptions) {
+ var createTransparentMarkerIcon = function (theoptions) {
 
     var generateTransparentCanvas = function (options) {
         var canvas = options.canvas || document.createElement("canvas"),
@@ -528,6 +531,7 @@ var createTransparentMarkerIcon = function (theoptions) {
     /*if (theoptions.shadow) {
         scale = 0.9 * scale;
     }*/
+    theoptions.type = 'transparent';
 
     Object.assign(markerOpts, theoptions);
 
@@ -542,11 +546,9 @@ var createTransparentMarkerIcon = function (theoptions) {
     var iconObj = new IconObject(markerCanvas, markerOpts);
 
     return iconObj;
-};
+ };
 
-MarkerFactory.toDecColor = toDecColor;
-
-function parseColorString(somecolor, opacity) {
+ function parseColorString(somecolor, opacity) {
     var parsedcolor = {
             original: somecolor
         },
@@ -585,9 +587,9 @@ function parseColorString(somecolor, opacity) {
     parsedcolor.strokeColor = rgb.strokeColor;
     parsedcolor.hex = ['#', rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)].join('');
     return parsedcolor;
-};
+ };
 
-var getHexColor = function (color) {
+ var getHexColor = function (color) {
     var hexcolor = color;
     if (color.indexOf('rgb') !== -1) {
         var rgbArr = color.split(/[\(,\)]/ig);
@@ -598,14 +600,18 @@ var getHexColor = function (color) {
         hexcolor = color.replace(/#/g, '');
     }
     return hexcolor;
-};
+ };
 
-var ButtonFactory = {
+ var ButtonFactory = {
     parseColorString: parseColorString,
+    getHexColor: getHexColor,
+    createTransparentMarkerIcon: createTransparentMarkerIcon,
+    createFatMarkerIcon: createFatMarkerIcon,
+    createTextMarker: createTextMarker,
     autoIcon: function (options) {
         options.font = options.font || 'Arial';
         options.color = options.color || '#FF0000';
-        options.hexcolor = getHexColor(options.color);
+        options.hexcolor = ButtonFactory.getHexColor(options.color);
 
         // En frontdev el icono debe aparecer solo, sin envoltorio
         if (options.transparent_background === undefined) {
@@ -624,21 +630,21 @@ var ButtonFactory = {
             options.unicodelabel = String.fromCharCode('0x' + options.label);
             options.scale = options.scale || 1;
             if (options.transparent_background) {
-                return createTransparentMarkerIcon(options);
+                return ButtonFactory.createTransparentMarkerIcon(options);
             } else {
-                return createFatMarkerIcon(options);
+                return ButtonFactory.createFatMarkerIcon(options);
             }
 
         } else {
             options.scale = options.scale || 0.75;
             options.label = String(options.label || 'A');
             // This is text I should print literally
-            return createTextMarker(options);
+            return ButtonFactory.createTextMarker(options);
         }
 
     }
-};
-export {
+ };
+ export {
     ButtonFactory
-};
-export default ButtonFactory;
+ };
+ export default ButtonFactory;

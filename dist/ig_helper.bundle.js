@@ -681,6 +681,8 @@ var createTextMarker = function createTextMarker(theoptions) {
     var markerCanvas = generateCanvas(theoptions),
         markerOpts = {};
 
+    theoptions.type = 'textmarker';
+
     Object.assign(markerOpts, theoptions);
 
     if (window.google && window.google.maps) {
@@ -765,6 +767,9 @@ var createFatMarkerIcon = function createFatMarkerIcon(theoptions) {
     var scale = theoptions.scale || 1,
         markerCanvas = generateFatCanvas(theoptions),
         markerOpts = {};
+
+    theoptions.type = 'fatmarker';
+
     Object.assign(markerOpts, theoptions);
 
     if (window.google && window.google.maps) {
@@ -869,6 +874,7 @@ var createTransparentMarkerIcon = function createTransparentMarkerIcon(theoption
     /*if (theoptions.shadow) {
         scale = 0.9 * scale;
     }*/
+    theoptions.type = 'transparent';
 
     Object.assign(markerOpts, theoptions);
 
@@ -938,10 +944,14 @@ var getHexColor = function getHexColor(color) {
 
 var ButtonFactory = {
     parseColorString: parseColorString,
+    getHexColor: getHexColor,
+    createTransparentMarkerIcon: createTransparentMarkerIcon,
+    createFatMarkerIcon: createFatMarkerIcon,
+    createTextMarker: createTextMarker,
     autoIcon: function autoIcon(options) {
         options.font = options.font || 'Arial';
         options.color = options.color || '#FF0000';
-        options.hexcolor = getHexColor(options.color);
+        options.hexcolor = ButtonFactory.getHexColor(options.color);
 
         // En frontdev el icono debe aparecer solo, sin envoltorio
         if (options.transparent_background === undefined) {
@@ -957,15 +967,15 @@ var ButtonFactory = {
             options.unicodelabel = String.fromCharCode('0x' + options.label);
             options.scale = options.scale || 1;
             if (options.transparent_background) {
-                return createTransparentMarkerIcon(options);
+                return ButtonFactory.createTransparentMarkerIcon(options);
             } else {
-                return createFatMarkerIcon(options);
+                return ButtonFactory.createFatMarkerIcon(options);
             }
         } else {
             options.scale = options.scale || 0.75;
             options.label = String(options.label || 'A');
             // This is text I should print literally
-            return createTextMarker(options);
+            return ButtonFactory.createTextMarker(options);
         }
     }
 };
