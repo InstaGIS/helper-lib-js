@@ -1,5 +1,5 @@
 // Run with mocha
-var assert = chai.assert;
+
 var MarkerFactory = IGProviders.ButtonFactory;
 
 console.dir(MarkerFactory);
@@ -50,23 +50,23 @@ describe('Markerfactory component of IGProviders', function () {
 				parsedObjectWO = MarkerFactory.parseColorString(value, 0.5);
 
 			it('should match RGBA result of parsed ' + key + ' color', function () {
-				assert.deepEqual(parsedObject.rgb, parsedColor.rgb);
+				expect(parsedObject.rgb).toEqual(parsedColor.rgb);
 			});
 
 			it('should match HSLA result of parsed ' + key + ' color', function () {
-				assert.deepEqual(parsedObject.hsl, parsedColor.hsl);
+				expect(parsedObject.hsl).toEqual(parsedColor.hsl);
 			});
 
 			it('should match HEX result of parsed ' + key + ' color', function () {
-				assert.equal(parsedObject.hex, parsedColor.hex);
+				expect(parsedObject.hex).toEqual(parsedColor.hex);
 			});
 
 			it('should match RGBA result of parsed ' + key + ' color with 50% opacity', function () {
-				assert.deepEqual(parsedObjectWO.rgb, parsedColorWO.rgb);
+				expect(parsedObjectWO.rgb).toEqual(parsedColorWO.rgb);
 			});
 
 			it('should match HSLA result of parsed ' + key + ' color with 50% opacity', function () {
-				assert.deepEqual(parsedObjectWO.hsl, parsedColorWO.hsl);
+				expect(parsedObjectWO.hsl).toEqual(parsedColorWO.hsl);
 			});
 
 		});
