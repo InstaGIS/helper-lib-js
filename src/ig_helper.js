@@ -1,4 +1,3 @@
-"format esm";
 import $ from 'jquery';
 
 export {
