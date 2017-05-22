@@ -353,6 +353,112 @@
     return iconObj;
  };
 
+ var createClusterIcon = function (theoptions) {
+
+    var generateClusterCanvas = function (options) {
+        var canvas = options.canvas || document.createElement("canvas"),
+            anchorX = 27,
+            anchorY = 53,
+            radius = (anchorX - 9),
+            angulo = 1.1,
+            font = options.font || 'fontello',
+            fontsize = options.fontsize || 14,
+            context = canvas.getContext("2d"),
+            grad = context.createLinearGradient(0, 0, 0, anchorY),
+            color0, color1;
+
+        canvas.width = anchorX * 2;
+        canvas.height = anchorY + 1;
+
+        if (options.index !== undefined && options.count > 0) {
+            color0 = getColor(options.index, options.count);
+            color1 = getColor1();
+        } else {
+            var deccolor = toDecColor(options.color);
+            color0 = deccolor.fillColor;
+            color1 = darken(deccolor).fillColor;
+        }
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.moveTo(anchorX, anchorY);
+
+        var labelvalue = parseInt(options.label);
+        if (labelvalue < 10) {
+            color1 = 'orange';
+            fontsize = 14;
+        } else if (labelvalue < 30) {
+            color1 = 'red';
+            fontsize = 15;
+        } else {
+            color1 = 'purple';
+            fontsize = 16;
+        }
+        if (labelvalue > 99) {
+            radius = radius + 3;
+            context.setLineDash([5, 5])
+            context.beginPath();
+            context.arc(anchorX, 2 + (0.50 * anchorY), (radius + 7), 0, 2 * Math.PI, false);
+            context.fillStyle = 'transparent';
+            context.strokeStyle = color1;
+            context.lineWidth = 2;
+            context.fill();
+            context.stroke();
+        }
+
+        context.setLineDash([5, 5])
+        context.beginPath();
+        context.arc(anchorX, 2 + (0.50 * anchorY), (radius + 2), 0, 2 * Math.PI, false);
+        context.fillStyle = 'transparent';
+        context.strokeStyle = color1;
+        context.lineWidth = 2;
+        context.fill();
+        context.stroke();
+
+        // Círculo blanco
+        context.setLineDash([5, 0])
+        context.beginPath();
+        context.arc(anchorX, 2 + (0.50 * anchorY), (radius - 3), 0, 2 * Math.PI, false);
+        context.fillStyle = 'white';
+        context.strokeStyle = color1;
+        context.lineWidth = 4;
+        context.fill();
+        context.stroke();
+
+        context.beginPath();
+
+        context.font = 'normal normal normal ' + fontsize + 'px ' + font;
+        console.log('context font', context.font);
+        context.fillStyle = '#333';
+        context.textBaseline = "top";
+        var textWidth = context.measureText(options.label);
+
+        // centre the text.
+        context.fillText(options.label, Math.floor((canvas.width / 2) - (textWidth.width / 2)), 1 + Math.floor(canvas.height / 2 - fontsize / 2));
+
+        return canvas;
+
+    };
+    theoptions.scale = theoptions.scale || 1;
+    var markerCanvas = generateClusterCanvas(theoptions),
+        markerOpts = {},
+        scale = theoptions.scale;
+
+    Object.assign(markerOpts, theoptions);
+
+    if (window.google && window.google.maps) {
+        Object.assign(markerOpts, {
+            size: new google.maps.Size(54, 48),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(27 * scale, 24 * scale),
+            scaledSize: new google.maps.Size(54 * scale, 48 * scale)
+        });
+    }
+
+    var iconObj = new IconObject(markerCanvas, markerOpts);
+
+    return iconObj;
+ };
+
  var createFatMarkerIcon = function (theoptions) {
 
     var generateFatCanvas = function (options) {
@@ -608,6 +714,7 @@
     createTransparentMarkerIcon: createTransparentMarkerIcon,
     createFatMarkerIcon: createFatMarkerIcon,
     createTextMarker: createTextMarker,
+    createClusterIcon: createClusterIcon,
     autoIcon: function (options) {
         options.font = options.font || 'Arial';
         options.color = options.color || '#FF0000';
@@ -634,7 +741,8 @@
             } else {
                 return ButtonFactory.createFatMarkerIcon(options);
             }
-
+        } else if (options.shadow) {
+            return ButtonFactory.createClusterIcon(options);
         } else {
             options.scale = options.scale || 0.75;
             options.label = String(options.label || 'A');
