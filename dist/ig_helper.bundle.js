@@ -948,8 +948,10 @@ var createTransparentMarkerIcon = function createTransparentMarkerIcon(theoption
             context.font = 'normal normal normal ' + (fontsize - 3) + 'px ' + font;
 
             context.textBaseline = "top";
-            var textWidth = context.measureText(options.unicodelabel),
-                text_x = Math.floor(canvas.width / 2 - textWidth.width / 2);
+            var textmetric = context.measureText(options.unicodelabel),
+                text_x = Math.floor(canvas.width / 2 - textmetric.width / 2);
+
+            console.log('textmetric', textmetric);
 
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
