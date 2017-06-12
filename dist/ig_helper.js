@@ -951,14 +951,14 @@ var createTransparentMarkerIcon = function createTransparentMarkerIcon(theoption
             context.shadowBlur = 0;
             context.shadowColor = '#FFFFFF';
             context.fillStyle = color0;
-            context.fillText(options.unicodelabel, text_x + 1, 4);
+            context.fillText(options.unicodelabel, text_x + 1, 5);
 
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
             context.shadowBlur = 1;
             context.shadowColor = '#FFFFFF';
             context.strokeStyle = color1;
-            context.strokeText(options.unicodelabel, text_x + 1, 4);
+            context.strokeText(options.unicodelabel, text_x + 1, 5);
         }
 
         canvas.fillColor = color0;

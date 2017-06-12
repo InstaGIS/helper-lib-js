@@ -600,7 +600,7 @@
 
         } else {
 
-            context.font = 'normal normal normal ' + (fontsize - 2) + 'px ' + font;
+            context.font = 'normal normal normal ' + (fontsize - 3) + 'px ' + font;
 
             context.textBaseline = "top";
             var textWidth = context.measureText(options.unicodelabel),
@@ -611,14 +611,14 @@
             context.shadowBlur = 0;
             context.shadowColor = '#FFFFFF';
             context.fillStyle = color0;
-            context.fillText(options.unicodelabel, text_x + 1, 4);
+            context.fillText(options.unicodelabel, text_x + 1, 5);
 
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
             context.shadowBlur = 1;
             context.shadowColor = '#FFFFFF';
             context.strokeStyle = color1;
-            context.strokeText(options.unicodelabel, text_x + 1, 4);
+            context.strokeText(options.unicodelabel, text_x + 1, 5);
 
         }
 
