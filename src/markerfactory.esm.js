@@ -606,7 +606,7 @@
             var textmetric = context.measureText(options.unicodelabel),
                 text_x = Math.floor((canvas.width / 2) - (textmetric.width / 2));
 
-            console.debug('textmetric', textmetric);
+            //console.debug('textmetric', textmetric);
 
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
