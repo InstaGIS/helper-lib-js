@@ -577,7 +577,7 @@
 
         context.font = 'normal normal normal ' + fontsize + 'px ' + font;
 
-        context.textBaseline = "top";
+        context.textBaseline = "middle";
         var textWidth = context.measureText(options.unicodelabel),
             text_x = Math.floor((canvas.width / 2) - (textWidth.width / 2));
 
@@ -605,14 +605,14 @@
             context.shadowBlur = 0;
             context.shadowColor = '#FFFFFF';
             context.fillStyle = color0;
-            context.fillText(options.unicodelabel, text_x + 3, 0);
+            context.fillText(options.unicodelabel, text_x + 1, 0);
 
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
             context.shadowBlur = 1;
             context.shadowColor = '#FFFFFF';
             context.strokeStyle = color1;
-            context.strokeText(options.unicodelabel, text_x + 3, 0);
+            context.strokeText(options.unicodelabel, text_x + 1, 0);
 
         }
 
