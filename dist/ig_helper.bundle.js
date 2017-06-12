@@ -897,7 +897,7 @@ var createTransparentMarkerIcon = function createTransparentMarkerIcon(theoption
         var canvas = options.canvas || document.createElement("canvas"),
             context = canvas.getContext("2d"),
             font = options.font || 'fontello',
-            fontsize = options.fontsize || 30,
+            fontsize = options.fontsize || 26,
             color0,
             color1;
 
@@ -928,12 +928,7 @@ var createTransparentMarkerIcon = function createTransparentMarkerIcon(theoption
             text_x = Math.floor(canvas.width / 2 - textWidth.width / 2);
 
         if (options.shadow) {
-            //var grad = context.createLinearGradient(text_x, 0, canvas.width, canvas.height);
 
-            //grad.addColorStop(0, '#FFFFFF');
-            //grad.addColorStop(1, color0);
-
-            //console.debug('applying shadow');
             context.shadowOffsetX = -2;
             context.shadowOffsetY = -2;
             context.shadowBlur = 0;
@@ -955,14 +950,14 @@ var createTransparentMarkerIcon = function createTransparentMarkerIcon(theoption
             context.shadowBlur = 0;
             context.shadowColor = '#FFFFFF';
             context.fillStyle = color0;
-            context.fillText(options.unicodelabel, text_x + 1, 0);
+            context.fillText(options.unicodelabel, text_x + 3, 0);
 
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
             context.shadowBlur = 1;
             context.shadowColor = '#FFFFFF';
             context.strokeStyle = color1;
-            context.strokeText(options.unicodelabel, text_x + 1, 0);
+            context.strokeText(options.unicodelabel, text_x + 3, 0);
         }
 
         canvas.fillColor = color0;
@@ -971,7 +966,7 @@ var createTransparentMarkerIcon = function createTransparentMarkerIcon(theoption
     };
 
     theoptions.scale = theoptions.scale || 1;
-    theoptions.fontsize = theoptions.fontsize || 30;
+    theoptions.fontsize = theoptions.fontsize || 26;
 
     var markerCanvas = generateTransparentCanvas(theoptions),
         markerOpts = {};
