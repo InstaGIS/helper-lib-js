@@ -590,13 +590,13 @@
             context.fillStyle = '#FFFFFF';
             context.shadowColor = '#666666';
 
-            context.fillText(options.unicodelabel, text_x - 4, 0);
-            context.fillText(options.unicodelabel, text_x, 3);
+            context.fillText(options.unicodelabel, text_x - 4, 2);
+            context.fillText(options.unicodelabel, text_x, 5);
             context.fillStyle = color0;
-            context.fillText(options.unicodelabel, text_x + 4, 6);
+            context.fillText(options.unicodelabel, text_x + 4, 8);
 
             context.strokeStyle = '#FFFFFF';
-            context.strokeText(options.unicodelabel, text_x + 4, 6);
+            context.strokeText(options.unicodelabel, text_x + 4, 8);
 
         } else {
 
