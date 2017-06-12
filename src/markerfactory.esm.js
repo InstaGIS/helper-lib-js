@@ -611,14 +611,14 @@
             context.shadowBlur = 0;
             context.shadowColor = '#FFFFFF';
             context.fillStyle = color0;
-            context.fillText(options.unicodelabel, text_x + 1, 5);
+            context.fillText(options.unicodelabel, text_x + 1, 6);
 
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
             context.shadowBlur = 1;
             context.shadowColor = '#FFFFFF';
             context.strokeStyle = color1;
-            context.strokeText(options.unicodelabel, text_x + 1, 5);
+            context.strokeText(options.unicodelabel, text_x + 1, 6);
 
         }
 
