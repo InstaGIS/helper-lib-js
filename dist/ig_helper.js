@@ -940,7 +940,7 @@ var createTransparentMarkerIcon = function createTransparentMarkerIcon(theoption
             context.strokeText(options.unicodelabel, text_x + 4, 6);
         } else {
 
-            context.font = 'normal normal normal ' + (fontsize - 2) + 'px ' + font;
+            context.font = 'normal normal normal ' + (fontsize - 3) + 'px ' + font;
 
             context.textBaseline = "top";
             var textWidth = context.measureText(options.unicodelabel),
