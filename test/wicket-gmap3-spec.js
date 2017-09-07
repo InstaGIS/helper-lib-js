@@ -1,6 +1,6 @@
 var Wkt = IGProviders.Wkt;
 
-describe('IGProviders.Wicket Test Cases: ', function () {
+describe('Standard WKT Test Cases: ', function () {
 	var cases, wkt;
 
 	wkt = new Wkt.Wkt();
@@ -577,14 +577,6 @@ describe('IGProviders.Wicket Test Cases: ', function () {
 
 	dataObjects = new google.maps.Data;
 
-	beforeAll(function (done) {
-		setTimeout(function () {
-			done()
-		}, 1000);
-	});
-
-	gmaps = google.maps;
-
 	describe('Converting objects into WKT strings: ', function () {
 
 		afterEach(function () {
@@ -614,14 +606,6 @@ describe('IGProviders.Wicket Test Cases: ', function () {
 			expect(wkt.components).toEqual(cases.polygon.cmp);
 			expect(wkt.write()).toBe(cases.polygon.str);
 		});
-
-		/*it('should convert a Polygon instance with a hole into a POLYGON string with the same hole', function () {
-			wkt.fromObject(cases.polygon2.obj);
-			expect(wkt.type).toBe('polygon');
-			expect(wkt.isCollection()).toBe(true);
-			expect(wkt.components).toEqual(cases.polygon2.cmp);
-			expect(wkt.write()).toBe(cases.polygon2.str);
-		});*/
 
 		it('should convert a Rectangle instance into a POLYGON string', function () {
 			wkt.fromObject(cases.rectangle.obj);
@@ -656,13 +640,21 @@ describe('IGProviders.Wicket Test Cases: ', function () {
 			expect(wkt.write()).toBe(cases.multipolygon.str);
 		});
 
-		/*it('should convert an Array of Polygon instances, some with holes, into a MULTIPOLYGON string with the same hole', function () {
+		it('should convert a Polygon instance with a hole into a POLYGON string with the same hole', function () {
+			wkt.fromObject(cases.polygon2.obj);
+			expect(wkt.type).toBe('polygon');
+			expect(wkt.isCollection()).toBe(true);
+			expect(wkt.components).toEqual(cases.polygon2.cmp);
+			expect(wkt.write()).toBe(cases.polygon2.str);
+		});
+
+		it('should convert an Array of Polygon instances, some with holes, into a MULTIPOLYGON string with the same hole', function () {
 			wkt.fromObject(cases.multipolygon2.obj);
 			expect(wkt.type).toBe('multipolygon');
 			expect(wkt.isCollection()).toBe(true);
 			expect(wkt.components).toEqual(cases.multipolygon2.cmp);
 			expect(wkt.write()).toBe(cases.multipolygon2.str);
-		});*/
+		});
 
 	});
 
@@ -816,17 +808,20 @@ describe('IGProviders.Wicket Test Cases: ', function () {
 			}).toString());
 		});
 
-		/*it('should convert a POLYGON string with a hole to a Polygon instance with the same hole', function () {
+		it('should convert a POLYGON string with a hole to a Polygon instance with the same hole', function () {
 			wkt.read(cases.polygon2.str);
 			expect(wkt.type).toBe('polygon');
+
 			expect(wkt.isCollection()).toBe(true);
+
 			expect(wkt.components).toEqual(cases.polygon2.cmp);
+
 			expect(wkt.toObject().getPaths().getArray().map(function (ring) {
 				return ring.getArray();
 			}).toString()).toEqual(cases.polygon2.obj.getPaths().getArray().map(function (ring) {
 				return ring.getArray();
 			}).toString());
-		});*/
+		});
 
 		it('should convert a POLYGON string, with isRectangle=true, into a Rectangle instance', function () {
 			wkt.read(cases.rectangle.str);
