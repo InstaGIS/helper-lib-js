@@ -26,7 +26,7 @@ build_esm:
 	jspm build src - jquery dist/ig_helper.js  --format esm --skip-source-maps  
 
 build_wicket:
-	jspm build src/wicket_helper.js dist/wicket_helper.js --format umd  --global-name Wkt  --global-deps '{"gmaps":"gmaps"}' --skip-encode-names
+	jspm build src/wicket_helper.js dist/wicket_helper.js --format umd  --global-name Wicket  --global-deps '{"gmaps":"gmaps"}' --skip-encode-names
 
 build_bundle:
 	jspm build src - jquery dist/ig_helper.bundle.js --format umd  --global-name IGProviders  --global-deps '{"jquery":"$$", "gmaps":"gmaps","underscore":"_"}' --skip-encode-names

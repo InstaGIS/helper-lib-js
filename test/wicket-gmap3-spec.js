@@ -150,9 +150,9 @@ describe('Standard WKT Test Cases: ', function () {
 						new google.maps.LatLng(20, 10)
 					],
 					[ // Order in inner rings is reversed
-						new google.maps.LatLng(20, 30),
+						new google.maps.LatLng(30, 20),
 						new google.maps.LatLng(35, 35),
-						new google.maps.LatLng(30, 20)
+						new google.maps.LatLng(20, 30)
 					]
 				]
 			}),

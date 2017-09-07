@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('gmaps')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'gmaps'], factory) :
-	(factory((global.Wkt = global.Wkt || {}),global.gmaps));
+	(factory((global.Wicket = global.Wicket || {}),global.gmaps));
 }(this, (function (exports,gmaps) { 'use strict';
 
 /** @license
