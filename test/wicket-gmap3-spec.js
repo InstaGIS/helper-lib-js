@@ -108,7 +108,7 @@ describe('Standard WKT Test Cases: ', function () {
 		},
 
 		polygon2: {
-			str: 'POLYGON((35 10,45 45,15 40,10 20,35 10),(20 30,35 35,30 20,20 30))',
+			str: 'POLYGON((35 10,45 45,15 40,10 20,35 10),(21 30,35 35,30 20,21 30))',
 			cmp: [
 				[{
 					x: 35,
@@ -127,7 +127,7 @@ describe('Standard WKT Test Cases: ', function () {
 					y: 10
 				}],
 				[{
-					x: 20,
+					x: 21,
 					y: 30
 				}, {
 					x: 35,
@@ -136,7 +136,7 @@ describe('Standard WKT Test Cases: ', function () {
 					x: 30,
 					y: 20
 				}, {
-					x: 20,
+					x: 21,
 					y: 30
 				}]
 			],
@@ -150,7 +150,7 @@ describe('Standard WKT Test Cases: ', function () {
 						new google.maps.LatLng(20, 10)
 					],
 					[ // Order in inner rings is reversed
-						new google.maps.LatLng(30, 20),
+						new google.maps.LatLng(30, 21),
 						new google.maps.LatLng(35, 35),
 						new google.maps.LatLng(20, 30)
 					]
@@ -166,15 +166,15 @@ describe('Standard WKT Test Cases: ', function () {
 						[35, 10]
 					],
 					[
-						[20, 30],
+						[21, 30],
 						[35, 35],
 						[30, 20],
-						[20, 30]
+						[21, 30]
 					]
 				],
 				'type': 'Polygon'
 			},
-			jsonStr: '{"coordinates": [[[35, 10], [45, 45], [15, 40], [10, 20], [35, 10]], [[20, 30], [35, 35], [30, 20], [20, 30]]], "type": "Polygon"}'
+			jsonStr: '{"coordinates": [[[35, 10], [45, 45], [15, 40], [10, 20], [35, 10]], [[21, 30], [35, 35], [30, 20], [21, 30]]], "type": "Polygon"}'
 		},
 
 		multipoint: {
