@@ -4,10 +4,10 @@ describe('Standard WKT Test Cases: ', function () {
 
 	wkt = new Wkt.Wkt();
 
-	cases = {
+	var cases = {
 
 		polygon2: {
-			str: 'POLYGON((35 10,45 45,15 40,10 20,35 10),(20 30,35 35,30 20,20 30))',
+			str: 'POLYGON((35 10,45 45,15 40,10 20,35 10),(21 30,35 35,30 20,21 30))',
 			cmp: [
 				[{
 					x: 35,
@@ -26,7 +26,7 @@ describe('Standard WKT Test Cases: ', function () {
 					y: 10
 				}],
 				[{
-					x: 20,
+					x: 21,
 					y: 30
 				}, {
 					x: 35,
@@ -35,7 +35,7 @@ describe('Standard WKT Test Cases: ', function () {
 					x: 30,
 					y: 20
 				}, {
-					x: 20,
+					x: 21,
 					y: 30
 				}]
 			],
@@ -49,7 +49,7 @@ describe('Standard WKT Test Cases: ', function () {
 						new google.maps.LatLng(20, 10)
 					],
 					[ // Order in inner rings is reversed
-						new google.maps.LatLng(30, 20),
+						new google.maps.LatLng(30, 21),
 						new google.maps.LatLng(35, 35),
 						new google.maps.LatLng(20, 30)
 					]
@@ -65,15 +65,15 @@ describe('Standard WKT Test Cases: ', function () {
 						[35, 10]
 					],
 					[
-						[20, 30],
+						[21, 30],
 						[35, 35],
 						[30, 20],
-						[20, 30]
+						[21, 30]
 					]
 				],
 				'type': 'Polygon'
 			},
-			jsonStr: '{"coordinates": [[[35, 10], [45, 45], [15, 40], [10, 20], [35, 10]], [[20, 30], [35, 35], [30, 20], [20, 30]]], "type": "Polygon"}'
+			jsonStr: '{"coordinates": [[[35, 10], [45, 45], [15, 40], [10, 20], [35, 10]], [[21, 30], [35, 35], [30, 20], [21, 30]]], "type": "Polygon"}'
 		},
 
 		multipolygon2: {
@@ -151,9 +151,10 @@ describe('Standard WKT Test Cases: ', function () {
 							new google.maps.LatLng(20, 45)
 						],
 						[
-							new google.maps.LatLng(25, 20),
+							new google.maps.LatLng(20, 30),
 							new google.maps.LatLng(15, 20),
-							new google.maps.LatLng(20, 30)
+							new google.maps.LatLng(25, 20),
+
 						]
 					]
 				})
@@ -191,8 +192,6 @@ describe('Standard WKT Test Cases: ', function () {
 		}
 	};
 
-	dataObjects = new google.maps.Data;
-
 	describe('Converting objects into WKT strings: ', function () {
 
 		afterEach(function () {
@@ -203,39 +202,17 @@ describe('Standard WKT Test Cases: ', function () {
 			wkt.fromObject(cases.polygon2.obj);
 			expect(wkt.type).toBe('polygon');
 			expect(wkt.isCollection()).toBe(true);
-			expect(wkt.components).toEqual(cases.polygon2.cmp);
 			expect(wkt.write()).toBe(cases.polygon2.str);
+			expect(wkt.components).toEqual(cases.polygon2.cmp);
+
 		});
 
 		it('should convert an Array of Polygon instances, some with holes, into a MULTIPOLYGON string with the same hole', function () {
 			wkt.fromObject(cases.multipolygon2.obj);
 			expect(wkt.type).toBe('multipolygon');
 			expect(wkt.isCollection()).toBe(true);
-			expect(wkt.components).toEqual(cases.multipolygon2.cmp);
 			expect(wkt.write()).toBe(cases.multipolygon2.str);
-		});
-
-	});
-
-	describe('Coverting WKT strings into objects: ', function () {
-
-		afterEach(function () {
-			wkt.delimiter = ' ';
-		});
-
-		it('should convert a POLYGON string with a hole to a Polygon instance with the same hole', function () {
-			wkt.read(cases.polygon2.str);
-			expect(wkt.type).toBe('polygon');
-
-			expect(wkt.isCollection()).toBe(true);
-
-			expect(wkt.components).toEqual(cases.polygon2.cmp);
-
-			expect(wkt.toObject().getPaths().getArray().map(function (ring) {
-				return ring.getArray();
-			}).toString()).toEqual(cases.polygon2.obj.getPaths().getArray().map(function (ring) {
-				return ring.getArray();
-			}).toString());
+			expect(wkt.components).toEqual(cases.multipolygon2.cmp);
 		});
 
 	});

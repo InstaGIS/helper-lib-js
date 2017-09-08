@@ -448,9 +448,10 @@ describe('Standard WKT Test Cases: ', function () {
 							new google.maps.LatLng(20, 45)
 						],
 						[
-							new google.maps.LatLng(25, 20),
+							new google.maps.LatLng(20, 30),
 							new google.maps.LatLng(15, 20),
-							new google.maps.LatLng(20, 30)
+							new google.maps.LatLng(25, 20),
+
 						]
 					]
 				})
@@ -486,7 +487,6 @@ describe('Standard WKT Test Cases: ', function () {
 			},
 			jsonStr: '{"coordinates": [[[[40, 40], [20, 45], [45, 30], [40, 40]]], [[[20, 35], [10, 30], [10, 10], [30, 5], [45, 20], [20, 35]], [[30, 20], [20, 15], [20, 25], [30, 20]]]], "type": "MultiPolygon"}'
 		},
-
 		rectangle: {
 			str: 'POLYGON((-50 20,0 20,0 0,-50 0,-50 20))',
 			cmp: [
@@ -652,10 +652,9 @@ describe('Standard WKT Test Cases: ', function () {
 			wkt.fromObject(cases.multipolygon2.obj);
 			expect(wkt.type).toBe('multipolygon');
 			expect(wkt.isCollection()).toBe(true);
-			expect(wkt.components).toEqual(cases.multipolygon2.cmp);
 			expect(wkt.write()).toBe(cases.multipolygon2.str);
+			expect(wkt.components).toEqual(cases.multipolygon2.cmp);
 		});
-
 	});
 
 	describe('Converting google.maps.Data objects into WKT strings: ', function () {

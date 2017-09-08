@@ -28,6 +28,13 @@ import './rAF';
 var root = (typeof self == 'object' && self.self === self && self) ||
 	(typeof global == 'object' && global.global === global && global);
 
+/**
+ * Sets the modal class.
+ *
+ * @param      {string}    cls      The cls
+ * @param      {<type>}    options  The options
+ * @return     {Function}  { description_of_the_return_value }
+ */
 function setModalClass(cls, options) {
 
 	options = options || {
@@ -50,6 +57,12 @@ function setModalClass(cls, options) {
 	return modal;
 }
 
+/**
+ * Determines if array.
+ *
+ * @param      {<type>}   obj     The object
+ * @return     {boolean}  True if array, False otherwise.
+ */
 function isArray(obj) {
 	return Object.prototype.toString.call(obj) === "[object Array]";
 }
@@ -88,6 +101,12 @@ function cleanString(str, strict) {
 	return cleanstr;
 }
 
+/**
+ * { function_description }
+ *
+ * @param      {number}  limit   The limit
+ * @return     {string}  { description_of_the_return_value }
+ */
 function randomname(limit) {
 	limit = limit || 5;
 	var text = "";
@@ -99,7 +118,12 @@ function randomname(limit) {
 
 	return text;
 }
-
+/**
+ * Gets the cookie.
+ *
+ * @param      {string}    name    The name
+ * @return     {Function}  The cookie.
+ */
 function getCookie(name) {
 	var match = root.document.cookie.match(new RegExp(name + '=([^;]+)'));
 	if (match) {

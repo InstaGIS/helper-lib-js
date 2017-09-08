@@ -1202,10 +1202,12 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 			if (!tmp.getAt(tmp.length - 1).equals(tmp.getAt(0))) {
 				if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
-					verts.unshift({ // Add the first coordinate again for closure
-						x: tmp.getAt(tmp.length - 1).lng(),
-						y: tmp.getAt(tmp.length - 1).lat()
+
+					verts.push({ // Add the first coordinate again for closure
+						x: tmp.getAt(0).lng(),
+						y: tmp.getAt(0).lat()
 					});
+					verts.reverse();
 
 				} else {
 					verts.push({ // Add the first coordinate again for closure
@@ -1220,17 +1222,20 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 			if (obj.getPaths().length > 1 && i > 0) {
 				// If this and the last ring have the same signs...
 				if (sign(obj.getPaths().getAt(i)) > 0 && sign(obj.getPaths().getAt(i - 1)) > 0 ||
-					sign(obj.getPaths().getAt(i)) < 0 && sign(obj.getPaths().getAt(i - 1)) < 0 && !multiFlag) {
+					sign(obj.getPaths().getAt(i)) < 0 && sign(obj.getPaths().getAt(i - 1)) < 0 /*&& !multiFlag*/ ) {
 					// ...They must both be inner rings (or both be outer rings, in a multipolygon)
 					verts = [verts]; // Wrap multipolygons once more (collection)
+				} else {
+					verts.reverse();
 				}
 
 			}
 
 			//TODO This makes mistakes when a second polygon has holes; it sees them all as individual polygons
-			if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
+			/*if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
 				verts.reverse();
-			}
+			}*/
+
 			rings.push(verts);
 		}
 
