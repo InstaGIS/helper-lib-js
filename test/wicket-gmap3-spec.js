@@ -2,7 +2,6 @@ var Wkt = IGProviders.Wkt;
 
 describe('Standard WKT Test Cases: ', function () {
 	var cases, wkt;
-
 	wkt = new Wkt.Wkt();
 
 	cases = {
@@ -28,7 +27,11 @@ describe('Standard WKT Test Cases: ', function () {
 			}],
 			obj: new google.maps.Marker({
 				position: new google.maps.LatLng(10, 30)
-			})
+			}),
+			json: {
+				'coordinates': [30, 10],
+				'type': 'Point'
+			},
 		},
 
 		linestring: {
@@ -777,6 +780,7 @@ describe('Standard WKT Test Cases: ', function () {
 
 		afterEach(function () {
 			wkt.delimiter = ' ';
+			wkt.isRectangle = false;
 		});
 
 		it('should convert a basic POINT string to a Marker instance', function () {
@@ -904,6 +908,125 @@ describe('Standard WKT Test Cases: ', function () {
 			expect(wkt.isCollection()).toBe(false);
 			expect(wkt.components).toEqual(cases.box.cmp);
 			expect(wkt.toObject().getBounds()).toEqual(cases.box.obj.getBounds());
+		});
+
+	});
+
+	describe('Coverting GeoJSON Objects into google.maps Objects: ', function () {
+
+		afterEach(function () {
+			wkt.delimiter = ' ';
+			wkt.isRectangle = false;
+		});
+
+		it('should convert a basic GeoJSON POINT string to a Marker instance', function () {
+			wkt.fromJson(cases.marker.json);
+			expect(wkt.type).toBe('point');
+			expect(wkt.isCollection()).toBe(false);
+			expect(wkt.components).toEqual(cases.marker.cmp);
+			expect(wkt.toObject().getPosition().toString()).toEqual(cases.marker.obj.getPosition().toString());
+		});
+
+		it('should convert a basic GeoJSON LINESTRING string to a Polyline instance', function () {
+			wkt.fromJson(cases.linestring.json);
+			expect(wkt.type).toBe('linestring');
+			expect(wkt.isCollection()).toBe(false);
+			expect(wkt.components).toEqual(cases.linestring.cmp);
+			expect(wkt.toObject().getPath().getArray().toString()).toEqual(cases.linestring.obj.getPath().getArray().toString());
+		});
+
+		it('should convert a basic GeoJSON POLYGON string to a Polygon instance', function () {
+			wkt.fromJson(cases.polygon.json);
+			expect(wkt.type).toBe('polygon');
+			expect(wkt.isCollection()).toBe(true);
+			expect(wkt.components).toEqual(cases.polygon.cmp);
+
+			expect(wkt.toObject().getPaths().getArray().map(function (ring) {
+				return ring.getArray();
+			}).toString()).toEqual(cases.polygon.obj.getPaths().getArray().map(function (ring) {
+				return ring.getArray();
+			}).toString());
+		});
+
+		it('should convert a GeoJSON POLYGON string with a hole to a Polygon instance with the same hole', function () {
+			wkt.fromJson(cases.polygon2.json);
+			expect(wkt.type).toBe('polygon');
+
+			expect(wkt.isCollection()).toBe(true);
+
+			expect(wkt.components).toEqual(cases.polygon2.cmp);
+
+			expect(wkt.toObject().getPaths().getArray().map(function (ring) {
+				return ring.getArray();
+			}).toString()).toEqual(cases.polygon2.obj.getPaths().getArray().map(function (ring) {
+				return ring.getArray();
+			}).toString());
+		});
+
+		it('should convert a GeoJSON MULTIPOINT string into an Array of Marker instances', function () {
+			var m;
+
+			wkt.fromJson(cases.multipoint.json);
+			expect(wkt.type).toBe('multipoint');
+			expect(wkt.isCollection()).toBe(true);
+			expect(wkt.components).toEqual(cases.multipoint.cmp);
+
+			markers = wkt.toObject();
+			for (m = 0; m < markers.length; m += 1) {
+				expect(markers[m].getPosition().toString()).toEqual(cases.multipoint.obj[m].getPosition().toString());
+			}
+		});
+
+		it('should convert a GeoJSON MULTILINESTRING string into an Array of Polyline instances', function () {
+			wkt.fromJson(cases.multilinestring.json);
+			expect(wkt.type).toBe('multilinestring');
+			expect(wkt.isCollection()).toBe(true);
+			expect(wkt.components).toEqual(cases.multilinestring.cmp);
+			//console.debug({wkt:wkt.toObject(), cases:cases.multilinestring.obj});
+			expect(wkt.toObject().map(function (linestring) {
+				return linestring.getPath().getArray().map(function (point) {
+					return point.toString();
+				});
+			})).toEqual(cases.multilinestring.obj.map(function (linestring) {
+				return linestring.getPath().getArray().map(function (point) {
+					return point.toString();
+				});
+			}));
+		});
+
+		it('should convert a GeoJSON MULTIPOLYGON string into an Array of Polygon instances', function () {
+			wkt.fromJson(cases.multipolygon.json);
+			expect(wkt.type).toBe('multipolygon');
+			expect(wkt.isCollection()).toBe(true);
+			expect(wkt.components).toEqual(cases.multipolygon.cmp);
+
+			expect(wkt.toObject().map(function (ring) {
+				return ring.getPath().getArray().map(function (point) {
+					return point.toString();
+				});
+			})).toEqual(cases.multipolygon.obj.map(function (ring) {
+				return ring.getPath().getArray().map(function (point) {
+					return point.toString();
+				});
+			}));
+
+		});
+
+		it('should convert a GeoJSON MULTIPOLYGON string with holes into an Array of Polygon instances with the same holes', function () {
+			wkt.fromJson(cases.multipolygon2.json);
+			expect(wkt.type).toBe('multipolygon');
+			expect(wkt.isCollection()).toBe(true);
+			expect(wkt.components).toEqual(cases.multipolygon2.cmp);
+
+			expect(wkt.toObject().map(function (ring) {
+				return ring.getPath().getArray().map(function (point) {
+					return point.toString();
+				});
+			})).toEqual(cases.multipolygon2.obj.map(function (ring) {
+				return ring.getPath().getArray().map(function (point) {
+					return point.toString();
+				});
+			}));
 		});
 
 	});

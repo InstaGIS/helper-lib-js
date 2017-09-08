@@ -2261,6 +2261,7 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 			// For each polygon (ring)...
 			tmp = obj.getPaths().getAt(i);
 			verts = [];
+
 			for (j = 0; j < obj.getPaths().getAt(i).length; j += 1) {
 				// For each vertex...
 				verts.push({
@@ -2272,10 +2273,12 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 			if (!tmp.getAt(tmp.length - 1).equals(tmp.getAt(0))) {
 				if (i % 2 !== 0) {
 					// In inner rings, coordinates are reversed...
-					verts.unshift({ // Add the first coordinate again for closure
-						x: tmp.getAt(tmp.length - 1).lng(),
-						y: tmp.getAt(tmp.length - 1).lat()
+
+					verts.push({ // Add the first coordinate again for closure
+						x: tmp.getAt(0).lng(),
+						y: tmp.getAt(0).lat()
 					});
+					verts.reverse();
 				} else {
 					verts.push({ // Add the first coordinate again for closure
 						x: tmp.getAt(0).lng(),
@@ -2286,17 +2289,19 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 			if (obj.getPaths().length > 1 && i > 0) {
 				// If this and the last ring have the same signs...
-				if (sign(obj.getPaths().getAt(i)) > 0 && sign(obj.getPaths().getAt(i - 1)) > 0 || sign(obj.getPaths().getAt(i)) < 0 && sign(obj.getPaths().getAt(i - 1)) < 0 && !multiFlag) {
-					// ...They must both be inner rings (or both be outer rings, in a multipolygon)
-					verts = [verts]; // Wrap multipolygons once more (collection)
+				if (sign(obj.getPaths().getAt(i)) > 0 && sign(obj.getPaths().getAt(i - 1)) > 0 || sign(obj.getPaths().getAt(i)) < 0 && sign(obj.getPaths().getAt(i - 1)) < 0 /*&& !multiFlag*/) {
+						// ...They must both be inner rings (or both be outer rings, in a multipolygon)
+						verts = [verts]; // Wrap multipolygons once more (collection)
+					} else {
+					verts.reverse();
 				}
 			}
 
 			//TODO This makes mistakes when a second polygon has holes; it sees them all as individual polygons
-			if (i % 2 !== 0) {
-				// In inner rings, coordinates are reversed...
-				verts.reverse();
-			}
+			/*if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
+   	verts.reverse();
+   }*/
+
 			rings.push(verts);
 		}
 
@@ -2794,6 +2799,13 @@ var cancelAnimationFrame = function cancelAnimationFrame(id) {
 
 var root = typeof self == 'object' && self.self === self && self || typeof global == 'object' && global.global === global && global;
 
+/**
+ * Sets the modal class.
+ *
+ * @param      {string}    cls      The cls
+ * @param      {<type>}    options  The options
+ * @return     {Function}  { description_of_the_return_value }
+ */
 function setModalClass(cls, options) {
 
 	options = options || {
@@ -2816,6 +2828,12 @@ function setModalClass(cls, options) {
 	return modal;
 }
 
+/**
+ * Determines if array.
+ *
+ * @param      {<type>}   obj     The object
+ * @return     {boolean}  True if array, False otherwise.
+ */
 function isArray(obj) {
 	return Object.prototype.toString.call(obj) === "[object Array]";
 }
@@ -2854,6 +2872,12 @@ function cleanString(str, strict) {
 	return cleanstr;
 }
 
+/**
+ * { function_description }
+ *
+ * @param      {number}  limit   The limit
+ * @return     {string}  { description_of_the_return_value }
+ */
 function randomname(limit) {
 	limit = limit || 5;
 	var text = "";
@@ -2865,7 +2889,12 @@ function randomname(limit) {
 
 	return text;
 }
-
+/**
+ * Gets the cookie.
+ *
+ * @param      {string}    name    The name
+ * @return     {Function}  The cookie.
+ */
 function getCookie(name) {
 	var match = root.document.cookie.match(new RegExp(name + '=([^;]+)'));
 	if (match) {
