@@ -506,7 +506,7 @@ Wkt.Wkt.prototype.read = function (str) {
 			}
 
 		} else {
-			console.log('Invalid WKT string provided to read()', str);
+			console.log('Invalid WKT string provided to read()');
 			throw {
 				name: 'WKTError',
 				message: 'Invalid WKT string provided to read()'
@@ -877,9 +877,7 @@ Wkt.Wkt.prototype.construct = {
 	point: function (config, component) {
 		var c = component || this.components;
 
-		config = config || {
-			optimized: true
-		};
+		config = config || {};
 
 		config.position = new google.maps.LatLng(c[0].y, c[0].x);
 
@@ -983,6 +981,20 @@ Wkt.Wkt.prototype.construct = {
 	polygon: function (config, component) {
 		var j, k, c, rings, verts;
 
+		var polygonIsClockwise = function (coords) {
+			var area = 0,
+				j = null,
+				i = 0;
+
+			for (i = 0; i < coords.length; i++) {
+				j = (i + 1) % coords.length;
+				area += coords[i].x * coords[j].x;
+				area -= coords[j].y * coords[i].y;
+			}
+
+			return area > 0;
+		};
+
 		c = component || this.components;
 
 		config = config || {
@@ -1001,8 +1013,9 @@ Wkt.Wkt.prototype.construct = {
 
 			} // eo for each vertex
 
-			if (j !== 0) { // Reverse the order of coordinates in inner rings
-				if (config.reverseInnerPolygons === null || config.reverseInnerPolygons) {
+			if (j !== 0) {
+				// Orient inner rings correctly
+				if (polygonIsClockwise(c[j]) && this.type == 'polygon') {
 					verts.reverse();
 				}
 			}
@@ -1071,12 +1084,12 @@ Wkt.Wkt.prototype.construct = {
  * @return          {Object}    A hash of the 'type' and 'components' thus derived, plus the WKT string of the feature.
  */
 Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
-	var features, i, j, verts, rings, sign, tmp, response, lat, lng, vertex, ring;
-	var polygons, polygon, k, linestring, linestrings;
+	var features, i, j, multiFlag, verts, rings, sign, tmp, response, lat, lng, vertex, ring, linestrings, k;
+
 	// Shortcut to signed area function (determines clockwise vs counter-clock)
 	if (google.maps.geometry) {
 		sign = google.maps.geometry.spherical.computeSignedArea;
-	}
+	};
 
 	// google.maps.LatLng //////////////////////////////////////////////////////
 	if (obj.constructor === google.maps.LatLng) {
@@ -1141,7 +1154,7 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 		if (multiFlag === undefined) {
 			multiFlag = (function () {
-				var areas, l;
+				var areas, i, l;
 
 				l = obj.getPaths().length;
 				if (l <= 1) { // Trivial; this is a single polygon
@@ -1178,6 +1191,7 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 		for (i = 0; i < obj.getPaths().length; i += 1) { // For each polygon (ring)...
 			tmp = obj.getPaths().getAt(i);
 			verts = [];
+
 			for (j = 0; j < obj.getPaths().getAt(i).length; j += 1) { // For each vertex...
 				verts.push({
 					x: tmp.getAt(j).lng(),
@@ -1188,10 +1202,12 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 			if (!tmp.getAt(tmp.length - 1).equals(tmp.getAt(0))) {
 				if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
-					verts.unshift({ // Add the first coordinate again for closure
-						x: tmp.getAt(tmp.length - 1).lng(),
-						y: tmp.getAt(tmp.length - 1).lat()
+
+					verts.push({ // Add the first coordinate again for closure
+						x: tmp.getAt(0).lng(),
+						y: tmp.getAt(0).lat()
 					});
+					verts.reverse();
 
 				} else {
 					verts.push({ // Add the first coordinate again for closure
@@ -1206,17 +1222,20 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 			if (obj.getPaths().length > 1 && i > 0) {
 				// If this and the last ring have the same signs...
 				if (sign(obj.getPaths().getAt(i)) > 0 && sign(obj.getPaths().getAt(i - 1)) > 0 ||
-					sign(obj.getPaths().getAt(i)) < 0 && sign(obj.getPaths().getAt(i - 1)) < 0 && !multiFlag) {
+					sign(obj.getPaths().getAt(i)) < 0 && sign(obj.getPaths().getAt(i - 1)) < 0 /*&& !multiFlag*/ ) {
 					// ...They must both be inner rings (or both be outer rings, in a multipolygon)
 					verts = [verts]; // Wrap multipolygons once more (collection)
+				} else {
+					verts.reverse();
 				}
 
 			}
 
 			//TODO This makes mistakes when a second polygon has holes; it sees them all as individual polygons
-			if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
+			/*if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
 				verts.reverse();
-			}
+			}*/
+
 			rings.push(verts);
 		}
 
@@ -1349,7 +1368,7 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 	// google.maps.Data.Point /////////////////////////////////////////////////////
 	if (obj.constructor === google.maps.Data.Point) {
-		//console.zlog('It is a google.maps.Data.Point');
+		//console.log('It is a google.maps.Data.Point');
 		response = {
 			type: 'point',
 			components: [{
@@ -1363,7 +1382,7 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 	// google.maps.Data.LineString /////////////////////////////////////////////////////
 	if (obj.constructor === google.maps.Data.LineString) {
 		verts = [];
-		//console.zlog('It is a google.maps.Data.LineString');
+		//console.log('It is a google.maps.Data.LineString');
 		for (i = 0; i < obj.getLength(); i += 1) {
 			vertex = obj.getAt(i);
 			verts.push({
@@ -1380,11 +1399,11 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 	// google.maps.Data.Polygon /////////////////////////////////////////////////////
 	if (obj.constructor === google.maps.Data.Polygon) {
-		rings = [];
-		//console.zlog('It is a google.maps.Data.Polygon');
+		var rings = [];
+		//console.log('It is a google.maps.Data.Polygon');
 		for (i = 0; i < obj.getLength(); i += 1) { // For each ring...
 			ring = obj.getAt(i);
-			verts = [];
+			var verts = [];
 			for (j = 0; j < ring.getLength(); j += 1) { // For each vertex...
 				vertex = ring.getAt(j);
 				verts.push({
@@ -1426,10 +1445,10 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 	// google.maps.Data.MultiLineString /////////////////////////////////////////////////////
 	if (obj.constructor === google.maps.Data.MultiLineString) {
-		linestrings = [];
+		linestrings = []
 		for (i = 0; i < obj.getLength(); i += 1) {
 			verts = [];
-			linestring = obj.getAt(i);
+			var linestring = obj.getAt(i);
 			for (j = 0; j < linestring.getLength(); j += 1) {
 				vertex = linestring.getAt(j);
 				verts.push({
@@ -1449,15 +1468,15 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 	// google.maps.Data.MultiPolygon /////////////////////////////////////////////////////
 	if (obj.constructor === google.maps.Data.MultiPolygon) {
 
-		polygons = [];
+		var polygons = [];
 
-		//console.zlog('It is a google.maps.Data.MultiPolygon');
+		//console.log('It is a google.maps.Data.MultiPolygon');
 		for (k = 0; k < obj.getLength(); k += 1) { // For each multipolygon
-			polygon = obj.getAt(k);
-			rings = [];
+			var polygon = obj.getAt(k);
+			var rings = [];
 			for (i = 0; i < polygon.getLength(); i += 1) { // For each ring...
 				ring = polygon.getAt(i);
-				verts = [];
+				var verts = [];
 				for (j = 0; j < ring.getLength(); j += 1) { // For each vertex...
 					vertex = ring.getAt(j);
 					verts.push({
@@ -1490,7 +1509,7 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 			var object = obj.getAt(k);
 			objects.push(this.deconstruct.call(this, object));
 		}
-		//console.zlog('It is a google.maps.Data.GeometryCollection', objects);
+		//console.log('It is a google.maps.Data.GeometryCollection', objects);
 		response = {
 			type: 'geometrycollection',
 			components: objects
@@ -1553,7 +1572,7 @@ Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
 
 	}
 
-	console.zlog('The passed object does not have any recognizable properties.');
+	console.log('The passed object does not have any recognizable properties.');
 
 };
 

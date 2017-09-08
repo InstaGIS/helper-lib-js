@@ -1,9 +1,3 @@
 language: node_js
 node_js:
-  - "6.1"
-install:
-  - make install
-script:
-  - make build
-after_success:
-  - make test  
+  - "6.1" 

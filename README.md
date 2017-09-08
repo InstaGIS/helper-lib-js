@@ -4,9 +4,9 @@
 [![Travis CI](https://travis-ci.org/InstaGIS/helper-lib-js.svg?branch=master)](https://travis-ci.org/InstaGIS/helper-lib-js)
 
 
-Este repo contiene helpers no específicos que InstaGIS-app u otro proyecto puede reutilizar
+This repo contains non-specific javascript helpers that are used in a few InstaGIS frontend apps.
 
-Los componentes son:
+It exports components:
 
 * CollectionUtils
 * ButtonFactory
@@ -22,45 +22,41 @@ Los componentes son:
 * randomname	
 * getCookie
 
-Algunas funciones (las que manipulan el DOM) requieren de jQuery para funcionar.
-
+Some of these methods (the ones that manipulate the DOM) need jQuery to work as intended. This means that using 
+this library on your project will also need you to have jQuery as a dependency. It isn't listed among this project 
+dependencies because different projects might want to use different builds of jquery (as is the case of `instagis-app`).
 
 
 ## Setup
 
-instagis-libs-js está pensado para utilizarse como dependencia mediante **jspm**. Por ejemplo, desde la app web
-se instala con:
+instagis-libs-js is meant to be used alongside **jspm**. Install it with
 
 ```sh
-
-jspm install github:instagis/helper-lib-js -o '{"directories":{"lib":"dist"}}'
+jspm install github:instagis/helper-lib-js 
 
 ```
 
-Este comando modifica la configuración de la aplicación insertando la referencia apropiada, mediante la cual
-helper-libs se asocia a la carpeta `dist` del presente repositorio. Si se quisiera utilizar, en cambio, la carpeta
-src, que contiene los archivos fuente sin consolidar, habría que instalar con:
+This command will add `helper-libs-js` to the `jspm.config.js` file. By default, files will be read from folder `dist` which contains the minified
+versions of the script. For debugging purposes, you might want to use instead the source files, in which case you can override the default
+folder by installing as:
+
 
 ```sh
-
 jspm install github:instagis/helper-lib-js -o '{"directories":{"lib":"src"}}'
 
 ```
 
-Este repo es privado. Recuerde configurar sus credenciales de github.
-*(Todos los desarrolladores y máquinas en AWS tienen una llave para eso)*
-
-
 
 ### Build
 
-Después de hacer modificaciones a este repo, éstas se pasan a producción generando un tag de la forma:
+After making any modification to this repo, you can trigger a build - test - tag combination by doing
 
 ```sh
-make tag v=16.1.35
+make tag v=16.1.35 m='tag description'
 ```
 
-(obviamente el valor de `v` debe variar según lo que corresponda, no lo tome al pie de la letra)
+
+(value of `v` should reflect the new tag number)
 
 
 
