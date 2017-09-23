@@ -1441,10 +1441,9 @@ Wkt.Wkt.prototype.toJson = function () {
 
 			return s;
 		}.call(this).join('')
-	};
 
-	// Wkt BOX type gets a special bbox property in GeoJSON
-	if (this.type.toLowerCase() === 'box') {
+		// Wkt BOX type gets a special bbox property in GeoJSON
+	};if (this.type.toLowerCase() === 'box') {
 		json.type = 'Polygon';
 		json.bbox = [];
 

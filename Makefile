@@ -13,25 +13,25 @@ version:
 
 install: 
 	npm install
-	jspm install 
+	$$(npm bin)/jspm install 
 
 test:
-	./node_modules/karma/bin/karma start
+	$$(npm bin)/karma start
 
 
 	
 	
 	
 build_esm:
-	jspm build src - jquery dist/ig_helper.js  --format esm --skip-source-maps  
+	$$(npm bin)/jspm build src - jquery dist/ig_helper.js  --format esm --skip-source-maps  
 
 build_bundle:
-	jspm build src - jquery dist/ig_helper.bundle.js --format umd  --global-name IGProviders  --global-deps '{"jquery":"$$", "gmaps":"gmaps","underscore":"_"}' --skip-encode-names
-	jspm build src/loadingcircle.js - jquery dist/loadingcircle.bundle.js --format umd  --global-name LoadingCircle  --global-deps '{"jquery":"$$"}' --skip-encode-names
+	$$(npm bin)/jspm build src - jquery dist/ig_helper.bundle.js --format umd  --global-name IGProviders  --global-deps '{"jquery":"$$", "gmaps":"gmaps","underscore":"_"}' --skip-encode-names
+	$$(npm bin)/jspm build src/loadingcircle.js - jquery dist/loadingcircle.bundle.js --format umd  --global-name LoadingCircle  --global-deps '{"jquery":"$$"}' --skip-encode-names
 
 build_min:
-	jspm build src - jquery dist/ig_helper.min.js --format umd  -m --global-name IGProviders  --global-deps '{"jquery":"$$", "gmaps":"gmaps", "underscore":"_"}' --skip-encode-names
-	jspm build src/loadingcircle.js - jquery dist/loadingcircle.min.js --format umd  -m --global-name LoadingCircle  --global-deps '{"jquery":"$$"}' --skip-encode-names
+	$$(npm bin)/jspm build src - jquery dist/ig_helper.min.js --format umd  -m --global-name IGProviders  --global-deps '{"jquery":"$$", "gmaps":"gmaps", "underscore":"_"}' --skip-encode-names
+	$$(npm bin)/jspm build src/loadingcircle.js - jquery dist/loadingcircle.min.js --format umd  -m --global-name LoadingCircle  --global-deps '{"jquery":"$$"}' --skip-encode-names
 
 update_version:
 ifeq ($(shell expr "${VERSION}" \> "$(v)"),1)
@@ -56,5 +56,5 @@ tag_and_push:
 
 
 tag: build release
-release: update_version  tag_and_push		
+release: test update_version  tag_and_push		
 	

@@ -1,6 +1,6 @@
 {
   "name": "ig_helper",
-  "version": "17.2.0",
+  "version": "17.2.1",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
   "contributors": [
@@ -36,15 +36,14 @@
   },
   "main": "dist/ig_helper.min.js",
   "private": true,
-  "dependencies": {
-    "jspm": "^0.17.0-beta.44"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.18.0",
     "eslint": "^3.13.1",
     "jasmine-core": "^2.5.2",
+    "jspm": "^0.17.0-beta.45",
     "karma": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-mocha-reporter": "^2.2.2",
@@ -66,7 +65,7 @@
       "gmap": "npm:amd-googlemaps-loader@^1"
     },
     "peerDependencies": {
-      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.21"
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.25"
     },
     "overrides": {
       "npm:inherits@2.0.3": {
