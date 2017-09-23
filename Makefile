@@ -6,7 +6,7 @@ default: build
 .PHONY: test  default build build_bundle
 
 
-build:  build_bundle test build_esm build_min
+build:  build_bundle build_esm build_min
 
 version:
 	@echo $(VERSION)
@@ -34,7 +34,13 @@ build_min:
 	$$(npm bin)/jspm build src/loadingcircle.js - jquery dist/loadingcircle.min.js --format umd  -m --global-name LoadingCircle  --global-deps '{"jquery":"$$"}' --skip-encode-names
 
 update_version:
-ifeq ($(shell expr "${VERSION}" \> "$(v)"),1)
+ifeq ($(shell expr "${CURRENT_MAJOR}" \> "$(NEXT_MAJOR)"),1)
+	$(error "v" parameter is lower than current version ${VERSION})
+endif
+ifeq ($(shell expr "${CURRENT_MINOR}" \> "$(NEXT_MINOR)"),1)
+	$(error "v" parameter is lower than current version ${VERSION})
+endif
+ifeq ($(shell expr "${CURRENT_HOTFIX}" \> "$(NEXT_HOTFIX)"),1)
 	$(error "v" parameter is lower than current version ${VERSION})
 endif
 ifeq ($(v),)
@@ -47,6 +53,17 @@ endif
 	@echo "Next version is " $(v)
 	sed -i s/"$(VERSION)"/"$(v)"/g package.json
 
+check_version:
+	$(eval SPLIT_VERSION = $(subst ., ,${VERSION}))
+	$(eval NEXT_VERSION := $(subst ., ,${v}))
+	$(eval CURRENT_MAJOR := $(word 1,$(SPLIT_VERSION)))
+	$(eval CURRENT_MINOR := $(word 2,$(SPLIT_VERSION)))
+	$(eval CURRENT_HOTFIX := $(word 3,$(SPLIT_VERSION)))
+	$(eval NEXT_MAJOR := $(word 1,$(NEXT_VERSION)))
+	$(eval NEXT_MINOR := $(word 2,$(NEXT_VERSION)))
+	$(eval NEXT_HOTFIX := $(word 3,$(NEXT_VERSION)))
+
+
 tag_and_push:
 		git add --all
 		git commit -a -m "Tag v $(v) $(m)"
@@ -54,7 +71,7 @@ tag_and_push:
 		git push
 		git push --tags
 
-
 tag: build release
-release: test update_version  tag_and_push		
+
+release: test check_version update_version tag_and_push		
 	
