@@ -1,6 +1,6 @@
 {
   "name": "ig_helper",
-  "version": "17.3.0",
+  "version": "17.3.1",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
   "contributors": [{
@@ -34,6 +34,8 @@
     "node": "4.2.x"
   },
   "main": "dist/ig_helper.min.js",
+  "module": "dist/ig_helper.js",
+  "jsnext:main": "dist/ig_helper.js",
   "private": true,
   "dependencies": {},
   "devDependencies": {
