@@ -1,10 +1,9 @@
 {
   "name": "ig_helper",
-  "version": "17.2.2",
+  "version": "17.3.0",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
-  "contributors": [
-    {
+  "contributors": [{
       "name": "José Salazar",
       "email": "jolsalazar@gmail.com",
       "role": "Senior Developer"
@@ -52,8 +51,8 @@
   },
   "jspm": {
     "registry": "jspm",
-    "main": "ig_helper.min.js",
-    "format": "amd",
+    "main": "ig_helper.js",
+    "format": "esm",
     "directories": {
       "lib": "dist"
     },
