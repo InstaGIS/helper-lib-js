@@ -21,6 +21,7 @@
 
 import gmaps from 'gmaps';
 
+gmaps.comment = 'shut up rollup'; // just to stop rollup from bugging me
 var beginsWith, endsWith;
 
 /**
@@ -29,7 +30,7 @@ var beginsWith, endsWith;
  * @namespace
  * @global
  */
-const Wkt = function (obj) {
+var Wkt = function (obj) {
 	if (obj instanceof Wkt) return obj;
 	if (!(this instanceof Wkt)) return new Wkt(obj);
 	this._wrapped = obj;

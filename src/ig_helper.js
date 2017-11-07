@@ -6,8 +6,8 @@ export {
 from './collection_helper.js';
 
 import {
-	ButtonFactory
-} from './markerfactory.esm.js';
+	MarkerFactory as ButtonFactory
+} from 'ig_markerfactory';
 
 import {
 	Wkt,
@@ -23,7 +23,6 @@ import {
 	colorset
 }
 from './colorset.js';
-import './rAF';
 
 var root = (typeof self == 'object' && self.self === self && self) ||
 	(typeof global == 'object' && global.global === global && global);

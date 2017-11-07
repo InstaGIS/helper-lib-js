@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
-var jqContainerLoading = null,
-	removeEvent = null;
+var jqContainerLoading = null;
+var removeEvent = null;
 var preloaderFN = function (id_selector) {
 	var preloader = $('<div class="preloader">'),
 		loading = $('<div class="preloader-wrapper big active" id="loading">'),
@@ -22,7 +22,7 @@ var preloaderFN = function (id_selector) {
  * @param  {string} container  selector CSS del contenedor
  * @return {void}
  */
-export function loadingcircle(timeout, message, container) {
+function loadingcircle(timeout, message, container) {
 
 	var theGlobalvars = window.globalvars || {};
 	theGlobalvars.containerIds = theGlobalvars.containerIds || {};
@@ -77,3 +77,5 @@ export function loadingcircle(timeout, message, container) {
 	return jqContainerLoading;
 
 }
+
+export { loadingcircle };

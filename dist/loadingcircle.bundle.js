@@ -4,14 +4,18 @@
 	(factory((global.LoadingCircle = global.LoadingCircle || {}),global.$));
 }(this, (function (exports,$) { 'use strict';
 
-$ = 'default' in $ ? $['default'] : $;
+$ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 
 var jqContainerLoading = null;
 var removeEvent = null;
-var preloaderFN = function preloaderFN(id_selector) {
+var preloaderFN = function (id_selector) {
 	var preloader = $('<div class="preloader">'),
-	    loading = $('<div class="preloader-wrapper big active" id="loading">'),
-	    spinnerlayer = $('<div class="spinner-layer spinner-blue-only">').append('<div class="circle-clipper left"><div class="circle"></div></div>').append('<div class="gap-patch"><div class="circle"></div></div>').append('<div class="circle-clipper right"><div class="circle"></div>').appendTo(loading);
+		loading = $('<div class="preloader-wrapper big active" id="loading">'),
+		spinnerlayer = $('<div class="spinner-layer spinner-blue-only">')
+		.append('<div class="circle-clipper left"><div class="circle"></div></div>')
+		.append('<div class="gap-patch"><div class="circle"></div></div>')
+		.append('<div class="circle-clipper right"><div class="circle"></div>')
+		.appendTo(loading);
 
 	preloader.append(loading).append('<div id="preload_text">');
 	preloader.attr('id', id_selector.replace('#', ''));
@@ -77,6 +81,7 @@ function loadingcircle(timeout, message, container) {
 		}
 	}
 	return jqContainerLoading;
+
 }
 
 exports.loadingcircle = loadingcircle;
@@ -84,5 +89,3 @@ exports.loadingcircle = loadingcircle;
 Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-
-//# sourceMappingURL=loadingcircle.bundle.js.map

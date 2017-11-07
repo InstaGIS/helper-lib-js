@@ -1,9 +1,10 @@
 {
   "name": "ig_helper",
-  "version": "17.3.1",
+  "version": "17.4.0",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
-  "contributors": [{
+  "contributors": [
+    {
       "name": "José Salazar",
       "email": "jolsalazar@gmail.com",
       "role": "Senior Developer"
@@ -31,18 +32,23 @@
   },
   "homepage": "https://www.instagis.com",
   "engines": {
-    "node": "4.2.x"
+    "node": "6.11.2"
   },
   "main": "dist/ig_helper.min.js",
   "module": "dist/ig_helper.js",
   "jsnext:main": "dist/ig_helper.js",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "rollup": "^0.50.0",
+    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-uglify": "^2.0.1"
+  },
   "devDependencies": {
-    "babel-eslint": "^7.1.1",
+    "babel-eslint": "^8.0.2",
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.18.0",
-    "eslint": "^3.13.1",
+    "eslint": "^4.10.0",
+    "ig_markerfactory": "^2.9.14",
     "jasmine-core": "^2.5.2",
     "jspm": "^0.17.0-beta.45",
     "karma": "^1.1.1",
@@ -58,11 +64,12 @@
     "directories": {
       "lib": "dist"
     },
+    "dependencies": {},
     "map": {
       "ig_helper": "./ig_helper.js"
     },
-    "dependencies": {},
     "devDependencies": {
+      "ig_markerfactory": "npm:ig_markerfactory@^2.9.9",
       "gmap": "npm:amd-googlemaps-loader@^1"
     },
     "peerDependencies": {

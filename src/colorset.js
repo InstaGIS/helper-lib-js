@@ -1,4 +1,4 @@
-export const colorset = {
+export var colorset = {
 	"polygon_mycolor": {
 		"rows": 4,
 		"cols": 9,

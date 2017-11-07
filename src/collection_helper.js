@@ -5,7 +5,7 @@ import _ from 'underscore';
  * Campos que no deben tomarse en cuenta a la hora de reconocer las características de un dataset
  * @type {Array}
  */
-const blacklistedfields = [
+var blacklistedfields = [
 	'id',
 	'strokeOpacity',
 	'clickable',
