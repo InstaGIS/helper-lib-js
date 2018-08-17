@@ -37,7 +37,7 @@ SystemJS.config({
       "parameters": {
         "v": "3.exp",
         "libraries": "drawing,geometry",
-        "key": "AIzaSyCIa4v2dHNb4jMpdLaMCHy8vZZCj8HYv40"
+        "key": "AIzaSyBg_W7nYM__4JVJpqkIYJGxSFJL9tuEznA"
       },
       "loader": "gmap"
     }

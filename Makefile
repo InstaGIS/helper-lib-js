@@ -1,6 +1,6 @@
 VERSION = $(shell cat package.json | sed -n 's/.*"version": "\([^"]*\)",/\1/p')
-current_eslint = $(shell cat package.json | sed -n 's/.*"babel-eslint": "\([^"]*\)",/\1/p')
-current_babel_eslint = $(shell cat package.json | sed -n 's/.*"eslint": "\([^"]*\)",/\1/p')
+current_babel_eslint = $(shell cat package.json | sed -n 's/.*"babel-eslint": "\([^"]*\)",/\1/p')
+current_eslint = $(shell cat package.json | sed -n 's/.*"eslint": "\([^"]*\)",/\1/p')
 SHELL = /usr/bin/env bash
 
 YELLOW=\033[0;33m
