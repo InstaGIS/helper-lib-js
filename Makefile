@@ -12,14 +12,13 @@ default: build
 .PHONY: test  default build build_bundle
 
 
-build_jspm:  build_bundle build_esm build_min
+
 
 version:
 	@echo $(VERSION)
 
 install: 
 	npm install
-	$$(npm bin)/jspm install 
 
 test:
 	$$(npm bin)/karma start
@@ -31,17 +30,6 @@ update_eslint:
 	npm remove --save-dev eslint babel-eslint ;\
 	npm install --save-dev eslint babel-eslint
 
-	
-build_esm:
-	$$(npm bin)/jspm build src - jquery dist/ig_helper.js  --format esm --skip-source-maps  
-
-build_bundle:
-	$$(npm bin)/jspm build src - jquery dist/ig_helper.bundle.js --format umd  --global-name IGProviders  --global-deps '{"jquery":"$$", "gmaps":"gmaps","underscore":"_"}' --skip-encode-names
-	$$(npm bin)/jspm build src/loadingcircle.js - jquery dist/loadingcircle.bundle.js --format umd  --global-name LoadingCircle  --global-deps '{"jquery":"$$"}' --skip-encode-names
-
-build_min:
-	$$(npm bin)/jspm build src - jquery dist/ig_helper.min.js --format umd  -m --global-name IGProviders  --global-deps '{"jquery":"$$", "gmaps":"gmaps", "underscore":"_"}' --skip-encode-names
-	$$(npm bin)/jspm build src/loadingcircle.js - jquery dist/loadingcircle.min.js --format umd  -m --global-name LoadingCircle  --global-deps '{"jquery":"$$"}' --skip-encode-names
 
 
 build:
