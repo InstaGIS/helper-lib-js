@@ -1,6 +1,6 @@
 {
   "name": "ig_helper",
-  "version": "18.0.1",
+  "version": "18.0.2",
   "description": "Javascript helpers for instagis apps",
   "author": "Felipe Figueroa  <amenadiel@gmail.com>",
   "contributors": [{
@@ -55,14 +55,14 @@
   },
   "jspm": {
     "registry": "jspm",
-    "main": "ig_helper.min.js",
-    "format": "umd",
+    "main": "ig_helper.js",
+    "format": "esm",
     "directories": {
       "lib": "dist"
     },
     "dependencies": {},
     "map": {
-      "ig_helper": "./ig_helper.min.js"
+      "ig_helper": "./ig_helper.js"
     }
   }
 }
