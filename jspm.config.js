@@ -1,7 +1,6 @@
 SystemJS.config({
   nodeConfig: {
     "paths": {
-      "gmaps": "https://maps.googleapis.com/maps/api/js",
       "github:": "jspm_packages/github/",
       "npm:": "jspm_packages/npm/",
       "jquery": "test/vendor/jquery.js",
@@ -31,15 +30,6 @@ SystemJS.config({
     },
     "underscore.js": {
       "build": false
-    },
-    "https://maps.googleapis.com/maps/api/*": {
-      "build": false,
-      "parameters": {
-        "v": "3.exp",
-        "libraries": "drawing,geometry",
-        "key": "AIzaSyBg_W7nYM__4JVJpqkIYJGxSFJL9tuEznA"
-      },
-      "loader": "gmap"
     }
   },
   packages: {

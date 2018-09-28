@@ -1,6 +1,15 @@
 var Wkt = IGProviders.Wkt;
 
 describe('Standard WKT Test Cases: ', function () {
+
+	beforeAll(function (done) {
+		window.gmapPromise.then(function () {
+			console.log('google maps loaded');
+			done();
+		});
+
+	});
+
 	var cases, wkt;
 	wkt = new Wkt.Wkt();
 

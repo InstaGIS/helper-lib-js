@@ -14,13 +14,11 @@ module.exports = function (config) {
 			'test/vendor/gmaps.js',
 			'test/vendor/object-assign-polyfill.js',
 			'test/vendor/prototype-bind-polyfill.js',
-			'https://maps.googleapis.com/maps/api/js?callback=__google_maps_callback__&v=3.exp&libraries=geometry&key=AIzaSyBg_W7nYM__4JVJpqkIYJGxSFJL9tuEznA',
+			'https://maps.googleapis.com/maps/api/js?callback=__google_maps_callback__&v=quarterly&key=AIzaSyBg_W7nYM__4JVJpqkIYJGxSFJL9tuEznA',
 			'test/vendor/jquery.js',
 			'test/vendor/underscore.js',
 			'dist/ig_helper.bundle.js',
-			'test/ig_helper-spec.js',
-			'test/markerfactory-spec.js',
-			'test/wicket-gmap3-spec.js'
+			'test/*-spec.js'
 		]
 	});
 };

@@ -1,12 +1,11 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jquery'), require('underscore'), require('gmaps')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'underscore', 'gmaps'], factory) :
-	(factory((global.IGProviders = global.IGProviders || {}),global.$,global._,global.gmaps));
-}(this, (function (exports,$,_,gmaps) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jquery'), require('underscore')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'underscore'], factory) :
+	(factory((global.IGProviders = global.IGProviders || {}),global.$,global._));
+}(this, (function (exports,$,_) { 'use strict';
 
 $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 _ = _ && _.hasOwnProperty('default') ? _['default'] : _;
-gmaps = gmaps && gmaps.hasOwnProperty('default') ? gmaps['default'] : gmaps;
 
 /**
  * Campos que no deben tomarse en cuenta a la hora de reconocer las características de un dataset
@@ -1183,10 +1182,6 @@ function compact(array) {
  *
  */
 
-gmaps.comment = 'shut up rollup'; // just to stop rollup from bugging me
-var beginsWith;
-var endsWith;
-
 /**
  * @desc The Wkt namespace.
  * @property    {String}    delimiter   - The default delimiter for separating components of atomic geometry (coordinates)
@@ -1206,7 +1201,7 @@ var Wkt = function (obj) {
  * @return      {Boolean}
  * @private
  */
-beginsWith = function (str, sub) {
+var beginsWith = function (str, sub) {
 	return str.substring(0, sub.length) === sub;
 };
 
@@ -1217,7 +1212,7 @@ beginsWith = function (str, sub) {
  * @return      {Boolean}
  * @private
  */
-endsWith = function (str, sub) {
+var endsWith = function (str, sub) {
 	return str.substring(str.length - sub.length) === sub;
 };
 

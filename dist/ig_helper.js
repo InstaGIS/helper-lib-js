@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import gmaps from 'gmaps';
 
 /**
  * Campos que no deben tomarse en cuenta a la hora de reconocer las características de un dataset
@@ -1177,10 +1176,6 @@ function compact(array) {
  *
  */
 
-gmaps.comment = 'shut up rollup'; // just to stop rollup from bugging me
-var beginsWith;
-var endsWith;
-
 /**
  * @desc The Wkt namespace.
  * @property    {String}    delimiter   - The default delimiter for separating components of atomic geometry (coordinates)
@@ -1200,7 +1195,7 @@ var Wkt = function (obj) {
  * @return      {Boolean}
  * @private
  */
-beginsWith = function (str, sub) {
+var beginsWith = function (str, sub) {
 	return str.substring(0, sub.length) === sub;
 };
 
@@ -1211,7 +1206,7 @@ beginsWith = function (str, sub) {
  * @return      {Boolean}
  * @private
  */
-endsWith = function (str, sub) {
+var endsWith = function (str, sub) {
 	return str.substring(str.length - sub.length) === sub;
 };
 

@@ -1,4 +1,4 @@
-(function (window, undefined) {
+(function (window) {
     if (typeof window.google === "object" && typeof window.google.maps !== "undefined") {
         console.log('gmaps already present');
         window.gmaps = window.google.maps;
