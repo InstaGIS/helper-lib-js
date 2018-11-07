@@ -138,7 +138,8 @@ describe('Generated icons', function () {
 			label: 'f011',
 			color: '#FFCC00',
 			scale: 1,
-			transparent_background: true
+			transparent_background: true,
+			no_cache: 1
 		},
 		fatIcon = {
 			character: 'f011',
@@ -146,14 +147,36 @@ describe('Generated icons', function () {
 			label: 'f011',
 			color: '#FFCC00',
 			scale: 1,
-			transparent_background: false
+			transparent_background: false,
+			no_cache: 1
 		},
 		textIcon = {
 			character: 'A',
 			label: 'A',
 			color: '#FFCC00',
-			scale: 1
+			scale: 1,
+			no_cache: 1
 		};
+
+	it('should call createTransparentMarkerIcon when transparent_background is true', function () {
+		spyOn(MarkerFactory, 'createTransparentMarkerIcon');
+		var newIcon = MarkerFactory.autoIcon(transparentIcon);
+
+		return expect(MarkerFactory.createTransparentMarkerIcon).toHaveBeenCalled();
+	});
+	it('should call createFatMarkerIcon when transparent_background is false', function () {
+		spyOn(MarkerFactory, 'createFatMarkerIcon');
+		var newIcon = MarkerFactory.autoIcon(fatIcon);
+
+		return expect(MarkerFactory.createFatMarkerIcon).toHaveBeenCalled();
+	});
+	it('should call createTextMarker when font is undefined', function () {
+		spyOn(MarkerFactory, 'createTextMarker');
+		var newIcon = MarkerFactory.autoIcon(textIcon);
+
+		return expect(MarkerFactory.createTextMarker).toHaveBeenCalled();
+	});
+
 	it('should serialize icons correctly for transparent_background', function () {
 		var newIcon = MarkerFactory.autoIcon(transparentIcon);
 
@@ -179,25 +202,6 @@ describe('Generated icons', function () {
 
 		expect(newIcon.toJSON().markerOpts.type).toBe('textmarker');
 
-	});
-
-	it('should call createTransparentMarkerIcon when transparent_background is true', function () {
-		spyOn(MarkerFactory, 'createTransparentMarkerIcon');
-		var newIcon = MarkerFactory.autoIcon(transparentIcon);
-
-		return expect(MarkerFactory.createTransparentMarkerIcon).toHaveBeenCalled();
-	});
-	it('should call createFatMarkerIcon when transparent_background is false', function () {
-		spyOn(MarkerFactory, 'createFatMarkerIcon');
-		var newIcon = MarkerFactory.autoIcon(fatIcon);
-
-		return expect(MarkerFactory.createFatMarkerIcon).toHaveBeenCalled();
-	});
-	it('should call createTextMarker when font is undefined', function () {
-		spyOn(MarkerFactory, 'createTextMarker');
-		var newIcon = MarkerFactory.autoIcon(textIcon);
-
-		return expect(MarkerFactory.createTextMarker).toHaveBeenCalled();
 	});
 
 });
