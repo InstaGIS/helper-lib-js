@@ -13,6 +13,7 @@ module.exports = function (config) {
 			'test/vendor/bluebird.js',
 			'test/vendor/gmaps.js',
 			'test/vendor/object-assign-polyfill.js',
+			'test/vendor/object-entries-polyfill.js',
 			'test/vendor/prototype-bind-polyfill.js',
 			'https://maps.googleapis.com/maps/api/js?callback=__google_maps_callback__&v=quarterly&libraries=geometry&key=AIzaSyBg_W7nYM__4JVJpqkIYJGxSFJL9tuEznA',
 			'test/vendor/jquery.js',
