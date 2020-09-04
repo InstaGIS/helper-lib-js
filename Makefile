@@ -37,6 +37,8 @@ build:
 	@MINIFY=true $$(npm bin)/rollup -c 
 	@LOADINGCIRCLE=true $$(npm bin)/rollup -c 
 	@LOADINGCIRCLE=true MINIFY=true $$(npm bin)/rollup -c 
+	@cp dist/ig_helper.js dist/index.js 
+	@cp dist/ig_helper.min.js dist/index.min.js
 
 
 

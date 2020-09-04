@@ -26,9 +26,9 @@
  * @global
  */
 var Wkt = function (obj) {
-	if (obj instanceof Wkt) return obj;
-	if (!(this instanceof Wkt)) return new Wkt(obj);
-	this._wrapped = obj;
+  if (obj instanceof Wkt) return obj;
+  if (!(this instanceof Wkt)) return new Wkt(obj);
+  this._wrapped = obj;
 };
 
 /**
@@ -39,7 +39,7 @@ var Wkt = function (obj) {
  * @private
  */
 var beginsWith = function (str, sub) {
-	return str.substring(0, sub.length) === sub;
+  return str.substring(0, sub.length) === sub;
 };
 
 /**
@@ -50,7 +50,7 @@ var beginsWith = function (str, sub) {
  * @private
  */
 var endsWith = function (str, sub) {
-	return str.substring(str.length - sub.length) === sub;
+  return str.substring(str.length - sub.length) === sub;
 };
 
 /**
@@ -67,7 +67,7 @@ Wkt.delimiter = ' ';
  * @method
  */
 Wkt.isArray = function (obj) {
-	return !!(obj && obj.constructor === Array);
+  return !!(obj && obj.constructor === Array);
 };
 
 /**
@@ -79,16 +79,16 @@ Wkt.isArray = function (obj) {
  * @method
  */
 Wkt.trim = function (str, sub) {
-	sub = sub || ' '; // Defaults to trimming spaces
-	// Trim beginning spaces
-	while (beginsWith(str, sub)) {
-		str = str.substring(1);
-	}
-	// Trim ending spaces
-	while (endsWith(str, sub)) {
-		str = str.substring(0, str.length - 1);
-	}
-	return str;
+  sub = sub || ' '; // Defaults to trimming spaces
+  // Trim beginning spaces
+  while (beginsWith(str, sub)) {
+    str = str.substring(1);
+  }
+  // Trim ending spaces
+  while (endsWith(str, sub)) {
+    str = str.substring(0, str.length - 1);
+  }
+  return str;
 };
 
 /**
@@ -104,52 +104,50 @@ Wkt.trim = function (str, sub) {
  * @memberof Wkt
  */
 Wkt.Wkt = function (initializer) {
+  /**
+   * The default delimiter between X and Y coordinates.
+   * @ignore
+   */
+  this.delimiter = Wkt.delimiter || ' ';
 
-	/**
-	 * The default delimiter between X and Y coordinates.
-	 * @ignore
-	 */
-	this.delimiter = Wkt.delimiter || ' ';
+  /**
+   * Configuration parameter for controlling how Wicket seralizes
+   * MULTIPOINT strings. Examples; both are valid WKT:
+   * If true: MULTIPOINT((30 10),(10 30),(40 40))
+   * If false: MULTIPOINT(30 10,10 30,40 40)
+   * @ignore
+   */
+  this.wrapVertices = true;
 
-	/**
-	 * Configuration parameter for controlling how Wicket seralizes
-	 * MULTIPOINT strings. Examples; both are valid WKT:
-	 * If true: MULTIPOINT((30 10),(10 30),(40 40))
-	 * If false: MULTIPOINT(30 10,10 30,40 40)
-	 * @ignore
-	 */
-	this.wrapVertices = true;
+  /**
+   * Some regular expressions copied from OpenLayers.Format.WKT.js
+   * @ignore
+   */
+  this.regExes = {
+    typeStr: /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
+    spaces: /\s+|\+/, // Matches the '+' or the empty space
+    numeric: /-*\d+(\.*\d+)?/,
+    comma: /\s*,\s*/,
+    parenComma: /\)\s*,\s*\(/,
+    coord: /-*\d+\.*\d+ -*\d+\.*\d+/, // e.g. "24 -14"
+    doubleParenComma: /\)\s*\)\s*,\s*\(\s*\(/,
+    trimParens: /^\s*\(?(.*?)\)?\s*$/,
+    ogcTypes: /^(multi)?(point|line|polygon|box)?(string)?$/i, // Captures e.g. "Multi","Line","String"
+    crudeJson: /^{.*"(type|coordinates|geometries|features)":.*}$/, // Attempts to recognize JSON strings
+  };
 
-	/**
-	 * Some regular expressions copied from OpenLayers.Format.WKT.js
-	 * @ignore
-	 */
-	this.regExes = {
-		'typeStr': /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
-		'spaces': /\s+|\+/, // Matches the '+' or the empty space
-		'numeric': /-*\d+(\.*\d+)?/,
-		'comma': /\s*,\s*/,
-		'parenComma': /\)\s*,\s*\(/,
-		'coord': /-*\d+\.*\d+ -*\d+\.*\d+/, // e.g. "24 -14"
-		'doubleParenComma': /\)\s*\)\s*,\s*\(\s*\(/,
-		'trimParens': /^\s*\(?(.*?)\)?\s*$/,
-		'ogcTypes': /^(multi)?(point|line|polygon|box)?(string)?$/i, // Captures e.g. "Multi","Line","String"
-		'crudeJson': /^{.*"(type|coordinates|geometries|features)":.*}$/ // Attempts to recognize JSON strings
-	};
+  /**
+   * The internal representation of geometry--the "components" of geometry.
+   * @ignore
+   */
+  this.components = undefined;
 
-	/**
-	 * The internal representation of geometry--the "components" of geometry.
-	 * @ignore
-	 */
-	this.components = undefined;
-
-	// An initial WKT string may be provided
-	if (initializer && typeof initializer === 'string') {
-		this.read(initializer);
-	} else if (initializer && typeof initializer !== undefined) {
-		this.fromObject(initializer);
-	}
-
+  // An initial WKT string may be provided
+  if (initializer && typeof initializer === 'string') {
+    this.read(initializer);
+  } else if (initializer && typeof initializer !== undefined) {
+    this.fromObject(initializer);
+  }
 };
 
 /**
@@ -159,17 +157,17 @@ Wkt.Wkt = function (initializer) {
  * @method
  */
 Wkt.Wkt.prototype.isCollection = function () {
-	switch (this.type.slice(0, 5)) {
-	case 'multi':
-		// Trivial; any multi-geometry is a collection
-		return true;
-	case 'polyg':
-		// Polygons with holes are "collections" of rings
-		return true;
-	default:
-		// Any other geometry is not a collection
-		return false;
-	}
+  switch (this.type.slice(0, 5)) {
+    case 'multi':
+      // Trivial; any multi-geometry is a collection
+      return true;
+    case 'polyg':
+      // Polygons with holes are "collections" of rings
+      return true;
+    default:
+      // Any other geometry is not a collection
+      return false;
+  }
 };
 
 /**
@@ -181,7 +179,7 @@ Wkt.Wkt.prototype.isCollection = function () {
  * @method
  */
 Wkt.Wkt.prototype.sameCoords = function (a, b) {
-	return (a.x === b.x && a.y === b.y);
+  return a.x === b.x && a.y === b.y;
 };
 
 /**
@@ -193,18 +191,18 @@ Wkt.Wkt.prototype.sameCoords = function (a, b) {
  * @method
  */
 Wkt.Wkt.prototype.fromObject = function (obj) {
-	var result;
+  var result;
 
-	if (obj.hasOwnProperty('type') && obj.hasOwnProperty('coordinates')) {
-		result = this.fromJson(obj);
-	} else {
-		result = this.deconstruct.call(this, obj);
-	}
+  if (obj.hasOwnProperty('type') && obj.hasOwnProperty('coordinates')) {
+    result = this.fromJson(obj);
+  } else {
+    result = this.deconstruct.call(this, obj);
+  }
 
-	this.components = result.components;
-	this.isRectangle = result.isRectangle || false;
-	this.type = result.type;
-	return this;
+  this.components = result.components;
+  this.isRectangle = result.isRectangle || false;
+  this.type = result.type;
+  return this;
 };
 
 /**
@@ -216,12 +214,12 @@ Wkt.Wkt.prototype.fromObject = function (obj) {
  * @method
  */
 Wkt.Wkt.prototype.toObject = function (config) {
-	var obj = this.construct[this.type].call(this, config);
-	// Don't assign the "properties" property to an Array
-	if (typeof obj === 'object' && !Wkt.isArray(obj)) {
-		obj.properties = this.properties;
-	}
-	return obj;
+  var obj = this.construct[this.type].call(this, config);
+  // Don't assign the "properties" property to an Array
+  if (typeof obj === 'object' && !Wkt.isArray(obj)) {
+    obj.properties = this.properties;
+  }
+  return obj;
 };
 
 /**
@@ -230,7 +228,7 @@ Wkt.Wkt.prototype.toObject = function (config) {
  * @method
  */
 Wkt.Wkt.prototype.toString = function (config) {
-	return this.write();
+  return this.write();
 };
 
 /**
@@ -241,85 +239,76 @@ Wkt.Wkt.prototype.toString = function (config) {
  * @method
  */
 Wkt.Wkt.prototype.fromJson = function (obj) {
-	var i, j, k, coords, iring, oring;
+  var i, j, k, coords, iring, oring;
 
-	this.type = obj.type.toLowerCase();
-	this.components = [];
-	if (obj.hasOwnProperty('geometry')) { //Feature
-		this.fromJson(obj.geometry);
-		this.properties = obj.properties;
-		return this;
-	}
-	coords = obj.coordinates;
+  this.type = obj.type.toLowerCase();
+  this.components = [];
+  if (obj.hasOwnProperty('geometry')) {
+    //Feature
+    this.fromJson(obj.geometry);
+    this.properties = obj.properties;
+    return this;
+  }
+  coords = obj.coordinates;
 
-	if (!Wkt.isArray(coords[0])) { // Point
-		this.components.push({
-			x: coords[0],
-			y: coords[1]
-		});
+  if (!Wkt.isArray(coords[0])) {
+    // Point
+    this.components.push({
+      x: coords[0],
+      y: coords[1],
+    });
+  } else {
+    for (i in coords) {
+      if (coords.hasOwnProperty(i)) {
+        if (!Wkt.isArray(coords[i][0])) {
+          // LineString
 
-	} else {
+          if (this.type === 'multipoint') {
+            // MultiPoint
+            this.components.push([
+              {
+                x: coords[i][0],
+                y: coords[i][1],
+              },
+            ]);
+          } else {
+            this.components.push({
+              x: coords[i][0],
+              y: coords[i][1],
+            });
+          }
+        } else {
+          oring = [];
+          for (j in coords[i]) {
+            if (coords[i].hasOwnProperty(j)) {
+              if (!Wkt.isArray(coords[i][j][0])) {
+                oring.push({
+                  x: coords[i][j][0],
+                  y: coords[i][j][1],
+                });
+              } else {
+                iring = [];
+                for (k in coords[i][j]) {
+                  if (coords[i][j].hasOwnProperty(k)) {
+                    iring.push({
+                      x: coords[i][j][k][0],
+                      y: coords[i][j][k][1],
+                    });
+                  }
+                }
 
-		for (i in coords) {
-			if (coords.hasOwnProperty(i)) {
+                oring.push(iring);
+              }
+            }
+          }
 
-				if (!Wkt.isArray(coords[i][0])) { // LineString
+          this.components.push(oring);
+        }
+      }
+    }
+  }
 
-					if (this.type === 'multipoint') { // MultiPoint
-						this.components.push([{
-							x: coords[i][0],
-							y: coords[i][1]
-						}]);
-
-					} else {
-						this.components.push({
-							x: coords[i][0],
-							y: coords[i][1]
-						});
-
-					}
-
-				} else {
-
-					oring = [];
-					for (j in coords[i]) {
-						if (coords[i].hasOwnProperty(j)) {
-
-							if (!Wkt.isArray(coords[i][j][0])) {
-								oring.push({
-									x: coords[i][j][0],
-									y: coords[i][j][1]
-								});
-
-							} else {
-
-								iring = [];
-								for (k in coords[i][j]) {
-									if (coords[i][j].hasOwnProperty(k)) {
-
-										iring.push({
-											x: coords[i][j][k][0],
-											y: coords[i][j][k][1]
-										});
-
-									}
-								}
-
-								oring.push(iring);
-
-							}
-
-						}
-					}
-
-					this.components.push(oring);
-				}
-			}
-		}
-
-	}
-
-	return this;
+  return this;
 };
 
 /**
@@ -329,102 +318,105 @@ Wkt.Wkt.prototype.fromJson = function (obj) {
  * @method
  */
 Wkt.Wkt.prototype.toJson = function () {
-	var cs, json, i, j, k, ring, rings;
+  var cs, json, i, j, k, ring, rings;
 
-	cs = this.components;
-	json = {
-		coordinates: [],
-		type: (function () {
-			var i, type, s;
+  cs = this.components;
+  json = {
+    coordinates: [],
+    type: function () {
+      var i, type, s;
 
-			type = this.regExes.ogcTypes.exec(this.type).slice(1);
-			s = [];
+      type = this.regExes.ogcTypes.exec(this.type).slice(1);
+      s = [];
 
-			for (i in type) {
-				if (type.hasOwnProperty(i)) {
-					if (type[i] !== undefined) {
-						s.push(type[i].toLowerCase().slice(0, 1).toUpperCase() + type[i].toLowerCase().slice(1));
-					}
-				}
-			}
+      for (i in type) {
+        if (type.hasOwnProperty(i)) {
+          if (type[i] !== undefined) {
+            s.push(
+              type[i].toLowerCase().slice(0, 1).toUpperCase() +
+                type[i].toLowerCase().slice(1)
+            );
+          }
+        }
+      }
 
-			return s;
-		}.call(this)).join('')
-	}
+      return s;
+    }
+      .call(this)
+      .join(''),
+  };
 
-	// Wkt BOX type gets a special bbox property in GeoJSON
-	if (this.type.toLowerCase() === 'box') {
-		json.type = 'Polygon';
-		json.bbox = [];
+  // Wkt BOX type gets a special bbox property in GeoJSON
+  if (this.type.toLowerCase() === 'box') {
+    json.type = 'Polygon';
+    json.bbox = [];
 
-		for (i in cs) {
-			if (cs.hasOwnProperty(i)) {
-				json.bbox = json.bbox.concat([cs[i].x, cs[i].y]);
-			}
-		}
+    for (i in cs) {
+      if (cs.hasOwnProperty(i)) {
+        json.bbox = json.bbox.concat([cs[i].x, cs[i].y]);
+      }
+    }
 
-		json.coordinates = [
-			[
-				[cs[0].x, cs[0].y],
-				[cs[0].x, cs[1].y],
-				[cs[1].x, cs[1].y],
-				[cs[1].x, cs[0].y],
-				[cs[0].x, cs[0].y]
-			]
-		];
+    json.coordinates = [
+      [
+        [cs[0].x, cs[0].y],
+        [cs[0].x, cs[1].y],
+        [cs[1].x, cs[1].y],
+        [cs[1].x, cs[0].y],
+        [cs[0].x, cs[0].y],
+      ],
+    ];
 
-		return json;
-	}
+    return json;
+  }
 
-	// For the coordinates of most simple features
-	for (i in cs) {
-		if (cs.hasOwnProperty(i)) {
+  // For the coordinates of most simple features
+  for (i in cs) {
+    if (cs.hasOwnProperty(i)) {
+      // For those nested structures
+      if (Wkt.isArray(cs[i])) {
+        rings = [];
 
-			// For those nested structures
-			if (Wkt.isArray(cs[i])) {
-				rings = [];
+        for (j in cs[i]) {
+          if (cs[i].hasOwnProperty(j)) {
+            if (Wkt.isArray(cs[i][j])) {
+              // MULTIPOLYGONS
+              ring = [];
 
-				for (j in cs[i]) {
-					if (cs[i].hasOwnProperty(j)) {
+              for (k in cs[i][j]) {
+                if (cs[i][j].hasOwnProperty(k)) {
+                  ring.push([cs[i][j][k].x, cs[i][j][k].y]);
+                }
+              }
 
-						if (Wkt.isArray(cs[i][j])) { // MULTIPOLYGONS
-							ring = [];
+              rings.push(ring);
+            } else {
+              // POLYGONS and MULTILINESTRINGS
 
-							for (k in cs[i][j]) {
-								if (cs[i][j].hasOwnProperty(k)) {
-									ring.push([cs[i][j][k].x, cs[i][j][k].y]);
-								}
-							}
+              if (cs[i].length > 1) {
+                rings.push([cs[i][j].x, cs[i][j].y]);
+              } else {
+                // MULTIPOINTS
+                rings = rings.concat([cs[i][j].x, cs[i][j].y]);
+              }
+            }
+          }
+        }
 
-							rings.push(ring);
+        json.coordinates.push(rings);
+      } else {
+        if (cs.length > 1) {
+          // For LINESTRING type
+          json.coordinates.push([cs[i].x, cs[i].y]);
+        } else {
+          // For POINT type
+          json.coordinates = json.coordinates.concat([cs[i].x, cs[i].y]);
+        }
+      }
+    }
+  }
 
-						} else { // POLYGONS and MULTILINESTRINGS
-
-							if (cs[i].length > 1) {
-								rings.push([cs[i][j].x, cs[i][j].y]);
-
-							} else { // MULTIPOINTS
-								rings = rings.concat([cs[i][j].x, cs[i][j].y]);
-							}
-						}
-					}
-				}
-
-				json.coordinates.push(rings);
-
-			} else {
-				if (cs.length > 1) { // For LINESTRING type
-					json.coordinates.push([cs[i].x, cs[i].y]);
-
-				} else { // For POINT type
-					json.coordinates = json.coordinates.concat([cs[i].x, cs[i].y]);
-				}
-			}
-
-		}
-	}
-
-	return json;
+  return json;
 };
 
 /**
@@ -438,37 +430,36 @@ Wkt.Wkt.prototype.toJson = function () {
  * @method
  */
 Wkt.Wkt.prototype.merge = function (wkt) {
-	var prefix = this.type.slice(0, 5);
+  var prefix = this.type.slice(0, 5);
 
-	if (this.type !== wkt.type) {
-		if (this.type.slice(5, this.type.length) !== wkt.type) {
-			throw TypeError('The input geometry types must agree or the calling this.Wkt.Wkt instance must be a multigeometry of the other');
-		}
-	}
+  if (this.type !== wkt.type) {
+    if (this.type.slice(5, this.type.length) !== wkt.type) {
+      throw TypeError(
+        'The input geometry types must agree or the calling this.Wkt.Wkt instance must be a multigeometry of the other'
+      );
+    }
+  }
 
-	switch (prefix) {
+  switch (prefix) {
+    case 'point':
+      this.components = [this.components.concat(wkt.components)];
+      break;
 
-	case 'point':
-		this.components = [this.components.concat(wkt.components)];
-		break;
+    case 'multi':
+      this.components = this.components.concat(
+        wkt.type.slice(0, 5) === 'multi' ? wkt.components : [wkt.components]
+      );
+      break;
 
-	case 'multi':
-		this.components = this.components.concat((wkt.type.slice(0, 5) === 'multi') ? wkt.components : [wkt.components]);
-		break;
+    default:
+      this.components = [this.components, wkt.components];
+      break;
+  }
 
-	default:
-		this.components = [
-			this.components,
-			wkt.components
-		];
-		break;
-
-	}
-
-	if (prefix !== 'multi') {
-		this.type = 'multi' + this.type;
-	}
-	return this;
+  if (prefix !== 'multi') {
+    this.type = 'multi' + this.type;
+  }
+  return this;
 };
 
 /**
@@ -479,38 +470,38 @@ Wkt.Wkt.prototype.merge = function (wkt) {
  * @method
  */
 Wkt.Wkt.prototype.read = function (str) {
-	var matches;
-	matches = this.regExes.typeStr.exec(str);
-	if (matches) {
-		this.type = matches[1].toLowerCase();
-		this.base = matches[2];
-		if (this.ingest[this.type]) {
-			this.components = this.ingest[this.type].apply(this, [this.base]);
-		}
+  var matches;
+  matches = this.regExes.typeStr.exec(str);
+  if (matches) {
+    this.type = matches[1].toLowerCase();
+    this.base = matches[2];
+    if (this.ingest[this.type]) {
+      this.components = this.ingest[this.type].apply(this, [this.base]);
+    }
+  } else {
+    if (this.regExes.crudeJson.test(str)) {
+      if (typeof JSON === 'object' && typeof JSON.parse === 'function') {
+        this.fromJson(JSON.parse(str));
+      } else {
+        console.log(
+          'JSON.parse() is not available; cannot parse GeoJSON strings'
+        );
+        throw {
+          name: 'JSONError',
+          message:
+            'JSON.parse() is not available; cannot parse GeoJSON strings',
+        };
+      }
+    } else {
+      console.log('Invalid WKT string provided to read()');
+      throw {
+        name: 'WKTError',
+        message: 'Invalid WKT string provided to read()',
+      };
+    }
+  }
 
-	} else {
-		if (this.regExes.crudeJson.test(str)) {
-			if (typeof JSON === 'object' && typeof JSON.parse === 'function') {
-				this.fromJson(JSON.parse(str));
-
-			} else {
-				console.log('JSON.parse() is not available; cannot parse GeoJSON strings');
-				throw {
-					name: 'JSONError',
-					message: 'JSON.parse() is not available; cannot parse GeoJSON strings'
-				};
-			}
-
-		} else {
-			console.log('Invalid WKT string provided to read()');
-			throw {
-				name: 'WKTError',
-				message: 'Invalid WKT string provided to read()'
-			};
-		}
-	}
-
-	return this;
+  return this;
 }; // eo readWkt
 
 /**
@@ -521,42 +512,40 @@ Wkt.Wkt.prototype.read = function (str) {
  * @method
  */
 Wkt.Wkt.prototype.write = function (components) {
-	var i, pieces, data;
+  var i, pieces, data;
 
-	components = components || this.components;
+  components = components || this.components;
 
-	pieces = [];
+  pieces = [];
 
-	pieces.push(this.type.toUpperCase() + '(');
+  pieces.push(this.type.toUpperCase() + '(');
 
-	for (i = 0; i < components.length; i += 1) {
-		if (this.isCollection() && i > 0) {
-			pieces.push(',');
-		}
+  for (i = 0; i < components.length; i += 1) {
+    if (this.isCollection() && i > 0) {
+      pieces.push(',');
+    }
 
-		// There should be an extract function for the named type
-		if (!this.extract[this.type]) {
-			return null;
-		}
+    // There should be an extract function for the named type
+    if (!this.extract[this.type]) {
+      return null;
+    }
 
-		data = this.extract[this.type].apply(this, [components[i]]);
-		if (this.isCollection() && this.type !== 'multipoint') {
-			pieces.push('(' + data + ')');
+    data = this.extract[this.type].apply(this, [components[i]]);
+    if (this.isCollection() && this.type !== 'multipoint') {
+      pieces.push('(' + data + ')');
+    } else {
+      pieces.push(data);
 
-		} else {
-			pieces.push(data);
+      // If not at the end of the components, add a comma
+      if (i !== components.length - 1 && this.type !== 'multipoint') {
+        pieces.push(',');
+      }
+    }
+  }
 
-			// If not at the end of the components, add a comma
-			if (i !== (components.length - 1) && this.type !== 'multipoint') {
-				pieces.push(',');
-			}
+  pieces.push(')');
 
-		}
-	}
-
-	pieces.push(')');
-
-	return pieces.join('');
+  return pieces.join('');
 };
 
 /**
@@ -567,115 +556,120 @@ Wkt.Wkt.prototype.write = function (components) {
  * @instance
  */
 Wkt.Wkt.prototype.extract = {
-	/**
-	 * Return a WKT string representing atomic (point) geometry
-	 * @param   point   {Object}    An object with x and y properties
-	 * @return          {String}    The WKT representation
-	 * @memberof this.Wkt.Wkt.extract
-	 * @instance
-	 */
-	point: function (point) {
-		return String(point.x) + this.delimiter + String(point.y);
-	},
+  /**
+   * Return a WKT string representing atomic (point) geometry
+   * @param   point   {Object}    An object with x and y properties
+   * @return          {String}    The WKT representation
+   * @memberof this.Wkt.Wkt.extract
+   * @instance
+   */
+  point: function (point) {
+    return String(point.x) + this.delimiter + String(point.y);
+  },
 
-	/**
-	 * Return a WKT string representing multiple atoms (points)
-	 * @param   multipoint  {Array}     Multiple x-and-y objects
-	 * @return              {String}    The WKT representation
-	 * @memberof this.Wkt.Wkt.extract
-	 * @instance
-	 */
-	multipoint: function (multipoint) {
-		var i, parts = [],
-			s;
+  /**
+   * Return a WKT string representing multiple atoms (points)
+   * @param   multipoint  {Array}     Multiple x-and-y objects
+   * @return              {String}    The WKT representation
+   * @memberof this.Wkt.Wkt.extract
+   * @instance
+   */
+  multipoint: function (multipoint) {
+    var i,
+      parts = [],
+      s;
 
-		for (i = 0; i < multipoint.length; i += 1) {
-			s = this.extract.point.apply(this, [multipoint[i]]);
+    for (i = 0; i < multipoint.length; i += 1) {
+      s = this.extract.point.apply(this, [multipoint[i]]);
 
-			if (this.wrapVertices) {
-				s = '(' + s + ')';
-			}
+      if (this.wrapVertices) {
+        s = '(' + s + ')';
+      }
 
-			parts.push(s);
-		}
+      parts.push(s);
+    }
 
-		return parts.join(',');
-	},
+    return parts.join(',');
+  },
 
-	/**
-	 * Return a WKT string representing a chain (linestring) of atoms
-	 * @param   linestring  {Array}     Multiple x-and-y objects
-	 * @return              {String}    The WKT representation
-	 * @memberof this.Wkt.Wkt.extract
-	 * @instance
-	 */
-	linestring: function (linestring) {
-		// Extraction of linestrings is the same as for points
-		return this.extract.point.apply(this, [linestring]);
-	},
+  /**
+   * Return a WKT string representing a chain (linestring) of atoms
+   * @param   linestring  {Array}     Multiple x-and-y objects
+   * @return              {String}    The WKT representation
+   * @memberof this.Wkt.Wkt.extract
+   * @instance
+   */
+  linestring: function (linestring) {
+    // Extraction of linestrings is the same as for points
+    return this.extract.point.apply(this, [linestring]);
+  },
 
-	/**
-	 * Return a WKT string representing multiple chains (multilinestring) of atoms
-	 * @param   multilinestring {Array}     Multiple of multiple x-and-y objects
-	 * @return                  {String}    The WKT representation
-	 * @memberof this.Wkt.Wkt.extract
-	 * @instance
-	 */
-	multilinestring: function (multilinestring) {
-		var i, parts = [];
+  /**
+   * Return a WKT string representing multiple chains (multilinestring) of atoms
+   * @param   multilinestring {Array}     Multiple of multiple x-and-y objects
+   * @return                  {String}    The WKT representation
+   * @memberof this.Wkt.Wkt.extract
+   * @instance
+   */
+  multilinestring: function (multilinestring) {
+    var i,
+      parts = [];
 
-		if (multilinestring.length) {
-			for (i = 0; i < multilinestring.length; i += 1) {
-				parts.push(this.extract.linestring.apply(this, [multilinestring[i]]));
-			}
-		} else {
-			parts.push(this.extract.point.apply(this, [multilinestring]));
-		}
+    if (multilinestring.length) {
+      for (i = 0; i < multilinestring.length; i += 1) {
+        parts.push(this.extract.linestring.apply(this, [multilinestring[i]]));
+      }
+    } else {
+      parts.push(this.extract.point.apply(this, [multilinestring]));
+    }
 
-		return parts.join(',');
-	},
+    return parts.join(',');
+  },
 
-	/**
-	 * Return a WKT string representing multiple atoms in closed series (polygon)
-	 * @param   polygon {Array}     Collection of ordered x-and-y objects
-	 * @return          {String}    The WKT representation
-	 * @memberof this.Wkt.Wkt.extract
-	 * @instance
-	 */
-	polygon: function (polygon) {
-		// Extraction of polygons is the same as for multilinestrings
-		return this.extract.multilinestring.apply(this, [polygon]);
-	},
+  /**
+   * Return a WKT string representing multiple atoms in closed series (polygon)
+   * @param   polygon {Array}     Collection of ordered x-and-y objects
+   * @return          {String}    The WKT representation
+   * @memberof this.Wkt.Wkt.extract
+   * @instance
+   */
+  polygon: function (polygon) {
+    // Extraction of polygons is the same as for multilinestrings
+    return this.extract.multilinestring.apply(this, [polygon]);
+  },
 
-	/**
-	 * Return a WKT string representing multiple closed series (multipolygons) of multiple atoms
-	 * @param   multipolygon    {Array}     Collection of ordered x-and-y objects
-	 * @return                  {String}    The WKT representation
-	 * @memberof this.Wkt.Wkt.extract
-	 * @instance
-	 */
-	multipolygon: function (multipolygon) {
-		var i, parts = [];
-		for (i = 0; i < multipolygon.length; i += 1) {
-			parts.push('(' + this.extract.polygon.apply(this, [multipolygon[i]]) + ')');
-		}
-		return parts.join(',');
-	},
+  /**
+   * Return a WKT string representing multiple closed series (multipolygons) of multiple atoms
+   * @param   multipolygon    {Array}     Collection of ordered x-and-y objects
+   * @return                  {String}    The WKT representation
+   * @memberof this.Wkt.Wkt.extract
+   * @instance
+   */
+  multipolygon: function (multipolygon) {
+    var i,
+      parts = [];
+    for (i = 0; i < multipolygon.length; i += 1) {
+      parts.push(
+        '(' + this.extract.polygon.apply(this, [multipolygon[i]]) + ')'
+      );
+    }
+    return parts.join(',');
+  },
 
-	/**
-	 * Return a WKT string representing a 2DBox
-	 * @param   multipolygon    {Array}     Collection of ordered x-and-y objects
-	 * @return                  {String}    The WKT representation
-	 * @memberof this.Wkt.Wkt.extract
-	 * @instance
-	 */
-	box: function (box) {
-		return this.extract.linestring.apply(this, [box]);
-	},
+  /**
+   * Return a WKT string representing a 2DBox
+   * @param   multipolygon    {Array}     Collection of ordered x-and-y objects
+   * @return                  {String}    The WKT representation
+   * @memberof this.Wkt.Wkt.extract
+   * @instance
+   */
+  box: function (box) {
+    return this.extract.linestring.apply(this, [box]);
+  },
 
-	geometrycollection: function (str) {
-		console.log('The geometrycollection WKT type is not yet supported.');
-	}
+  geometrycollection: function (str) {
+    console.log('The geometrycollection WKT type is not yet supported.');
+  },
 };
 
 /**
@@ -686,169 +680,173 @@ Wkt.Wkt.prototype.extract = {
  * @instance
  */
 Wkt.Wkt.prototype.ingest = {
+  /**
+   * Return point feature given a point WKT fragment.
+   * @param   str {String}    A WKT fragment representing the point
+   * @memberof this.Wkt.Wkt.ingest
+   * @instance
+   */
+  point: function (str) {
+    var coords = Wkt.trim(str).split(this.regExes.spaces);
+    // In case a parenthetical group of coordinates is passed...
+    return [
+      {
+        // ...Search for numeric substrings
+        x: parseFloat(this.regExes.numeric.exec(coords[0])[0]),
+        y: parseFloat(this.regExes.numeric.exec(coords[1])[0]),
+      },
+    ];
+  },
 
-	/**
-	 * Return point feature given a point WKT fragment.
-	 * @param   str {String}    A WKT fragment representing the point
-	 * @memberof this.Wkt.Wkt.ingest
-	 * @instance
-	 */
-	point: function (str) {
-		var coords = Wkt.trim(str).split(this.regExes.spaces);
-		// In case a parenthetical group of coordinates is passed...
-		return [{ // ...Search for numeric substrings
-			x: parseFloat(this.regExes.numeric.exec(coords[0])[0]),
-			y: parseFloat(this.regExes.numeric.exec(coords[1])[0])
-		}];
-	},
+  /**
+   * Return a multipoint feature given a multipoint WKT fragment.
+   * @param   str {String}    A WKT fragment representing the multipoint
+   * @memberof this.Wkt.Wkt.ingest
+   * @instance
+   */
+  multipoint: function (str) {
+    var i, components, points;
+    components = [];
+    points = Wkt.trim(str).split(this.regExes.comma);
+    for (i = 0; i < points.length; i += 1) {
+      components.push(this.ingest.point.apply(this, [points[i]]));
+    }
+    return components;
+  },
 
-	/**
-	 * Return a multipoint feature given a multipoint WKT fragment.
-	 * @param   str {String}    A WKT fragment representing the multipoint
-	 * @memberof this.Wkt.Wkt.ingest
-	 * @instance
-	 */
-	multipoint: function (str) {
-		var i, components, points;
-		components = [];
-		points = Wkt.trim(str).split(this.regExes.comma);
-		for (i = 0; i < points.length; i += 1) {
-			components.push(this.ingest.point.apply(this, [points[i]]));
-		}
-		return components;
-	},
+  /**
+   * Return a linestring feature given a linestring WKT fragment.
+   * @param   str {String}    A WKT fragment representing the linestring
+   * @memberof this.Wkt.Wkt.ingest
+   * @instance
+   */
+  linestring: function (str) {
+    var i, multipoints, components;
 
-	/**
-	 * Return a linestring feature given a linestring WKT fragment.
-	 * @param   str {String}    A WKT fragment representing the linestring
-	 * @memberof this.Wkt.Wkt.ingest
-	 * @instance
-	 */
-	linestring: function (str) {
-		var i, multipoints, components;
+    // In our x-and-y representation of components, parsing
+    //  multipoints is the same as parsing linestrings
+    multipoints = this.ingest.multipoint.apply(this, [str]);
 
-		// In our x-and-y representation of components, parsing
-		//  multipoints is the same as parsing linestrings
-		multipoints = this.ingest.multipoint.apply(this, [str]);
+    // However, the points need to be joined
+    components = [];
+    for (i = 0; i < multipoints.length; i += 1) {
+      components = components.concat(multipoints[i]);
+    }
+    return components;
+  },
 
-		// However, the points need to be joined
-		components = [];
-		for (i = 0; i < multipoints.length; i += 1) {
-			components = components.concat(multipoints[i]);
-		}
-		return components;
-	},
+  /**
+   * Return a multilinestring feature given a multilinestring WKT fragment.
+   * @param   str {String}    A WKT fragment representing the multilinestring
+   * @memberof this.Wkt.Wkt.ingest
+   * @instance
+   */
+  multilinestring: function (str) {
+    var i, components, line, lines;
+    components = [];
 
-	/**
-	 * Return a multilinestring feature given a multilinestring WKT fragment.
-	 * @param   str {String}    A WKT fragment representing the multilinestring
-	 * @memberof this.Wkt.Wkt.ingest
-	 * @instance
-	 */
-	multilinestring: function (str) {
-		var i, components, line, lines;
-		components = [];
+    lines = Wkt.trim(str).split(this.regExes.doubleParenComma);
+    if (lines.length === 1) {
+      // If that didn't work...
+      lines = Wkt.trim(str).split(this.regExes.parenComma);
+    }
 
-		lines = Wkt.trim(str).split(this.regExes.doubleParenComma);
-		if (lines.length === 1) { // If that didn't work...
-			lines = Wkt.trim(str).split(this.regExes.parenComma);
-		}
+    for (i = 0; i < lines.length; i += 1) {
+      line = lines[i].replace(this.regExes.trimParens, '$1');
+      components.push(this.ingest.linestring.apply(this, [line]));
+    }
 
-		for (i = 0; i < lines.length; i += 1) {
-			line = lines[i].replace(this.regExes.trimParens, '$1');
-			components.push(this.ingest.linestring.apply(this, [line]));
-		}
+    return components;
+  },
 
-		return components;
-	},
+  /**
+   * Return a polygon feature given a polygon WKT fragment.
+   * @param   str {String}    A WKT fragment representing the polygon
+   * @memberof this.Wkt.Wkt.ingest
+   * @instance
+   */
+  polygon: function (str) {
+    var i, j, components, subcomponents, ring, rings;
+    rings = Wkt.trim(str).split(this.regExes.parenComma);
+    components = []; // Holds one or more rings
+    for (i = 0; i < rings.length; i += 1) {
+      ring = rings[i]
+        .replace(this.regExes.trimParens, '$1')
+        .split(this.regExes.comma);
+      subcomponents = []; // Holds the outer ring and any inner rings (holes)
+      for (j = 0; j < ring.length; j += 1) {
+        // Split on the empty space or '+' character (between coordinates)
+        var split = ring[j].split(this.regExes.spaces);
+        if (split.length > 2) {
+          //remove the elements which are blanks
+          split = split.filter(function (n) {
+            return n != '';
+          });
+        }
+        if (split.length === 2) {
+          var x_cord = split[0];
+          var y_cord = split[1];
 
-	/**
-	 * Return a polygon feature given a polygon WKT fragment.
-	 * @param   str {String}    A WKT fragment representing the polygon
-	 * @memberof this.Wkt.Wkt.ingest
-	 * @instance
-	 */
-	polygon: function (str) {
-		var i, j, components, subcomponents, ring, rings;
-		rings = Wkt.trim(str).split(this.regExes.parenComma);
-		components = []; // Holds one or more rings
-		for (i = 0; i < rings.length; i += 1) {
-			ring = rings[i].replace(this.regExes.trimParens, '$1').split(this.regExes.comma);
-			subcomponents = []; // Holds the outer ring and any inner rings (holes)
-			for (j = 0; j < ring.length; j += 1) {
-				// Split on the empty space or '+' character (between coordinates)
-				var split = ring[j].split(this.regExes.spaces);
-				if (split.length > 2) {
-					//remove the elements which are blanks
-					split = split.filter(function (n) {
-						return n != ""
-					});
-				}
-				if (split.length === 2) {
-					var x_cord = split[0];
-					var y_cord = split[1];
+          //now push
+          subcomponents.push({
+            x: parseFloat(x_cord),
+            y: parseFloat(y_cord),
+          });
+        }
+      }
+      components.push(subcomponents);
+    }
+    return components;
+  },
 
-					//now push
-					subcomponents.push({
-						x: parseFloat(x_cord),
-						y: parseFloat(y_cord)
-					});
-				}
-			}
-			components.push(subcomponents);
-		}
-		return components;
-	},
+  /**
+   * Return box vertices (which would become the Rectangle bounds) given a Box WKT fragment.
+   * @param   str {String}    A WKT fragment representing the box
+   * @memberof this.Wkt.Wkt.ingest
+   * @instance
+   */
+  box: function (str) {
+    var i, multipoints, components;
 
-	/**
-	 * Return box vertices (which would become the Rectangle bounds) given a Box WKT fragment.
-	 * @param   str {String}    A WKT fragment representing the box
-	 * @memberof this.Wkt.Wkt.ingest
-	 * @instance
-	 */
-	box: function (str) {
-		var i, multipoints, components;
+    // In our x-and-y representation of components, parsing
+    //  multipoints is the same as parsing linestrings
+    multipoints = this.ingest.multipoint.apply(this, [str]);
 
-		// In our x-and-y representation of components, parsing
-		//  multipoints is the same as parsing linestrings
-		multipoints = this.ingest.multipoint.apply(this, [str]);
+    // However, the points need to be joined
+    components = [];
+    for (i = 0; i < multipoints.length; i += 1) {
+      components = components.concat(multipoints[i]);
+    }
 
-		// However, the points need to be joined
-		components = [];
-		for (i = 0; i < multipoints.length; i += 1) {
-			components = components.concat(multipoints[i]);
-		}
+    return components;
+  },
 
-		return components;
-	},
+  /**
+   * Return a multipolygon feature given a multipolygon WKT fragment.
+   * @param   str {String}    A WKT fragment representing the multipolygon
+   * @memberof this.Wkt.Wkt.ingest
+   * @instance
+   */
+  multipolygon: function (str) {
+    var i, components, polygon, polygons;
+    components = [];
+    polygons = Wkt.trim(str).split(this.regExes.doubleParenComma);
+    for (i = 0; i < polygons.length; i += 1) {
+      polygon = polygons[i].replace(this.regExes.trimParens, '$1');
+      components.push(this.ingest.polygon.apply(this, [polygon]));
+    }
+    return components;
+  },
 
-	/**
-	 * Return a multipolygon feature given a multipolygon WKT fragment.
-	 * @param   str {String}    A WKT fragment representing the multipolygon
-	 * @memberof this.Wkt.Wkt.ingest
-	 * @instance
-	 */
-	multipolygon: function (str) {
-		var i, components, polygon, polygons;
-		components = [];
-		polygons = Wkt.trim(str).split(this.regExes.doubleParenComma);
-		for (i = 0; i < polygons.length; i += 1) {
-			polygon = polygons[i].replace(this.regExes.trimParens, '$1');
-			components.push(this.ingest.polygon.apply(this, [polygon]));
-		}
-		return components;
-	},
-
-	/**
-	 * Return an array of features given a geometrycollection WKT fragment.
-	 * @param   str {String}    A WKT fragment representing the geometry collection
-	 * @memberof this.Wkt.Wkt.ingest
-	 * @instance
-	 */
-	geometrycollection: function (str) {
-		console.log('The geometrycollection WKT type is not yet supported.');
-	}
-
+  /**
+   * Return an array of features given a geometrycollection WKT fragment.
+   * @param   str {String}    A WKT fragment representing the geometry collection
+   * @memberof this.Wkt.Wkt.ingest
+   * @instance
+   */
+  geometrycollection: function (str) {
+    console.log('The geometrycollection WKT type is not yet supported.');
+  },
 }; // eo ingest
 
 /**
@@ -864,209 +862,211 @@ Wkt.Wkt.prototype.isRectangle = false;
  * objects belonging to the various geometry classes of the framework.
  */
 Wkt.Wkt.prototype.construct = {
-	/**
-	 * Creates the framework's equivalent point geometry object.
-	 * @param   config      {Object}    An optional properties hash the object should use
-	 * @param   component   {Object}    An optional component to build from
-	 * @return              {google.maps.Marker}
-	 */
-	point: function (config, component) {
-		var c = component || this.components;
+  /**
+   * Creates the framework's equivalent point geometry object.
+   * @param   config      {Object}    An optional properties hash the object should use
+   * @param   component   {Object}    An optional component to build from
+   * @return              {google.maps.Marker}
+   */
+  point: function (config, component) {
+    var c = component || this.components;
 
-		config = config || {};
+    config = config || {};
 
-		config.position = new google.maps.LatLng(c[0].y, c[0].x);
+    config.position = new google.maps.LatLng(c[0].y, c[0].x);
 
-		return new google.maps.Marker(config);
-	},
+    return new google.maps.Marker(config);
+  },
 
-	/**
-	 * Creates the framework's equivalent multipoint geometry object.
-	 * @param   config  {Object}    An optional properties hash the object should use
-	 * @return          {Array}     Array containing multiple google.maps.Marker
-	 */
-	multipoint: function (config) {
-		var i, c, arr;
+  /**
+   * Creates the framework's equivalent multipoint geometry object.
+   * @param   config  {Object}    An optional properties hash the object should use
+   * @return          {Array}     Array containing multiple google.maps.Marker
+   */
+  multipoint: function (config) {
+    var i, c, arr;
 
-		c = this.components;
+    c = this.components;
 
-		config = config || {};
+    config = config || {};
 
-		arr = [];
+    arr = [];
 
-		for (i = 0; i < c.length; i += 1) {
-			arr.push(this.construct.point(config, c[i]));
-		}
+    for (i = 0; i < c.length; i += 1) {
+      arr.push(this.construct.point(config, c[i]));
+    }
 
-		return arr;
-	},
+    return arr;
+  },
 
-	/**
-	 * Creates the framework's equivalent linestring geometry object.
-	 * @param   config      {Object}    An optional properties hash the object should use
-	 * @param   component   {Object}    An optional component to build from
-	 * @return              {google.maps.Polyline}
-	 */
-	linestring: function (config, component) {
-		var i, c;
+  /**
+   * Creates the framework's equivalent linestring geometry object.
+   * @param   config      {Object}    An optional properties hash the object should use
+   * @param   component   {Object}    An optional component to build from
+   * @return              {google.maps.Polyline}
+   */
+  linestring: function (config, component) {
+    var i, c;
 
-		c = component || this.components;
+    c = component || this.components;
 
-		config = config || {
-			editable: false
-		};
+    config = config || {
+      editable: false,
+    };
 
-		config.path = [];
+    config.path = [];
 
-		for (i = 0; i < c.length; i += 1) {
-			config.path.push(new google.maps.LatLng(c[i].y, c[i].x));
-		}
+    for (i = 0; i < c.length; i += 1) {
+      config.path.push(new google.maps.LatLng(c[i].y, c[i].x));
+    }
 
-		return new google.maps.Polyline(config);
-	},
+    return new google.maps.Polyline(config);
+  },
 
-	/**
-	 * Creates the framework's equivalent multilinestring geometry object.
-	 * @param   config  {Object}    An optional properties hash the object should use
-	 * @return          {Array}     Array containing multiple google.maps.Polyline instances
-	 */
-	multilinestring: function (config) {
-		var i, c, arr;
+  /**
+   * Creates the framework's equivalent multilinestring geometry object.
+   * @param   config  {Object}    An optional properties hash the object should use
+   * @return          {Array}     Array containing multiple google.maps.Polyline instances
+   */
+  multilinestring: function (config) {
+    var i, c, arr;
 
-		c = this.components;
+    c = this.components;
 
-		config = config || {
-			editable: false
-		};
+    config = config || {
+      editable: false,
+    };
 
-		config.path = [];
+    config.path = [];
 
-		arr = [];
+    arr = [];
 
-		for (i = 0; i < c.length; i += 1) {
-			arr.push(this.construct.linestring(config, c[i]));
-		}
+    for (i = 0; i < c.length; i += 1) {
+      arr.push(this.construct.linestring(config, c[i]));
+    }
 
-		return arr;
-	},
+    return arr;
+  },
 
-	/**
-	 * Creates the framework's equivalent Box or Rectangle geometry object.
-	 * @param   config      {Object}    An optional properties hash the object should use
-	 * @param   component   {Object}    An optional component to build from
-	 * @return              {google.maps.Rectangle}
-	 */
-	box: function (config, component) {
-		var c = component || this.components;
+  /**
+   * Creates the framework's equivalent Box or Rectangle geometry object.
+   * @param   config      {Object}    An optional properties hash the object should use
+   * @param   component   {Object}    An optional component to build from
+   * @return              {google.maps.Rectangle}
+   */
+  box: function (config, component) {
+    var c = component || this.components;
 
-		config = config || {};
+    config = config || {};
 
-		config.bounds = new google.maps.LatLngBounds(
-			new google.maps.LatLng(c[0].y, c[0].x),
-			new google.maps.LatLng(c[1].y, c[1].x));
+    config.bounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(c[0].y, c[0].x),
+      new google.maps.LatLng(c[1].y, c[1].x)
+    );
 
-		return new google.maps.Rectangle(config);
-	},
+    return new google.maps.Rectangle(config);
+  },
 
-	/**
-	 * Creates the framework's equivalent polygon geometry object.
-	 * @param   config      {Object}    An optional properties hash the object should use
-	 * @param   component   {Object}    An optional component to build from
-	 * @return              {google.maps.Polygon}
-	 */
-	polygon: function (config, component) {
-		var j, k, c, rings, verts;
+  /**
+   * Creates the framework's equivalent polygon geometry object.
+   * @param   config      {Object}    An optional properties hash the object should use
+   * @param   component   {Object}    An optional component to build from
+   * @return              {google.maps.Polygon}
+   */
+  polygon: function (config, component) {
+    var j, k, c, rings, verts;
 
-		var polygonIsClockwise = function (coords) {
-			var area = 0,
-				j = null,
-				i = 0;
+    var polygonIsClockwise = function (coords) {
+      var area = 0,
+        j = null,
+        i = 0;
 
-			for (i = 0; i < coords.length; i++) {
-				j = (i + 1) % coords.length;
-				area += coords[i].x * coords[j].x;
-				area -= coords[j].y * coords[i].y;
-			}
+      for (i = 0; i < coords.length; i++) {
+        j = (i + 1) % coords.length;
+        area += coords[i].x * coords[j].x;
+        area -= coords[j].y * coords[i].y;
+      }
 
-			return area > 0;
-		};
+      return area > 0;
+    };
 
-		c = component || this.components;
+    c = component || this.components;
 
-		config = config || {
-			editable: false // Editable geometry off by default
-		};
+    config = config || {
+      editable: false, // Editable geometry off by default
+    };
 
-		config.paths = [];
+    config.paths = [];
 
-		rings = [];
-		for (j = 0; j < c.length; j += 1) { // For each ring...
+    rings = [];
+    for (j = 0; j < c.length; j += 1) {
+      // For each ring...
 
-			verts = [];
-			// NOTE: We iterate to one (1) less than the Array length to skip the last vertex
-			for (k = 0; k < c[j].length - 1; k += 1) { // For each vertex...
-				verts.push(new google.maps.LatLng(c[j][k].y, c[j][k].x));
+      verts = [];
+      // NOTE: We iterate to one (1) less than the Array length to skip the last vertex
+      for (k = 0; k < c[j].length - 1; k += 1) {
+        // For each vertex...
+        verts.push(new google.maps.LatLng(c[j][k].y, c[j][k].x));
+      } // eo for each vertex
 
-			} // eo for each vertex
+      if (j !== 0) {
+        // Orient inner rings correctly
+        if (polygonIsClockwise(c[j]) && this.type == 'polygon') {
+          verts.reverse();
+        }
+      }
 
-			if (j !== 0) {
-				// Orient inner rings correctly
-				if (polygonIsClockwise(c[j]) && this.type == 'polygon') {
-					verts.reverse();
-				}
-			}
+      rings.push(verts);
+    } // eo for each ring
 
-			rings.push(verts);
-		} // eo for each ring
+    config.paths = config.paths.concat(rings);
 
-		config.paths = config.paths.concat(rings);
+    if (this.isRectangle) {
+      return (function () {
+        var bounds, v;
 
-		if (this.isRectangle) {
-			return (function () {
-				var bounds, v;
+        bounds = new google.maps.LatLngBounds();
 
-				bounds = new google.maps.LatLngBounds();
+        for (v in rings[0]) {
+          // Ought to be only 1 ring in a Rectangle
+          if (rings[0].hasOwnProperty(v)) {
+            bounds.extend(rings[0][v]);
+          }
+        }
 
-				for (v in rings[0]) { // Ought to be only 1 ring in a Rectangle
-					if (rings[0].hasOwnProperty(v)) {
-						bounds.extend(rings[0][v]);
-					}
-				}
+        return new google.maps.Rectangle({
+          bounds: bounds,
+        });
+      })();
+    } else {
+      return new google.maps.Polygon(config);
+    }
+  },
 
-				return new google.maps.Rectangle({
-					bounds: bounds
-				});
-			}());
-		} else {
-			return new google.maps.Polygon(config);
-		}
-	},
+  /**
+   * Creates the framework's equivalent multipolygon geometry object.
+   * @param   config  {Object}    An optional properties hash the object should use
+   * @return          {Array}     Array containing multiple google.maps.Polygon
+   */
+  multipolygon: function (config) {
+    var i, c, arr;
 
-	/**
-	 * Creates the framework's equivalent multipolygon geometry object.
-	 * @param   config  {Object}    An optional properties hash the object should use
-	 * @return          {Array}     Array containing multiple google.maps.Polygon
-	 */
-	multipolygon: function (config) {
-		var i, c, arr;
+    c = this.components;
 
-		c = this.components;
+    config = config || {
+      editable: false,
+    };
 
-		config = config || {
-			editable: false
-		};
+    config.path = [];
 
-		config.path = [];
+    arr = [];
 
-		arr = [];
+    for (i = 0; i < c.length; i += 1) {
+      arr.push(this.construct.polygon(config, c[i]));
+    }
 
-		for (i = 0; i < c.length; i += 1) {
-			arr.push(this.construct.polygon(config, c[i]));
-		}
-
-		return arr;
-	}
-
+    return arr;
+  },
 };
 
 /**
@@ -1080,522 +1080,553 @@ Wkt.Wkt.prototype.construct = {
  * @return          {Object}    A hash of the 'type' and 'components' thus derived, plus the WKT string of the feature.
  */
 Wkt.Wkt.prototype.deconstruct = function (obj, multiFlag) {
-	var features, i, j, multiFlag, verts, rings, sign, tmp, response, lat, lng, vertex, ring, linestrings, k;
+  var features,
+    i,
+    j,
+    multiFlag,
+    verts,
+    rings,
+    sign,
+    tmp,
+    response,
+    lat,
+    lng,
+    vertex,
+    ring,
+    linestrings,
+    k;
 
-	// Shortcut to signed area function (determines clockwise vs counter-clock)
-	if (google.maps.geometry) {
-		sign = google.maps.geometry.spherical.computeSignedArea;
-	};
+  // Shortcut to signed area function (determines clockwise vs counter-clock)
+  if (google.maps.geometry) {
+    sign = google.maps.geometry.spherical.computeSignedArea;
+  }
 
-	// google.maps.LatLng //////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.LatLng) {
+  // google.maps.LatLng //////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.LatLng) {
+    response = {
+      type: 'point',
+      components: [
+        {
+          x: obj.lng(),
+          y: obj.lat(),
+        },
+      ],
+    };
+    return response;
+  }
 
-		response = {
-			type: 'point',
-			components: [{
-				x: obj.lng(),
-				y: obj.lat()
-			}]
-		};
-		return response;
-	}
+  // google.maps.Point //////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Point) {
+    response = {
+      type: 'point',
+      components: [
+        {
+          x: obj.x,
+          y: obj.y,
+        },
+      ],
+    };
+    return response;
+  }
 
-	// google.maps.Point //////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Point) {
-		response = {
-			type: 'point',
-			components: [{
-				x: obj.x,
-				y: obj.y
-			}]
-		};
-		return response;
-	}
+  // google.maps.Marker //////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Marker) {
+    response = {
+      type: 'point',
+      components: [
+        {
+          x: obj.getPosition().lng(),
+          y: obj.getPosition().lat(),
+        },
+      ],
+    };
+    return response;
+  }
 
-	// google.maps.Marker //////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Marker) {
-		response = {
-			type: 'point',
-			components: [{
-				x: obj.getPosition().lng(),
-				y: obj.getPosition().lat()
-			}]
-		};
-		return response;
-	}
+  // google.maps.Polyline ////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Polyline) {
+    verts = [];
+    for (i = 0; i < obj.getPath().length; i += 1) {
+      tmp = obj.getPath().getAt(i);
+      verts.push({
+        x: tmp.lng(),
+        y: tmp.lat(),
+      });
+    }
+    response = {
+      type: 'linestring',
+      components: verts,
+    };
+    return response;
+  }
 
-	// google.maps.Polyline ////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Polyline) {
+  // google.maps.Polygon /////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Polygon) {
+    rings = [];
 
-		verts = [];
-		for (i = 0; i < obj.getPath().length; i += 1) {
-			tmp = obj.getPath().getAt(i);
-			verts.push({
-				x: tmp.lng(),
-				y: tmp.lat()
-			});
-		}
-		response = {
-			type: 'linestring',
-			components: verts
-		};
-		return response;
+    if (multiFlag === undefined) {
+      multiFlag = (function () {
+        var areas, i, l;
 
-	}
+        l = obj.getPaths().length;
+        if (l <= 1) {
+          // Trivial; this is a single polygon
+          return false;
+        }
 
-	// google.maps.Polygon /////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Polygon) {
+        if (l === 2) {
+          // If clockwise*clockwise or counter*counter, i.e.
+          //  (-1)*(-1) or (1)*(1), then result would be positive
+          if (
+            sign(obj.getPaths().getAt(0)) * sign(obj.getPaths().getAt(1)) <
+            0
+          ) {
+            return false; // Most likely single polygon with 1 hole
+          }
 
-		rings = [];
+          return true;
+        }
 
-		if (multiFlag === undefined) {
-			multiFlag = (function () {
-				var areas, i, l;
+        // Must be longer than 3 polygons at this point...
+        areas = obj
+          .getPaths()
+          .getArray()
+          .map(function (k) {
+            return sign(k) / Math.abs(sign(k)); // Unit normalization (outputs 1 or -1)
+          });
 
-				l = obj.getPaths().length;
-				if (l <= 1) { // Trivial; this is a single polygon
-					return false;
-				}
+        // If two clockwise or two counter-clockwise rings are found
+        //  (at different indices)...
+        if (areas.indexOf(areas[0]) !== areas.lastIndexOf(areas[0])) {
+          multiFlag = true; // Flag for holes in one or more polygons
+          return true;
+        }
 
-				if (l === 2) {
-					// If clockwise*clockwise or counter*counter, i.e.
-					//  (-1)*(-1) or (1)*(1), then result would be positive
-					if (sign(obj.getPaths().getAt(0)) * sign(obj.getPaths().getAt(1)) < 0) {
-						return false; // Most likely single polygon with 1 hole
-					}
+        return false;
+      })();
+    }
 
-					return true;
-				}
+    for (i = 0; i < obj.getPaths().length; i += 1) {
+      // For each polygon (ring)...
+      tmp = obj.getPaths().getAt(i);
+      verts = [];
 
-				// Must be longer than 3 polygons at this point...
-				areas = obj.getPaths().getArray().map(function (k) {
-					return sign(k) / Math.abs(sign(k)); // Unit normalization (outputs 1 or -1)
-				});
+      for (j = 0; j < obj.getPaths().getAt(i).length; j += 1) {
+        // For each vertex...
+        verts.push({
+          x: tmp.getAt(j).lng(),
+          y: tmp.getAt(j).lat(),
+        });
+      }
 
-				// If two clockwise or two counter-clockwise rings are found
-				//  (at different indices)...
-				if (areas.indexOf(areas[0]) !== areas.lastIndexOf(areas[0])) {
-					multiFlag = true; // Flag for holes in one or more polygons
-					return true;
-				}
+      if (!tmp.getAt(tmp.length - 1).equals(tmp.getAt(0))) {
+        if (i % 2 !== 0) {
+          // In inner rings, coordinates are reversed...
 
-				return false;
+          verts.push({
+            // Add the first coordinate again for closure
+            x: tmp.getAt(0).lng(),
+            y: tmp.getAt(0).lat(),
+          });
+          verts.reverse();
+        } else {
+          verts.push({
+            // Add the first coordinate again for closure
+            x: tmp.getAt(0).lng(),
+            y: tmp.getAt(0).lat(),
+          });
+        }
+      }
 
-			}());
-		}
+      if (obj.getPaths().length > 1 && i > 0) {
+        // If this and the last ring have the same signs...
+        if (
+          (sign(obj.getPaths().getAt(i)) > 0 &&
+            sign(obj.getPaths().getAt(i - 1)) > 0) ||
+          (sign(obj.getPaths().getAt(i)) < 0 &&
+            sign(obj.getPaths().getAt(i - 1)) < 0) /*&& !multiFlag*/
+        ) {
+          // ...They must both be inner rings (or both be outer rings, in a multipolygon)
+          verts = [verts]; // Wrap multipolygons once more (collection)
+        } else {
+          verts.reverse();
+        }
+      }
 
-		for (i = 0; i < obj.getPaths().length; i += 1) { // For each polygon (ring)...
-			tmp = obj.getPaths().getAt(i);
-			verts = [];
-
-			for (j = 0; j < obj.getPaths().getAt(i).length; j += 1) { // For each vertex...
-				verts.push({
-					x: tmp.getAt(j).lng(),
-					y: tmp.getAt(j).lat()
-				});
-
-			}
-
-			if (!tmp.getAt(tmp.length - 1).equals(tmp.getAt(0))) {
-				if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
-
-					verts.push({ // Add the first coordinate again for closure
-						x: tmp.getAt(0).lng(),
-						y: tmp.getAt(0).lat()
-					});
-					verts.reverse();
-
-				} else {
-					verts.push({ // Add the first coordinate again for closure
-						x: tmp.getAt(0).lng(),
-						y: tmp.getAt(0).lat()
-					});
-
-				}
-
-			}
-
-			if (obj.getPaths().length > 1 && i > 0) {
-				// If this and the last ring have the same signs...
-				if (sign(obj.getPaths().getAt(i)) > 0 && sign(obj.getPaths().getAt(i - 1)) > 0 ||
-					sign(obj.getPaths().getAt(i)) < 0 && sign(obj.getPaths().getAt(i - 1)) < 0 /*&& !multiFlag*/ ) {
-					// ...They must both be inner rings (or both be outer rings, in a multipolygon)
-					verts = [verts]; // Wrap multipolygons once more (collection)
-				} else {
-					verts.reverse();
-				}
-
-			}
-
-			//TODO This makes mistakes when a second polygon has holes; it sees them all as individual polygons
-			/*if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
+      //TODO This makes mistakes when a second polygon has holes; it sees them all as individual polygons
+      /*if (i % 2 !== 0) { // In inner rings, coordinates are reversed...
 				verts.reverse();
 			}*/
 
-			rings.push(verts);
-		}
+      rings.push(verts);
+    }
 
-		response = {
-			type: (multiFlag) ? 'multipolygon' : 'polygon',
-			components: rings
-		};
-		return response;
+    response = {
+      type: multiFlag ? 'multipolygon' : 'polygon',
+      components: rings,
+    };
+    return response;
+  }
 
-	}
+  // google.maps.Circle //////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Circle) {
+    var point = obj.getCenter();
+    var radius = obj.getRadius();
+    verts = [];
+    var d2r = Math.PI / 180; // degrees to radians
+    var r2d = 180 / Math.PI; // radians to degrees
+    radius = radius / 1609; // meters to miles
+    var earthsradius = 3963; // 3963 is the radius of the earth in miles
+    var num_seg = 32; // number of segments used to approximate a circle
+    var rlat = (radius / earthsradius) * r2d;
+    var rlng = rlat / Math.cos(point.lat() * d2r);
 
-	// google.maps.Circle //////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Circle) {
-		var point = obj.getCenter();
-		var radius = obj.getRadius();
-		verts = [];
-		var d2r = Math.PI / 180; // degrees to radians
-		var r2d = 180 / Math.PI; // radians to degrees
-		radius = radius / 1609; // meters to miles
-		var earthsradius = 3963; // 3963 is the radius of the earth in miles
-		var num_seg = 32; // number of segments used to approximate a circle
-		var rlat = (radius / earthsradius) * r2d;
-		var rlng = rlat / Math.cos(point.lat() * d2r);
+    for (var n = 0; n <= num_seg; n++) {
+      var theta = Math.PI * (n / (num_seg / 2));
+      lng = point.lng() + rlng * Math.cos(theta); // center a + radius x * cos(theta)
+      lat = point.lat() + rlat * Math.sin(theta); // center b + radius y * sin(theta)
+      verts.push({
+        x: lng,
+        y: lat,
+      });
+    }
 
-		for (var n = 0; n <= num_seg; n++) {
-			var theta = Math.PI * (n / (num_seg / 2));
-			lng = point.lng() + (rlng * Math.cos(theta)); // center a + radius x * cos(theta)
-			lat = point.lat() + (rlat * Math.sin(theta)); // center b + radius y * sin(theta)
-			verts.push({
-				x: lng,
-				y: lat
-			});
-		}
+    response = {
+      type: 'polygon',
+      components: [verts],
+    };
 
-		response = {
-			type: 'polygon',
-			components: [verts]
-		};
+    return response;
+  }
 
-		return response;
+  // google.maps.LatLngBounds ///////////////////////////////////////////////////
+  if (obj.constructor === google.maps.LatLngBounds) {
+    tmp = obj;
+    verts = [];
+    verts.push({
+      // NW corner
+      x: tmp.getSouthWest().lng(),
+      y: tmp.getNorthEast().lat(),
+    });
 
-	}
+    verts.push({
+      // NE corner
+      x: tmp.getNorthEast().lng(),
+      y: tmp.getNorthEast().lat(),
+    });
 
-	// google.maps.LatLngBounds ///////////////////////////////////////////////////
-	if (obj.constructor === google.maps.LatLngBounds) {
+    verts.push({
+      // SE corner
+      x: tmp.getNorthEast().lng(),
+      y: tmp.getSouthWest().lat(),
+    });
 
-		tmp = obj;
-		verts = [];
-		verts.push({ // NW corner
-			x: tmp.getSouthWest().lng(),
-			y: tmp.getNorthEast().lat()
-		});
+    verts.push({
+      // SW corner
+      x: tmp.getSouthWest().lng(),
+      y: tmp.getSouthWest().lat(),
+    });
 
-		verts.push({ // NE corner
-			x: tmp.getNorthEast().lng(),
-			y: tmp.getNorthEast().lat()
-		});
+    verts.push({
+      // NW corner (again, for closure)
+      x: tmp.getSouthWest().lng(),
+      y: tmp.getNorthEast().lat(),
+    });
 
-		verts.push({ // SE corner
-			x: tmp.getNorthEast().lng(),
-			y: tmp.getSouthWest().lat()
-		});
+    response = {
+      type: 'polygon',
+      isRectangle: true,
+      components: [verts],
+    };
 
-		verts.push({ // SW corner
-			x: tmp.getSouthWest().lng(),
-			y: tmp.getSouthWest().lat()
-		});
+    return response;
+  }
 
-		verts.push({ // NW corner (again, for closure)
-			x: tmp.getSouthWest().lng(),
-			y: tmp.getNorthEast().lat()
-		});
+  // google.maps.Rectangle ///////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Rectangle) {
+    tmp = obj.getBounds();
+    verts = [];
+    verts.push({
+      // NW corner
+      x: tmp.getSouthWest().lng(),
+      y: tmp.getNorthEast().lat(),
+    });
 
-		response = {
-			type: 'polygon',
-			isRectangle: true,
-			components: [verts]
-		};
+    verts.push({
+      // NE corner
+      x: tmp.getNorthEast().lng(),
+      y: tmp.getNorthEast().lat(),
+    });
 
-		return response;
+    verts.push({
+      // SE corner
+      x: tmp.getNorthEast().lng(),
+      y: tmp.getSouthWest().lat(),
+    });
 
-	}
+    verts.push({
+      // SW corner
+      x: tmp.getSouthWest().lng(),
+      y: tmp.getSouthWest().lat(),
+    });
 
-	// google.maps.Rectangle ///////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Rectangle) {
+    verts.push({
+      // NW corner (again, for closure)
+      x: tmp.getSouthWest().lng(),
+      y: tmp.getNorthEast().lat(),
+    });
 
-		tmp = obj.getBounds();
-		verts = [];
-		verts.push({ // NW corner
-			x: tmp.getSouthWest().lng(),
-			y: tmp.getNorthEast().lat()
-		});
+    response = {
+      type: 'polygon',
+      isRectangle: true,
+      components: [verts],
+    };
 
-		verts.push({ // NE corner
-			x: tmp.getNorthEast().lng(),
-			y: tmp.getNorthEast().lat()
-		});
+    return response;
+  }
 
-		verts.push({ // SE corner
-			x: tmp.getNorthEast().lng(),
-			y: tmp.getSouthWest().lat()
-		});
+  // google.maps.Data Geometry Types /////////////////////////////////////////////////////
 
-		verts.push({ // SW corner
-			x: tmp.getSouthWest().lng(),
-			y: tmp.getSouthWest().lat()
-		});
+  // google.maps.Data.Feature /////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Data.Feature) {
+    return this.deconstruct.call(this, obj.getGeometry());
+  }
 
-		verts.push({ // NW corner (again, for closure)
-			x: tmp.getSouthWest().lng(),
-			y: tmp.getNorthEast().lat()
-		});
+  // google.maps.Data.Point /////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Data.Point) {
+    //console.log('It is a google.maps.Data.Point');
+    response = {
+      type: 'point',
+      components: [
+        {
+          x: obj.get().lng(),
+          y: obj.get().lat(),
+        },
+      ],
+    };
+    return response;
+  }
 
-		response = {
-			type: 'polygon',
-			isRectangle: true,
-			components: [verts]
-		};
+  // google.maps.Data.LineString /////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Data.LineString) {
+    verts = [];
+    //console.log('It is a google.maps.Data.LineString');
+    for (i = 0; i < obj.getLength(); i += 1) {
+      vertex = obj.getAt(i);
+      verts.push({
+        x: vertex.lng(),
+        y: vertex.lat(),
+      });
+    }
+    response = {
+      type: 'linestring',
+      components: verts,
+    };
+    return response;
+  }
 
-		return response;
+  // google.maps.Data.Polygon /////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Data.Polygon) {
+    var rings = [];
+    //console.log('It is a google.maps.Data.Polygon');
+    for (i = 0; i < obj.getLength(); i += 1) {
+      // For each ring...
+      ring = obj.getAt(i);
+      var verts = [];
+      for (j = 0; j < ring.getLength(); j += 1) {
+        // For each vertex...
+        vertex = ring.getAt(j);
+        verts.push({
+          x: vertex.lng(),
+          y: vertex.lat(),
+        });
+      }
+      verts.push({
+        x: ring.getAt(0).lng(),
+        y: ring.getAt(0).lat(),
+      });
 
-	}
+      rings.push(verts);
+    }
+    response = {
+      type: 'polygon',
+      components: rings,
+    };
 
-	// google.maps.Data Geometry Types /////////////////////////////////////////////////////
+    return response;
+  }
 
-	// google.maps.Data.Feature /////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Data.Feature) {
-		return this.deconstruct.call(this, obj.getGeometry());
-	}
+  // google.maps.Data.MultiPoint /////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Data.MultiPoint) {
+    verts = [];
+    for (i = 0; i < obj.getLength(); i += 1) {
+      vertex = obj.getAt(i);
+      verts.push([
+        {
+          x: vertex.lng(),
+          y: vertex.lat(),
+        },
+      ]);
+    }
+    response = {
+      type: 'multipoint',
+      components: verts,
+    };
+    return response;
+  }
 
-	// google.maps.Data.Point /////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Data.Point) {
-		//console.log('It is a google.maps.Data.Point');
-		response = {
-			type: 'point',
-			components: [{
-				x: obj.get().lng(),
-				y: obj.get().lat()
-			}]
-		};
-		return response;
-	}
+  // google.maps.Data.MultiLineString /////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Data.MultiLineString) {
+    linestrings = [];
+    for (i = 0; i < obj.getLength(); i += 1) {
+      verts = [];
+      var linestring = obj.getAt(i);
+      for (j = 0; j < linestring.getLength(); j += 1) {
+        vertex = linestring.getAt(j);
+        verts.push({
+          x: vertex.lng(),
+          y: vertex.lat(),
+        });
+      }
+      linestrings.push(verts);
+    }
+    response = {
+      type: 'multilinestring',
+      components: linestrings,
+    };
+    return response;
+  }
 
-	// google.maps.Data.LineString /////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Data.LineString) {
-		verts = [];
-		//console.log('It is a google.maps.Data.LineString');
-		for (i = 0; i < obj.getLength(); i += 1) {
-			vertex = obj.getAt(i);
-			verts.push({
-				x: vertex.lng(),
-				y: vertex.lat()
-			});
-		}
-		response = {
-			type: 'linestring',
-			components: verts
-		};
-		return response;
-	}
+  // google.maps.Data.MultiPolygon /////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Data.MultiPolygon) {
+    var polygons = [];
 
-	// google.maps.Data.Polygon /////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Data.Polygon) {
-		var rings = [];
-		//console.log('It is a google.maps.Data.Polygon');
-		for (i = 0; i < obj.getLength(); i += 1) { // For each ring...
-			ring = obj.getAt(i);
-			var verts = [];
-			for (j = 0; j < ring.getLength(); j += 1) { // For each vertex...
-				vertex = ring.getAt(j);
-				verts.push({
-					x: vertex.lng(),
-					y: vertex.lat()
-				});
-			}
-			verts.push({
-				x: ring.getAt(0).lng(),
-				y: ring.getAt(0).lat()
-			});
+    //console.log('It is a google.maps.Data.MultiPolygon');
+    for (k = 0; k < obj.getLength(); k += 1) {
+      // For each multipolygon
+      var polygon = obj.getAt(k);
+      var rings = [];
+      for (i = 0; i < polygon.getLength(); i += 1) {
+        // For each ring...
+        ring = polygon.getAt(i);
+        var verts = [];
+        for (j = 0; j < ring.getLength(); j += 1) {
+          // For each vertex...
+          vertex = ring.getAt(j);
+          verts.push({
+            x: vertex.lng(),
+            y: vertex.lat(),
+          });
+        }
+        verts.push({
+          x: ring.getAt(0).lng(),
+          y: ring.getAt(0).lat(),
+        });
 
-			rings.push(verts);
-		}
-		response = {
-			type: 'polygon',
-			components: rings
-		};
+        rings.push(verts);
+      }
+      polygons.push(rings);
+    }
 
-		return response;
-	}
+    response = {
+      type: 'multipolygon',
+      components: polygons,
+    };
+    return response;
+  }
 
-	// google.maps.Data.MultiPoint /////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Data.MultiPoint) {
-		verts = [];
-		for (i = 0; i < obj.getLength(); i += 1) {
-			vertex = obj.getAt(i);
-			verts.push([{
-				x: vertex.lng(),
-				y: vertex.lat()
-			}]);
-		}
-		response = {
-			type: 'multipoint',
-			components: verts
-		};
-		return response;
-	}
+  // google.maps.Data.GeometryCollection /////////////////////////////////////////////////////
+  if (obj.constructor === google.maps.Data.GeometryCollection) {
+    var objects = [];
+    for (k = 0; k < obj.getLength(); k += 1) {
+      // For each multipolygon
+      var object = obj.getAt(k);
+      objects.push(this.deconstruct.call(this, object));
+    }
+    //console.log('It is a google.maps.Data.GeometryCollection', objects);
+    response = {
+      type: 'geometrycollection',
+      components: objects,
+    };
+    return response;
+  }
 
-	// google.maps.Data.MultiLineString /////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Data.MultiLineString) {
-		linestrings = []
-		for (i = 0; i < obj.getLength(); i += 1) {
-			verts = [];
-			var linestring = obj.getAt(i);
-			for (j = 0; j < linestring.getLength(); j += 1) {
-				vertex = linestring.getAt(j);
-				verts.push({
-					x: vertex.lng(),
-					y: vertex.lat()
-				});
-			}
-			linestrings.push(verts);
-		}
-		response = {
-			type: 'multilinestring',
-			components: linestrings
-		};
-		return response;
-	}
+  // Array ///////////////////////////////////////////////////////////////////
+  if (Wkt.isArray(obj)) {
+    features = [];
 
-	// google.maps.Data.MultiPolygon /////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Data.MultiPolygon) {
+    for (i = 0; i < obj.length; i += 1) {
+      features.push(this.deconstruct.call(this, obj[i], true));
+    }
 
-		var polygons = [];
+    response = {
+      type: (function () {
+        var k,
+          type = obj[0].constructor;
 
-		//console.log('It is a google.maps.Data.MultiPolygon');
-		for (k = 0; k < obj.getLength(); k += 1) { // For each multipolygon
-			var polygon = obj.getAt(k);
-			var rings = [];
-			for (i = 0; i < polygon.getLength(); i += 1) { // For each ring...
-				ring = polygon.getAt(i);
-				var verts = [];
-				for (j = 0; j < ring.getLength(); j += 1) { // For each vertex...
-					vertex = ring.getAt(j);
-					verts.push({
-						x: vertex.lng(),
-						y: vertex.lat()
-					});
-				}
-				verts.push({
-					x: ring.getAt(0).lng(),
-					y: ring.getAt(0).lat()
-				});
+        for (k = 0; k < obj.length; k += 1) {
+          // Check that all items have the same constructor as the first item
+          if (obj[k].constructor !== type) {
+            // If they don't, type is heterogeneous geometry collection
+            return 'geometrycollection';
+          }
+        }
 
-				rings.push(verts);
-			}
-			polygons.push(rings);
-		}
+        switch (type) {
+          case google.maps.Marker:
+            return 'multipoint';
+          case google.maps.Polyline:
+            return 'multilinestring';
+          case google.maps.Polygon:
+            return 'multipolygon';
+          default:
+            return 'geometrycollection';
+        }
+      })(),
+      components: (function () {
+        // Pluck the components from each Wkt
+        var i, comps;
 
-		response = {
-			type: 'multipolygon',
-			components: polygons
-		};
-		return response;
-	}
+        comps = [];
+        for (i = 0; i < features.length; i += 1) {
+          if (features[i].components) {
+            comps.push(features[i].components);
+          }
+        }
 
-	// google.maps.Data.GeometryCollection /////////////////////////////////////////////////////
-	if (obj.constructor === google.maps.Data.GeometryCollection) {
+        return {
+          comps: comps,
+        };
+      })(),
+    };
+    response.components = response.components.comps;
+    return response;
+  }
 
-		var objects = [];
-		for (k = 0; k < obj.getLength(); k += 1) { // For each multipolygon
-			var object = obj.getAt(k);
-			objects.push(this.deconstruct.call(this, object));
-		}
-		//console.log('It is a google.maps.Data.GeometryCollection', objects);
-		response = {
-			type: 'geometrycollection',
-			components: objects
-		};
-		return response;
-	}
-
-	// Array ///////////////////////////////////////////////////////////////////
-	if (Wkt.isArray(obj)) {
-		features = [];
-
-		for (i = 0; i < obj.length; i += 1) {
-			features.push(this.deconstruct.call(this, obj[i], true));
-		}
-
-		response = {
-
-			type: (function () {
-				var k, type = obj[0].constructor;
-
-				for (k = 0; k < obj.length; k += 1) {
-					// Check that all items have the same constructor as the first item
-					if (obj[k].constructor !== type) {
-						// If they don't, type is heterogeneous geometry collection
-						return 'geometrycollection';
-					}
-				}
-
-				switch (type) {
-				case google.maps.Marker:
-					return 'multipoint';
-				case google.maps.Polyline:
-					return 'multilinestring';
-				case google.maps.Polygon:
-					return 'multipolygon';
-				default:
-					return 'geometrycollection';
-				}
-
-			}()),
-			components: (function () {
-				// Pluck the components from each Wkt
-				var i, comps;
-
-				comps = [];
-				for (i = 0; i < features.length; i += 1) {
-					if (features[i].components) {
-						comps.push(features[i].components);
-					}
-				}
-
-				return {
-					comps: comps
-				};
-			}())
-
-		};
-		response.components = response.components.comps;
-		return response;
-
-	}
-
-	console.log('The passed object does not have any recognizable properties.');
-
+  console.log('The passed object does not have any recognizable properties.');
 };
 
-export {
-	Wkt
-};
+export {Wkt};
 export function Wicket() {
-	return new Wkt.Wkt();
-};
+  return new Wkt.Wkt();
+}
 
 export function WKT2Object(WKT) {
-	var wkt = new Wkt.Wkt();
-	try {
-		wkt.read(WKT);
-	} catch (e) {
-		console.zlog('Imposible leer geometría', WKT);
-		return false;
-	}
-	try {
-		var obj = wkt.toObject({
-			reverseInnerPolygons: true
-		}); // Make an object
-		obj.wkt = wkt;
-		return obj;
-	} catch (e) {
-		console.warn('Imposible exportar geometría', WKT);
-		return false;
-	}
-
-};
+  var wkt = new Wkt.Wkt();
+  try {
+    wkt.read(WKT);
+  } catch (e) {
+    console.zlog('Imposible leer geometría', WKT);
+    return false;
+  }
+  try {
+    var obj = wkt.toObject({
+      reverseInnerPolygons: true,
+    }); // Make an object
+    obj.wkt = wkt;
+    return obj;
+  } catch (e) {
+    console.warn('Imposible exportar geometría', WKT);
+    return false;
+  }
+}
