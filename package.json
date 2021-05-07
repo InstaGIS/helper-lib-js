@@ -52,7 +52,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-mocha-reporter": "^2.2.2",
     "karma-phantomjs-launcher": "^1.0.4",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.21",
     "prettier": "^2.1.1",
     "rollup": "^0.50.0",
     "rollup-plugin-alias": "^1.4.0",
